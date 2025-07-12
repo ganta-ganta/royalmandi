@@ -89,104 +89,173 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     
     <script>
-    // Your existing Firebase config
-    const firebaseConfig = {
-        apiKey: "AIzaSyC7Y0BVRoH9m1B8jzYKvI61csT4bnifXEU",
-        authDomain: "royal-mandi.firebaseapp.com",
-        projectId: "royal-mandi",
-        storageBucket: "royal-mandi.appspot.com",
-        messagingSenderId: "285256672352",
-        appId: "1:285256672352:web:9cee8057176e4885ed8f05",
-        measurementId: "G-YC7ZK7Y81H"
-    };
+   // Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyC7Y0BVRoH9m1B8jzYKvI61csT4bnifXEU",
+  authDomain: "royal-mandi.firebaseapp.com",
+  projectId: "royal-mandi",
+  storageBucket: "royal-mandi.appspot.com",
+  messagingSenderId: "285256672352",
+  appId: "1:285256672352:web:9cee8057176e4885ed8f05",
+  measurementId: "G-YC7ZK7Y81H"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// List of authorized admin emails
+const ADMIN_EMAILS = new Set([
+  "theroyalmandi@gmail.com",
+  "the.royalmandi@gmail.com",
+  "theroyalmandii@gmail.com"
+]);
+
+// DOM elements
+const loginForm = document.getElementById('adminLoginForm');
+const emailInput = document.getElementById('adminEmail');
+const passwordInput = document.getElementById('adminPassword');
+const submitBtn = document.querySelector('#adminLoginForm button[type="submit"]');
+const submitText = document.getElementById('adminSubmitText');
+const submitSpinner = document.getElementById('adminSubmitSpinner');
+
+// Admin login form submission
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const email = emailInput.value.trim().toLowerCase();
+  const password = passwordInput.value;
+
+  // Validate email format
+  if (!validateEmail(email)) {
+    showError("Please enter a valid email address");
+    return;
+  }
+
+  // Check if email is authorized
+  if (!ADMIN_EMAILS.has(email)) {
+    showError("Access restricted to admin accounts only");
+    return;
+  }
+
+  setLoadingState(true);
+
+  try {
+    // Authenticate user
+    const userCredential = await auth.signInWithEmailAndPassword(email, password);
+    const user = userCredential.user;
     
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+    // Verify admin status in Firestore
+    const adminDoc = await db.collection('admins').doc(user.uid).get();
     
-    // Function to create admin users (run this once in browser console)
-    function createAdminUsers() {
-        const adminEmails = [
-            "theroyalmandii@gmail.com",
-            "the.royalmandi@gmail.com"
-        ];
-        
-        const password = "StrongPassword123!"; // Set a strong initial password
-        
-        adminEmails.forEach(email => {
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    // Add to admins collection
-                    return db.collection('admins').doc(user.uid).set({
-                        email: user.email,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                })
-                .then(() => {
-                    console.log(`Admin ${email} created successfully`);
-                })
-                .catch((error) => {
-                    console.error(`Error creating admin ${email}:`, error);
-                });
-        });
+    if (!adminDoc.exists) {
+      await auth.signOut();
+      throw new Error('Not authorized as admin');
     }
+
+    // Successful login - redirect to dashboard
+    window.location.href = 'admin-dashboard.html';
     
-    // Admin login form submission
-    document.getElementById('adminLoginForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const submitBtn = e.target.querySelector('button[type="submit"]');
-        const submitText = submitBtn.querySelector('#adminSubmitText');
-        const submitSpinner = submitBtn.querySelector('#adminSubmitSpinner');
-        
-        // Show loading state
-        submitText.textContent = 'Authenticating...';
-        submitSpinner.classList.remove('d-none');
-        
-        const email = document.getElementById('adminEmail').value;
-        const password = document.getElementById('adminPassword').value;
-        
-        // Firebase authentication
-        auth.signInWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                // Check if user is admin
-                const user = userCredential.user;
-                return db.collection('admins').doc(user.uid).get();
-            })
-            .then((doc) => {
-                if (doc.exists) {
-                    // Redirect to admin dashboard
-                    window.location.href = 'admin-dashboard.html';
-                } else {
-                    // Not an admin
-                    auth.signOut();
-                    throw new Error('Not authorized as admin');
-                }
-            })
-            .catch((error) => {
-                console.error('Login error:', error);
-                alert('Login failed: ' + error.message);
-            })
-            .finally(() => {
-                // Reset button state
-                submitText.textContent = 'Login';
-                submitSpinner.classList.add('d-none');
-            });
-    });
-    
-    // Check if user is already logged in
-    auth.onAuthStateChanged((user) => {
-        if (user) {
-            db.collection('admins').doc(user.uid).get()
-                .then((doc) => {
-                    if (doc.exists) {
-                        window.location.href = 'admin-dashboard.html';
-                    }
-                });
-        }
-    });
+  } catch (error) {
+    handleLoginError(error);
+  } finally {
+    setLoadingState(false);
+  }
+});
+
+// Check authentication state on page load
+auth.onAuthStateChanged(async (user) => {
+  if (user) {
+    try {
+      const adminDoc = await db.collection('admins').doc(user.uid).get();
+      if (adminDoc.exists) {
+        window.location.href = 'admin-dashboard.html';
+      } else {
+        await auth.signOut();
+      }
+    } catch (error) {
+      console.error("Auth state check failed:", error);
+    }
+  }
+});
+
+// Helper functions
+function validateEmail(email) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
+}
+
+function setLoadingState(isLoading) {
+  if (isLoading) {
+    submitText.textContent = 'Authenticating...';
+    submitSpinner.classList.remove('d-none');
+    submitBtn.disabled = true;
+  } else {
+    submitText.textContent = 'Login';
+    submitSpinner.classList.add('d-none');
+    submitBtn.disabled = false;
+  }
+}
+
+function showError(message) {
+  const errorElement = document.getElementById('loginError') || createErrorElement();
+  errorElement.textContent = message;
+  errorElement.classList.remove('d-none');
+}
+
+function createErrorElement() {
+  const errorElement = document.createElement('div');
+  errorElement.id = 'loginError';
+  errorElement.className = 'alert alert-danger mt-3 d-none';
+  loginForm.appendChild(errorElement);
+  return errorElement;
+}
+
+function handleLoginError(error) {
+  console.error('Login error:', error);
+  
+  let errorMessage = 'Login failed. Please try again.';
+  
+  switch (error.code) {
+    case 'auth/wrong-password':
+      errorMessage = 'Incorrect password. Please try again.';
+      break;
+    case 'auth/user-not-found':
+      errorMessage = 'No user found with this email.';
+      break;
+    case 'auth/too-many-requests':
+      errorMessage = 'Too many attempts. Please try again later.';
+      break;
+    case 'auth/user-disabled':
+      errorMessage = 'This account has been disabled.';
+      break;
+  }
+  
+  showError(errorMessage);
+  passwordInput.value = '';
+  passwordInput.focus();
+}
+
+// Password reset functionality
+document.getElementById('forgotPassword')?.addEventListener('click', async () => {
+  const email = prompt("Enter your admin email address:");
+  
+  if (!email) return;
+  
+  if (!ADMIN_EMAILS.has(email.toLowerCase())) {
+    alert("This email is not registered as an admin.");
+    return;
+  }
+  
+  try {
+    await auth.sendPasswordResetEmail(email);
+    alert(`Password reset email sent to ${email}. Please check your inbox.`);
+  } catch (error) {
+    console.error("Password reset error:", error);
+    alert("Failed to send password reset. Please try again later.");
+  }
+});
 </script>
 </body>
 </html>
