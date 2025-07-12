@@ -16,7 +16,7 @@
             apiKey: "AIzaSyC7Y0BVRoH9m1B8jzYKvI61csT4bnifXEU",
             authDomain: "royal-mandi.firebaseapp.com",
             projectId: "royal-mandi",
-            storageBucket: "royal-mandi.firebasestorage.app",
+            storageBucket: "royal-mandi.appspot.com",
             messagingSenderId: "285256672352",
             appId: "1:285256672352:web:9cee8057176e4885ed8f05",
             measurementId: "G-YC7ZK7Y81H"
@@ -184,7 +184,7 @@
         
         /* Hero Section */
         .hero-section {
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://theroyalmandi.gantasolutions.com/img/logonv.png');
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1601050690597-df0568f70950?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -542,7 +542,7 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             margin-bottom: 30px;
             display: flex;
-            justify-content: between;
+            justify-content: space-between;
             align-items: center;
         }
         
@@ -935,7 +935,7 @@
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <img src="https://theroyalmandi.gantasolutions.com/img/logonv.png" alt="The Royal Mandi" class="img-fluid">
+                <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&h=40&q=80" alt="The Royal Mandi" class="img-fluid">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -1430,7 +1430,7 @@
                         </button>
                     </form>
                     <div class="mt-3 text-center">
-                        <small class="text-muted">Demo: theroyalmandi@gmail.com / admin123</small>
+                        <small class="text-muted">For authorized personnel only</small>
                     </div>
                 </div>
             </div>
@@ -1441,7 +1441,7 @@
     <div class="admin-dashboard" id="adminDashboard">
         <div class="admin-sidebar">
             <div class="admin-sidebar-header">
-                <img src="https://theroyalmandi.gantasolutions.com/img/logonv.png" alt="The Royal Mandi" class="admin-sidebar-logo">
+                <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&h=40&q=80" alt="The Royal Mandi" class="admin-sidebar-logo">
                 <h6 class="mt-2 mb-0">Admin Panel</h6>
             </div>
             <div class="admin-nav">
@@ -1884,40 +1884,17 @@
             const password = document.getElementById('adminPassword').value;
             
             try {
-                import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-
-// Replace with your actual Firebase config
-const auth = getAuth();
-
-async function loginAdmin(email, password) {
-  try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-    
-    // Check if the user is an admin (this should be done via backend or Firestore)
-    const isAdmin = await checkIfAdmin(user.uid);
-    
-    if (isAdmin) {
-      console.log("Admin logged in successfully");
-      return true;
-    } else {
-      console.log("User is not an admin");
-      await auth.signOut();
-      return false;
-    }
-  } catch (error) {
-    console.error("Login error:", error.message);
-    return false;
-  }
-}
-
-// Example function to check admin status (should be secured)
-async function checkIfAdmin(uid) {
-  // In a real app, this should check Firestore or call a secure backend function
-  // For demo, you might have a collection of admin UIDs
-  const adminUids = ["P906BU5sR6VZOOrAgX4R3EfrmCq2"]; // Get this from Firestore
-  return adminUids.includes(uid);
-}
+                // Use the already initialized auth from window
+                const userCredential = await window.firebaseModules.signInWithEmailAndPassword(
+                    window.auth,
+                    email,
+                    password
+                );
+                
+                // Check if the user is an admin (using email verification for demo)
+                const adminEmails = ['the.royalmandi@gmail.com', 'theroyalmandii@gmail.com'];
+                if (adminEmails.includes(email)) {
+                    isAdminLoggedIn = true;
                     
                     // Hide modal
                     const adminModal = bootstrap.Modal.getInstance(document.getElementById('adminLoginModal'));
@@ -1935,6 +1912,7 @@ async function checkIfAdmin(uid) {
                     
                     showToast('Welcome back, Admin!', 'success');
                 } else {
+                    await window.firebaseModules.signOut(window.auth);
                     throw new Error('Invalid credentials');
                 }
                 
@@ -1949,11 +1927,17 @@ async function checkIfAdmin(uid) {
             }
         }
         
-        function handleAdminLogout() {
-            isAdminLoggedIn = false;
-            document.getElementById('adminDashboard').style.display = 'none';
-            document.body.style.overflow = 'auto';
-            showToast('Logged out successfully', 'success');
+        async function handleAdminLogout() {
+            try {
+                await window.firebaseModules.signOut(window.auth);
+                isAdminLoggedIn = false;
+                document.getElementById('adminDashboard').style.display = 'none';
+                document.body.style.overflow = 'auto';
+                showToast('Logged out successfully', 'success');
+            } catch (error) {
+                console.error('Logout error:', error);
+                showToast('Error during logout', 'error');
+            }
         }
         
         function showSection(sectionName) {
