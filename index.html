@@ -5,214 +5,1287 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Royal Mandi - Authentic Indian Cuisine</title>
     
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js"></script>
-    <!-- Replace your current Firebase SDK imports with these: -->
-<script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-storage-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics-compat.js"></script>
-    
-    <script>
-        // Your Firebase configuration
+    <!-- Firebase SDK v9 -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot, query, orderBy, where, serverTimestamp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js';
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js';
+        
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyC7Y0BVRoH9m1B8jzYKvI61csT4bnifXEU",
             authDomain: "royal-mandi.firebaseapp.com",
             projectId: "royal-mandi",
-            storageBucket: "royal-mandi.appspot.com",
+            storageBucket: "royal-mandi.firebasestorage.app",
             messagingSenderId: "285256672352",
             appId: "1:285256672352:web:9cee8057176e4885ed8f05",
             measurementId: "G-YC7ZK7Y81H"
         };
-
+        
         // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        const storage = firebase.storage();
-        const analytics = firebase.analytics();
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        
+        // Make Firebase available globally
+        window.db = db;
+        window.auth = auth;
+        window.firebaseModules = {
+            collection,
+            addDoc,
+            getDocs,
+            doc,
+            updateDoc,
+            deleteDoc,
+            onSnapshot,
+            query,
+            orderBy,
+            where,
+            serverTimestamp,
+            signInWithEmailAndPassword,
+            signOut,
+            onAuthStateChanged
+        };
     </script>
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <style>
         :root {
-            --primary-color: #d35400;
-            --secondary-color: #e67e22;
-            --dark-color: #333;
-            --light-color: #f4f4f4;
+            --primary: #E67E22;
+            --primary-dark: #D35400;
+            --primary-light: #F39C12;
+            --secondary: #5D4037;
+            --accent: #E74C3C;
+            --light: #FFF9F5;
+            --dark: #2C3E50;
+            --text: #333333;
+            --text-light: #757575;
+            --success: #27AE60;
+            --warning: #F39C12;
+            --danger: #E74C3C;
+            --gold: #F1C40F;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #fff9f5;
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            background-color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
         
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        /* Navigation */
         .navbar {
-            background-color: var(--dark-color);
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            padding: 15px 0;
+            transition: all 0.3s ease;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
         }
         
+        .navbar.scrolled {
+            padding: 10px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            background-color: rgba(255,255,255,0.98);
+        }
+        
+        .navbar-brand img {
+            height: 40px;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar.scrolled .navbar-brand img {
+            height: 35px;
+        }
+        
+        .nav-link {
+            color: var(--dark);
+            font-weight: 500;
+            margin: 0 10px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            bottom: 0;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover:after, .nav-link.active:after {
+            width: 100%;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary);
+        }
+        
+        /* Buttons */
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            padding: 12px 25px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230, 126, 34, 0.4);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary);
+            border-color: var(--primary);
+            padding: 12px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+        }
+        
+        /* Hero Section */
         .hero-section {
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1601050690597-df0568f70950');
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1601050690597-df0568f70950?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
             background-size: cover;
             background-position: center;
+            background-attachment: fixed;
             color: white;
-            padding: 100px 0;
+            padding: 180px 0;
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-top: 70px;
         }
         
-        .menu-category {
+        .hero-content {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            animation: fadeInDown 1s ease;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
             margin-bottom: 30px;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.3s forwards;
+            opacity: 0;
+        }
+        
+        .hero-buttons {
+            animation: fadeIn 1s ease 0.6s forwards;
+            opacity: 0;
+        }
+        
+        /* Sections */
+        .section {
+            padding: 100px 0;
+            position: relative;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        /* Menu Section */
+        .menu-category {
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 15px;
+            color: var(--dark);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .menu-category:after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+            bottom: 0;
+            left: 0;
+            border-radius: 2px;
         }
         
         .menu-item {
             background: white;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
         
         .menu-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            border-left: 4px solid var(--primary);
         }
         
-        .price {
-            color: var(--primary-color);
-            font-weight: bold;
+        .menu-item-img {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .menu-item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .menu-item:hover .menu-item-img img {
+            transform: scale(1.05);
+        }
+        
+        .menu-item-content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .menu-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .menu-item-name {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .menu-item-price {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        
+        .menu-item-desc {
+            color: var(--text-light);
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            flex: 1;
         }
         
         .special-badge {
-            background-color: var(--primary-color);
+            background-color: var(--primary);
             color: white;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-left: 10px;
+            display: inline-block;
         }
         
         .spice-level {
+            display: flex;
+            align-items: center;
             margin-top: 5px;
         }
         
+        .spice-label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-right: 8px;
+        }
+        
         .spice-icon {
-            color: #ff6b6b;
+            color: var(--warning);
+            font-size: 0.9rem;
+            margin-right: 3px;
+        }
+        
+        .veg-icon {
+            color: var(--success);
+            margin-left: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .non-veg-icon {
+            color: var(--danger);
+            margin-left: 8px;
+            font-size: 0.9rem;
+        }
+        
+        /* Booking Section */
+        .booking-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .booking-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--primary);
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+        
+        .form-control, .form-select {
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(230, 126, 34, 0.25);
+        }
+        
+        /* Contact Section */
+        .contact-info-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            height: 100%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            text-align: center;
+            border-top: 4px solid var(--primary);
+        }
+        
+        .contact-info-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(230, 126, 34, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: var(--primary);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-info-card:hover .contact-icon {
+            background: var(--primary);
+            color: white;
+            transform: rotate(10deg);
+        }
+        
+        /* Admin Dashboard Styles */
+        .admin-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 9999;
+            display: none;
+        }
+        
+        .admin-dashboard {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f8f9fa;
+            z-index: 10000;
+            display: none;
+        }
+        
+        .admin-sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--dark);
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+        
+        .admin-sidebar-header {
+            padding: 0 20px 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .admin-sidebar-logo {
+            height: 40px;
+            filter: brightness(0) invert(1);
+        }
+        
+        .admin-nav {
+            padding: 0 20px;
+        }
+        
+        .admin-nav-link {
+            display: block;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            padding: 15px 20px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .admin-nav-link:hover, .admin-nav-link.active {
+            background: var(--primary);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .admin-nav-link i {
+            width: 20px;
+            margin-right: 10px;
+        }
+        
+        .admin-main {
+            margin-left: 280px;
+            padding: 30px;
+            min-height: 100vh;
+        }
+        
+        .admin-header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+        
+        .admin-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-card:hover {
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        
+        .admin-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .admin-card-title {
+            margin: 0;
+            color: var(--dark);
+            font-size: 1.3rem;
+        }
+        
+        .stats-card {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(230, 126, 34, 0.3);
+        }
+        
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .stats-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .table-responsive {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .table {
+            margin: 0;
+        }
+        
+        .table th {
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 15px;
+        }
+        
+        .table td {
+            padding: 15px;
+            vertical-align: middle;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-pending {
+            background: rgba(243, 156, 18, 0.1);
+            color: #F39C12;
+        }
+        
+        .status-confirmed {
+            background: rgba(39, 174, 96, 0.1);
+            color: #27AE60;
+        }
+        
+        .status-cancelled {
+            background: rgba(231, 76, 60, 0.1);
+            color: #E74C3C;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 80px 0 30px;
+            position: relative;
+        }
+        
+        .footer:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+        }
+        
+        .footer-logo {
+            height: 50px;
+            margin-bottom: 20px;
+            filter: brightness(0) invert(1);
+        }
+        
+        .footer-links h5 {
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-links h5:after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 3px;
+            background: var(--primary);
+            bottom: 0;
+            left: 0;
+            border-radius: 2px;
+        }
+        
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            color: white;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+            margin-top: 40px;
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Menu filter buttons */
+        .menu-filter {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .filter-btn {
+            padding: 8px 20px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 30px;
+            font-weight: 500;
+            color: var(--text);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 1199.98px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .section {
+                padding: 80px 0;
+            }
+            
+            .admin-sidebar {
+                width: 250px;
+            }
+            
+            .admin-main {
+                margin-left: 250px;
+            }
+        }
+        
+        @media (max-width: 991.98px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .menu-item-img {
+                height: 180px;
+            }
+            
+            .admin-sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .admin-sidebar.show {
+                transform: translateX(0);
+            }
+            
+            .admin-main {
+                margin-left: 0;
+            }
+        }
+        
+        @media (max-width: 767.98px) {
+            .hero-section {
+                padding: 120px 0;
+                background-attachment: scroll;
+            }
+            
+            .hero-title {
+                font-size: 2.2rem;
+                line-height: 1.2;
+                margin-bottom: 15px;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+                margin-bottom: 20px;
+            }
+            
+            .section-title {
+                margin-bottom: 40px;
+            }
+            
+            .menu-item {
+                margin-bottom: 20px;
+            }
+            
+            .booking-card {
+                padding: 30px;
+            }
+            
+            .menu-items-container {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+            }
+            
+            .menu-item {
+                margin-bottom: 0;
+            }
+            
+            .menu-item-img {
+                height: 150px;
+            }
+            
+            .menu-item-content {
+                padding: 15px;
+            }
+            
+            .menu-item-name, .menu-item-price {
+                font-size: 1rem;
+            }
+            
+            .menu-item-desc {
+                font-size: 0.85rem;
+            }
+        }
+        
+        @media (max-width: 575.98px) {
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+            
+            .booking-card {
+                padding: 20px;
+            }
+            
+            .menu-items-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .menu-category {
+                font-size: 1.3rem;
+            }
+        }
+        
+        /* Loading spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <img src="logo.png" alt="The Royal Mandi" height="40">
+                <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&h=40&q=80" alt="The Royal Mandi" class="img-fluid">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#menu">Menu</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#booking">Book a Table</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#booking">Reservations</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" id="adminLoginLink">Admin Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" id="adminLoginLink"><i class="fas fa-lock"></i> Admin</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero-section text-center">
+    <section id="home" class="hero-section">
         <div class="container">
-            <h1 class="display-4 fw-bold">The Royal Mandi</h1>
-            <p class="lead">Authentic Indian Cuisine in Middlesbrough</p>
-            <a href="#booking" class="btn btn-primary btn-lg mt-3">Book a Table</a>
+            <div class="hero-content">
+                <h1 class="hero-title">The Royal Mandi</h1>
+                <p class="hero-subtitle">Experience authentic Indian cuisine with royal flavors and traditional cooking techniques</p>
+                <div class="hero-buttons">
+                    <a href="#menu" class="btn btn-primary btn-lg me-3">View Menu</a>
+                    <a href="#booking" class="btn btn-outline-light btn-lg">Book a Table</a>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Menu Section -->
-    <section id="menu" class="py-5">
+    <section id="menu" class="section bg-light">
         <div class="container">
-            <h2 class="text-center mb-5">Our Menu</h2>
+            <h2 class="section-title">Our Menu</h2>
             
-            <div class="row">
-                <div class="col-md-6">
-                    <h3 class="menu-category"><i class="fas fa-drumstick-bite me-2"></i>Non-Veg Curries</h3>
-                    <div id="nonVegMenuItems"></div>
+            <div class="menu-filter mb-5">
+                <button class="filter-btn active" data-filter="all">All Items</button>
+                <button class="filter-btn" data-filter="non-veg">Non-Veg</button>
+                <button class="filter-btn" data-filter="veg">Vegetarian</button>
+                <button class="filter-btn" data-filter="rice">Rice</button>
+                <button class="filter-btn" data-filter="noodles">Noodles</button>
+                <button class="filter-btn" data-filter="bread">Bread</button>
+            </div>
+            
+            <!-- Non-Veg Curries -->
+            <div class="menu-category" id="non-veg"><i class="fas fa-drumstick-bite me-2"></i>Non-Veg Curries</div>
+            <div class="row menu-items-container">
+                <div class="col-md-6 col-lg-4 menu-item" data-category="non-veg">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1633321702518-7feccafb94d5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80" alt="Butter Chicken Masala">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <span class="menu-item-name">
+                                Butter Chicken Masala
+                                <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                            </span>
+                            <span class="menu-item-price">6.50€</span>
+                        </div>
+                        <p class="menu-item-desc">Chicken cooked with onion, tomato, cashew in a rich buttery sauce</p>
+                        <div class="spice-level">
+                            <span class="spice-label">Spice:</span>
+                            <i class="fas fa-pepper-hot spice-icon"></i>
+                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="col-md-6">
-                    <h3 class="menu-category"><i class="fas fa-carrot me-2"></i>Veg Curries</h3>
-                    <div id="vegMenuItems"></div>
+                <div class="col-md-6 col-lg-4 menu-item" data-category="non-veg">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Hyderabadi Chicken Masala">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <span class="menu-item-name">
+                                Hyderabadi Chicken Masala
+                                <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                            </span>
+                            <span class="menu-item-price">5.50€</span>
+                        </div>
+                        <p class="menu-item-desc">Chicken cooked with onion, tomato and authentic Hyderabadi spices</p>
+                        <div class="spice-level">
+                            <span class="spice-label">Spice:</span>
+                            <i class="fas fa-pepper-hot spice-icon"></i>
+                            <i class="fas fa-pepper-hot spice-icon"></i>
+                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4 menu-item" data-category="non-veg">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Tikka Chicken Masala">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <span class="menu-item-name">
+                                Tikka Chicken Masala
+                                <span class="special-badge">Chef's Special</span>
+                                <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                            </span>
+                            <span class="menu-item-price">6.50€</span>
+                        </div>
+                        <p class="menu-item-desc">Chicken tikka cooked with Indian spices in rich creamy sauce</p>
+                        <div class="spice-level">
+                            <span class="spice-label">Spice:</span>
+                            <i class="fas fa-pepper-hot spice-icon"></i>
+                            <i class="fas fa-pepper-hot spice-icon"></i>
+                            <i class="fas fa-pepper-hot spice-icon"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <!-- More menu sections would go here -->
+            <!-- Veg Curries -->
+            <div class="menu-category" id="veg"><i class="fas fa-carrot me-2"></i>Veg Curries</div>
+            <div class="row menu-items-container">
+                <div class="col-md-6 col-lg-4 menu-item" data-category="veg">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1633514986513-85c9f41b1b0d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Paneer Butter Masala">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <span class="menu-item-name">
+                                Paneer Butter Masala
+                                <i class="fas fa-leaf veg-icon"></i>
+                            </span>
+                            <span class="menu-item-price">6.99€</span>
+                        </div>
+                        <p class="menu-item-desc">Cottage cheese in rich creamy tomato sauce with aromatic spices</p>
+                        <div class="spice-level">
+                            <span class="spice-label">Spice:</span>
+                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4 menu-item" data-category="veg">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1601050690117-64b6d2f56ed0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Mixed Vegetable Curry">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <span class="menu-item-name">
+                                Mixed Vegetable Curry
+                                <i class="fas fa-leaf veg-icon"></i>
+                            </span>
+                            <span class="menu-item-price">5.99€</span>
+                        </div>
+                        <p class="menu-item-desc">Seasonal vegetables in light curry sauce with aromatic spices</p>
+                        <div class="spice-level">
+                            <span class="spice-label">Spice:</span>
+                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Rice -->
+            <div class="menu-category" id="rice"><i class="fas fa-utensils me-2"></i>Rice</div>
+            <div class="row menu-items-container">
+                <div class="col-md-6 col-lg-4 menu-item" data-category="rice">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Plain White Rice">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <span class="menu-item-name">
+                                Plain White Rice
+                            </span>
+                            <span class="menu-item-price">2.99€</span>
+                        </div>
+                        <p class="menu-item-desc">Steamed basmati rice - the perfect accompaniment to our curries</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4 menu-item" data-category="rice">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1633945274309-2c16c9682a8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Plain Biryani Rice">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <span class="menu-item-name">
+                                Plain Biryani Rice
+                            </span>
+                            <span class="menu-item-price">3.50€</span>
+                        </div>
+                        <p class="menu-item-desc">Fragrant basmati rice cooked with whole spices</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Noodles -->
+            <div class="menu-category" id="noodles"><i class="fas fa-utensils me-2"></i>Noodles</div>
+            <div class="row menu-items-container">
+                <div class="col-md-6 col-lg-4 menu-item" data-category="noodles">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1555126634-323283e090fa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Veg Noodles">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <span class="menu-item-name">
+                                Veg Noodles
+                            </span>
+                            <span class="menu-item-price">3.99€</span>
+                        </div>
+                        <p class="menu-item-desc">Stir-fried noodles with fresh vegetables and light spices</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4 menu-item" data-category="noodles">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1555126634-323283e090fa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Gobi Noodles">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <span class="menu-item-name">
+                                Gobi Noodles
+                            </span>
+                            <span class="menu-item-price">4.50€</span>
+                        </div>
+                        <p class="menu-item-desc">Noodles with cauliflower and aromatic spices</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Nans -->
+            <div class="menu-category" id="bread"><i class="fas fa-bread-slice me-2"></i>Nans</div>
+            <div class="row menu-items-container">
+                <div class="col-md-6 col-lg-4 menu-item" data-category="bread">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1601050690646-5ab7a0e0fe1a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Plain Nan">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <span class="menu-item-name">
+                                Plain Nan
+                            </span>
+                            <span class="menu-item-price">0.99€</span>
+                        </div>
+                        <p class="menu-item-desc">Traditional tandoori bread - soft and fluffy</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4 menu-item" data-category="bread">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1601050690646-5ab7a0e0fe1a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Garlic Nan">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <span class="menu-item-name">
+                                Garlic Nan
+                            </span>
+                            <span class="menu-item-price">1.50€</span>
+                        </div>
+                        <p class="menu-item-desc">Tandoori bread with garlic butter and fresh herbs</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4 menu-item" data-category="bread">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1601050690646-5ab7a0e0fe1a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Butter Nan">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <span class="menu-item-name">
+                                Butter Nan
+                            </span>
+                            <span class="menu-item-price">1.50€</span>
+                        </div>
+                        <p class="menu-item-desc">Tandoori bread brushed with melted butter</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Booking Section -->
-    <section id="booking" class="py-5 bg-light">
+    <section id="booking" class="section bg-light">
         <div class="container">
-            <h2 class="text-center mb-5">Book a Table</h2>
+            <h2 class="section-title">Make a Reservation</h2>
+            
             <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-body">
-                            <form id="bookingForm">
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="name" class="form-label">Full Name</label>
-                                        <input type="text" class="form-control" id="name" required>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="phone" class="form-label">Phone Number</label>
-                                        <input type="tel" class="form-control" id="phone" required>
-                                    </div>
+                <div class="col-lg-8">
+                    <div class="booking-card">
+                        <form id="bookingForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label for="name" class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="name" required>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="email" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="email" required>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="guests" class="form-label">Number of Guests</label>
-                                        <select class="form-select" id="guests" required>
-                                            <option value="1">1 Person</option>
-                                            <option value="2">2 People</option>
-                                            <option value="3">3 People</option>
-                                            <option value="4">4 People</option>
-                                            <option value="5">5 People</option>
-                                            <option value="6">6+ People</option>
-                                        </select>
-                                    </div>
+                                <div class="col-md-6 mb-4">
+                                    <label for="phone" class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" id="phone" required>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="date" class="form-label">Date</label>
-                                        <input type="date" class="form-control" id="date" required>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="time" class="form-label">Time</label>
-                                        <select class="form-select" id="time" required>
-                                            <option value="12:00">12:00 PM</option>
-                                            <option value="12:30">12:30 PM</option>
-                                            <!-- More time slots would go here -->
-                                        </select>
-                                    </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label for="email" class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" id="email" required>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="specialRequests" class="form-label">Special Requests</label>
-                                    <textarea class="form-control" id="specialRequests" rows="3"></textarea>
+                                <div class="col-md-6 mb-4">
+                                    <label for="guests" class="form-label">Number of Guests</label>
+                                    <select class="form-select" id="guests" required>
+                                        <option value="" disabled selected>Select</option>
+                                        <option value="1">1 Person</option>
+                                        <option value="2">2 People</option>
+                                        <option value="3">3 People</option>
+                                        <option value="4">4 People</option>
+                                        <option value="5">5 People</option>
+                                        <option value="6">6 People</option>
+                                        <option value="7">7+ People</option>
+                                    </select>
                                 </div>
-                                <button type="submit" class="btn btn-primary w-100">Book Now</button>
-                            </form>
-                        </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label for="date" class="form-label">Date</label>
+                                    <input type="date" class="form-control" id="date" required>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label for="time" class="form-label">Time</label>
+                                    <select class="form-select" id="time" required>
+                                        <option value="" disabled selected>Select</option>
+                                        <option value="12:00">12:00 PM</option>
+                                        <option value="12:30">12:30 PM</option>
+                                        <option value="13:00">1:00 PM</option>
+                                        <option value="13:30">1:30 PM</option>
+                                        <option value="18:00">6:00 PM</option>
+                                        <option value="18:30">6:30 PM</option>
+                                        <option value="19:00">7:00 PM</option>
+                                        <option value="19:30">7:30 PM</option>
+                                        <option value="20:00">8:00 PM</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="specialRequests" class="form-label">Special Requests</label>
+                                <textarea class="form-control" id="specialRequests" rows="3" placeholder="Allergies, high chairs, etc."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 py-3">
+                                <span id="submitText">Confirm Reservation</span>
+                                <span id="submitSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -220,45 +1293,56 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-5">
+    <section id="contact" class="section bg-white">
         <div class="container">
-            <h2 class="text-center mb-5">Contact Us</h2>
-            <div class="row">
-                <div class="col-md-6 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h4><i class="fas fa-map-marker-alt me-2"></i>Address</h4>
-                            <p>48 Borough Road, TS1 5DW<br>Middlesbrough, North Yorkshire<br>United Kingdom</p>
-                            
-                            <h4 class="mt-4"><i class="fas fa-phone me-2"></i>Phone</h4>
-                            <p><a href="tel:07467473372">07467473372</a></p>
-                            
-                            <h4 class="mt-4"><i class="fas fa-envelope me-2"></i>Email</h4>
-                            <p><a href="mailto:The.royalmandi@gmail.com">The.royalmandi@gmail.com</a></p>
+            <h2 class="section-title">Contact Us</h2>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="contact-info-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
                         </div>
+                        <h4>Address</h4>
+                        <p>48 Borough Road, TS1 5DW<br>Middlesbrough, UK</p>
+                        <a href="https://maps.google.com?q=48+Borough+Road+TS1+5DW" class="btn btn-sm btn-outline-primary mt-2" target="_blank">View on Map</a>
                     </div>
                 </div>
-                <div class="col-md-6 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h4><i class="fas fa-clock me-2"></i>Opening Hours</h4>
-                            <table class="table">
-                                <tbody>
-                                    <tr>
-                                        <td>Monday - Thursday</td>
-                                        <td>11:00 AM - 10:00 PM</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Friday - Saturday</td>
-                                        <td>11:00 AM - 11:00 PM</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Sunday</td>
-                                        <td>12:00 PM - 9:00 PM</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                
+                <div class="col-md-4">
+                    <div class="contact-info-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone-alt"></i>
                         </div>
+                        <h4>Phone</h4>
+                        <p><a href="tel:07467473372" class="text-decoration-none">07467 473372</a></p>
+                        <h4 class="mt-3">Email</h4>
+                        <p><a href="mailto:theroyalmandi@gmail.com" class="text-decoration-none">theroyalmandi@gmail.com</a></p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="contact-info-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h4>Opening Hours</h4>
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <td>Mon - Thu</td>
+                                    <td>11:00 AM - 10:00 PM</td>
+                                </tr>
+                                <tr>
+                                    <td>Fri - Sat</td>
+                                    <td>11:00 AM - 11:00 PM</td>
+                                </tr>
+                                <tr>
+                                    <td>Sunday</td>
+                                    <td>12:00 PM - 9:00 PM</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -266,39 +1350,65 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white py-4">
+    <footer class="footer">
         <div class="container">
             <div class="row">
-                <div class="col-md-6">
-                    <h5>The Royal Mandi</h5>
-                    <p>Authentic Indian cuisine with traditional flavors and modern presentation.</p>
+                <div class="col-lg-4 mb-5 mb-lg-0">
+                    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&h=50&q=80" alt="The Royal Mandi" class="footer-logo">
+                    <p>Bringing authentic Indian flavors to Middlesbrough since 2015. Our passion for traditional cooking techniques and premium ingredients ensures an unforgettable dining experience.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-tripadvisor"></i></a>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <h5>Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-white">Home</a></li>
-                        <li><a href="#menu" class="text-white">Menu</a></li>
-                        <li><a href="#booking" class="text-white">Book a Table</a></li>
-                        <li><a href="#contact" class="text-white">Contact</a></li>
-                    </ul>
+                
+                <div class="col-lg-2 col-md-6 mb-5 mb-md-0">
+                    <div class="footer-links">
+                        <h5>Quick Links</h5>
+                        <ul>
+                            <li><a href="#home">Home</a></li>
+                            <li><a href="#menu">Menu</a></li>
+                            <li><a href="#booking">Reservations</a></li>
+                            <li><a href="#contact">Contact</a></li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <h5>Follow Us</h5>
-                    <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
+                
+                <div class="col-lg-3 col-md-6 mb-5 mb-md-0">
+                    <div class="footer-links">
+                        <h5>Menu Categories</h5>
+                        <ul>
+                            <li><a href="#non-veg">Non-Veg Specialties</a></li>
+                            <li><a href="#veg">Vegetarian Dishes</a></li>
+                            <li><a href="#rice">Rice & Biryanis</a></li>
+                            <li><a href="#bread">Naan & Breads</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <div class="footer-links">
+                        <h5>Contact Info</h5>
+                        <ul>
+                            <li><a href="https://maps.google.com?q=48+Borough+Road+TS1+5DW">48 Borough Road, TS1 5DW</a></li>
+                            <li><a href="tel:07467473372">07467 473372</a></li>
+                            <li><a href="mailto:theroyalmandi@gmail.com">theroyalmandi@gmail.com</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <hr>
-            <div class="text-center">
-                <p class="mb-0">&copy; 2023 The Royal Mandi. All rights reserved.</p>
+            
+            <div class="copyright">
+                &copy; 2023 The Royal Mandi. All rights reserved.
             </div>
         </div>
     </footer>
 
     <!-- Admin Login Modal -->
     <div class="modal fade" id="adminLoginModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Admin Login</h5>
@@ -306,227 +1416,871 @@
                 </div>
                 <div class="modal-body">
                     <form id="adminLoginForm">
-                        <div class="mb-3">
-                            <label for="adminEmail" class="form-label">Email</label>
+                        <div class="mb-4">
+                            <label for="adminEmail" class="form-label">Email Address</label>
                             <input type="email" class="form-control" id="adminEmail" required>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label for="adminPassword" class="form-label">Password</label>
                             <input type="password" class="form-control" id="adminPassword" required>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                        <button type="submit" class="btn btn-primary w-100 py-3">
+                            <span id="adminSubmitText">Login</span>
+                            <span id="adminSubmitSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
+                        </button>
                     </form>
+                    <div class="mt-3 text-center">
+                        <small class="text-muted">Demo: theroyalmandi@gmail.com / admin123</small>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Admin Dashboard (hidden by default) -->
-    <div id="adminDashboard" style="display: none;">
-        <!-- Admin content would go here -->
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Firebase initialization is already done in the head section
+    <!-- Admin Dashboard -->
+    <div class="admin-dashboard" id="adminDashboard">
+        <div class="admin-sidebar">
+            <div class="admin-sidebar-header">
+                <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&h=40&q=80" alt="The Royal Mandi" class="admin-sidebar-logo">
+                <h6 class="mt-2 mb-0">Admin Panel</h6>
+            </div>
+            <div class="admin-nav">
+                <a href="#" class="admin-nav-link active" data-section="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="#" class="admin-nav-link" data-section="bookings"><i class="fas fa-calendar-alt"></i> Reservations</a>
+                <a href="#" class="admin-nav-link" data-section="menu"><i class="fas fa-utensils"></i> Menu Management</a>
+                <a href="#" class="admin-nav-link" data-section="customers"><i class="fas fa-users"></i> Customers</a>
+                <a href="#" class="admin-nav-link" data-section="settings"><i class="fas fa-cog"></i> Settings</a>
+                <a href="#" class="admin-nav-link" id="adminLogoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
         
-        // DOM elements
-        const adminLoginLink = document.getElementById('adminLoginLink');
-        const adminLoginModal = new bootstrap.Modal(document.getElementById('adminLoginModal'));
-        const adminLoginForm = document.getElementById('adminLoginForm');
-        const adminDashboard = document.getElementById('adminDashboard');
-        const bookingForm = document.getElementById('bookingForm');
-        
-        // Menu items from Firestore
-        const nonVegMenuItems = document.getElementById('nonVegMenuItems');
-        const vegMenuItems = document.getElementById('vegMenuItems');
-        
-        // Show admin login modal
-        adminLoginLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            adminLoginModal.show();
-        });
-        
-        // Admin login
-        adminLoginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('adminEmail').value;
-            const password = document.getElementById('adminPassword').value;
-            
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // Check if the email is one of the authorized admin emails
-                    if (email === 'theroyalmandii@gmail.com' || email === 'the.royalmandi@gmail.com') {
-                        adminLoginModal.hide();
-                        // Hide main content and show admin dashboard
-                        document.querySelector('body > :not(#adminDashboard)').style.display = 'none';
-                        adminDashboard.style.display = 'block';
-                        loadAdminDashboard();
-                    } else {
-                        auth.signOut();
-                        alert('You are not authorized to access the admin panel.');
-                    }
-                })
-                .catch((error) => {
-                    alert('Login failed: ' + error.message);
-                });
-        });
-        
-        // Load menu items from Firestore
-        function loadMenuItems() {
-            db.collection('menuItems').where('category', '==', 'non-veg').get()
-                .then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
-                        const item = doc.data();
-                        nonVegMenuItems.innerHTML += `
-                            <div class="menu-item">
-                                <div class="d-flex justify-content-between">
-                                    <h5>${item.name} ${item.special ? '<span class="special-badge">Special</span>' : ''}</h5>
-                                    <span class="price">${item.price}€</span>
-                                </div>
-                                <p class="text-muted">${item.description}</p>
-                                <div class="spice-level">
-                                    ${'<i class="fas fa-pepper-hot spice-icon"></i>'.repeat(item.spiceLevel)}
-                                </div>
-                            </div>
-                        `;
-                    });
-                });
+        <div class="admin-main">
+            <!-- Dashboard Section -->
+            <div class="admin-section" id="dashboardSection">
+                <div class="admin-header">
+                    <h3 class="mb-0">Dashboard Overview</h3>
+                    <div class="text-muted">Welcome back, Admin!</div>
+                </div>
                 
-            db.collection('menuItems').where('category', '==', 'veg').get()
-                .then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
-                        const item = doc.data();
-                        vegMenuItems.innerHTML += `
-                            <div class="menu-item">
-                                <div class="d-flex justify-content-between">
-                                    <h5>${item.name}</h5>
-                                    <span class="price">${item.price}€</span>
-                                </div>
-                                <p class="text-muted">${item.description}</p>
-                                <div class="spice-level">
-                                    ${'<i class="fas fa-pepper-hot spice-icon"></i>'.repeat(item.spiceLevel)}
-                                </div>
-                            </div>
-                        `;
-                    });
-                });
-        }
-        
-        // Handle table bookings
-        bookingForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const booking = {
-                name: document.getElementById('name').value,
-                phone: document.getElementById('phone').value,
-                email: document.getElementById('email').value,
-                guests: document.getElementById('guests').value,
-                date: document.getElementById('date').value,
-                time: document.getElementById('time').value,
-                specialRequests: document.getElementById('specialRequests').value,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                status: 'confirmed'
-            };
-            
-            db.collection('bookings').add(booking)
-                .then(() => {
-                    alert('Your table has been booked successfully!');
-                    bookingForm.reset();
-                })
-                .catch((error) => {
-                    alert('Error booking table: ' + error.message);
-                });
-        });
-        
-        // Load admin dashboard
-        function loadAdminDashboard() {
-            // This would be more complex in a real implementation
-            adminDashboard.innerHTML = `
-                <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-                    <div class="container">
-                        <span class="navbar-brand">Admin Dashboard</span>
-                        <button class="btn btn-light ms-auto" id="logoutBtn">Logout</button>
-                    </div>
-                </nav>
-                
-                <div class="container mt-4">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="list-group">
-                                <a href="#" class="list-group-item list-group-item-action active" data-section="bookings">Bookings</a>
-                                <a href="#" class="list-group-item list-group-item-action" data-section="menu">Menu Management</a>
-                                <a href="#" class="list-group-item list-group-item-action" data-section="settings">Settings</a>
-                            </div>
+                <div class="row">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="stats-card">
+                            <div class="stats-number" id="todayReservations">0</div>
+                            <div class="stats-label">Today's Reservations</div>
                         </div>
-                        <div class="col-md-9">
-                            <div id="bookingsSection">
-                                <h3>Recent Bookings</h3>
-                                <div class="table-responsive">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Date/Time</th>
-                                                <th>Guests</th>
-                                                <th>Status</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="bookingsList">
-                                            <!-- Bookings will be loaded here -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            
-                            <!-- Other sections would be here but hidden by default -->
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <div class="stats-card">
+                            <div class="stats-number" id="totalReservations">0</div>
+                            <div class="stats-label">Total Reservations</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <div class="stats-card">
+                            <div class="stats-number" id="pendingReservations">0</div>
+                            <div class="stats-label">Pending Reservations</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <div class="stats-card">
+                            <div class="stats-number" id="totalCustomers">0</div>
+                            <div class="stats-label">Total Customers</div>
                         </div>
                     </div>
                 </div>
-            `;
+                
+                <div class="row mt-4">
+                    <div class="col-lg-8">
+                        <div class="admin-card">
+                            <div class="admin-card-header">
+                                <h4 class="admin-card-title">Recent Reservations</h4>
+                                <button class="btn btn-sm btn-outline-primary" onclick="showSection('bookings')">View All</button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Date/Time</th>
+                                            <th>Guests</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recentBookingsList">
+                                        <tr>
+                                            <td colspan="5" class="text-center">Loading...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4">
+                        <div class="admin-card">
+                            <div class="admin-card-header">
+                                <h4 class="admin-card-title">Quick Actions</h4>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary text-start" onclick="showSection('bookings')">
+                                    <i class="fas fa-calendar-plus me-2"></i> View All Reservations
+                                </button>
+                                <button class="btn btn-outline-primary text-start" onclick="showSection('customers')">
+                                    <i class="fas fa-users me-2"></i> Manage Customers
+                                </button>
+                                <button class="btn btn-outline-primary text-start" onclick="refreshDashboard()">
+                                    <i class="fas fa-sync-alt me-2"></i> Refresh Data
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
-            // Load bookings
-            db.collection('bookings').orderBy('timestamp', 'desc').limit(10).get()
-                .then((querySnapshot) => {
-                    const bookingsList = document.getElementById('bookingsList');
-                    querySnapshot.forEach((doc) => {
-                        const booking = doc.data();
-                        bookingsList.innerHTML += `
-                            <tr>
-                                <td>${booking.name}</td>
-                                <td>${booking.date} at ${booking.time}</td>
-                                <td>${booking.guests}</td>
-                                <td>${booking.status}</td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary">View</button>
-                                </td>
-                            </tr>
-                        `;
+            <!-- Bookings Section -->
+            <div class="admin-section" id="bookingsSection" style="display: none;">
+                <div class="admin-header">
+                    <h3 class="mb-0">Reservations Management</h3>
+                    <div class="text-muted">Manage all restaurant reservations</div>
+                </div>
+                
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h4 class="admin-card-title">All Reservations</h4>
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary me-2" onclick="refreshBookings()">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                            <select class="form-select form-select-sm d-inline-block w-auto" id="statusFilter">
+                                <option value="all">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="confirmed">Confirmed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Guests</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="allBookingsList">
+                                <tr>
+                                    <td colspan="8" class="text-center">Loading reservations...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Customers Section -->
+            <div class="admin-section" id="customersSection" style="display: none;">
+                <div class="admin-header">
+                    <h3 class="mb-0">Customer Management</h3>
+                    <div class="text-muted">View and manage customer information</div>
+                </div>
+                
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h4 class="admin-card-title">Customer List</h4>
+                        <button class="btn btn-sm btn-outline-primary" onclick="refreshCustomers()">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Total Reservations</th>
+                                    <th>Last Visit</th>
+                                </tr>
+                            </thead>
+                            <tbody id="customersList">
+                                <tr>
+                                    <td colspan="5" class="text-center">Loading customers...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Menu Section -->
+            <div class="admin-section" id="menuSection" style="display: none;">
+                <div class="admin-header">
+                    <h3 class="mb-0">Menu Management</h3>
+                    <div class="text-muted">Manage restaurant menu items</div>
+                </div>
+                
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h4 class="admin-card-title">Menu Items</h4>
+                        <button class="btn btn-sm btn-primary">
+                            <i class="fas fa-plus"></i> Add New Item
+                        </button>
+                    </div>
+                    <div class="text-center py-5">
+                        <i class="fas fa-utensils fa-3x text-muted mb-3"></i>
+                        <h5>Menu Management</h5>
+                        <p class="text-muted">Menu management features coming soon...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings Section -->
+            <div class="admin-section" id="settingsSection" style="display: none;">
+                <div class="admin-header">
+                    <h3 class="mb-0">Settings</h3>
+                    <div class="text-muted">Configure restaurant settings</div>
+                </div>
+                
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h4 class="admin-card-title">Restaurant Settings</h4>
+                    </div>
+                    <div class="text-center py-5">
+                        <i class="fas fa-cog fa-3x text-muted mb-3"></i>
+                        <h5>Settings Panel</h5>
+                        <p class="text-muted">Settings configuration coming soon...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Toast -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="successToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <i class="fas fa-check-circle me-2"></i>
+                    <span id="toastMessage">Operation completed successfully</span>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Toast -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="errorToast" class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <span id="errorMessage">An error occurred</span>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script>
+        // Global variables
+        let isAdminLoggedIn = false;
+        let bookingsData = [];
+        let customersData = [];
+        
+        // Wait for Firebase modules to load
+        window.addEventListener('load', function() {
+            setTimeout(initializeApp, 1000);
+        });
+        
+        function initializeApp() {
+            console.log('Initializing app...');
+            
+            // Navbar scroll effect
+            window.addEventListener('scroll', function() {
+                const navbar = document.querySelector('.navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Menu filter functionality
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const menuItems = document.querySelectorAll('.menu-item');
+            
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    const filter = btn.dataset.filter;
+                    
+                    menuItems.forEach(item => {
+                        if (filter === 'all' || item.dataset.category === filter) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
                     });
+                    
+                    if (filter !== 'all') {
+                        const section = document.getElementById(filter);
+                        if (section) {
+                            section.scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+            
+            // Admin login link
+            document.getElementById('adminLoginLink').addEventListener('click', (e) => {
+                e.preventDefault();
+                const adminModal = new bootstrap.Modal(document.getElementById('adminLoginModal'));
+                adminModal.show();
+            });
+            
+            // Set minimum date to today
+            const dateInput = document.getElementById('date');
+            if (dateInput) {
+                const today = new Date().toISOString().split('T')[0];
+                dateInput.setAttribute('min', today);
+            }
+            
+            // Initialize forms
+            initializeForms();
+            
+            console.log('App initialized successfully');
+        }
+        
+        function initializeForms() {
+            // Booking form submission
+            const bookingForm = document.getElementById('bookingForm');
+            if (bookingForm) {
+                bookingForm.addEventListener('submit', handleBookingSubmission);
+            }
+            
+            // Admin login form submission
+            const adminLoginForm = document.getElementById('adminLoginForm');
+            if (adminLoginForm) {
+                adminLoginForm.addEventListener('submit', handleAdminLogin);
+            }
+            
+            // Admin logout
+            const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+            if (adminLogoutBtn) {
+                adminLogoutBtn.addEventListener('click', handleAdminLogout);
+            }
+            
+            // Admin navigation
+            document.querySelectorAll('.admin-nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const section = link.dataset.section;
+                    if (section && section !== 'logout') {
+                        showSection(section);
+                    }
+                });
+            });
+            
+            // Status filter
+            const statusFilter = document.getElementById('statusFilter');
+            if (statusFilter) {
+                statusFilter.addEventListener('change', filterBookings);
+            }
+        }
+        
+        async function handleBookingSubmission(e) {
+            e.preventDefault();
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const submitText = submitBtn.querySelector('#submitText');
+            const submitSpinner = submitBtn.querySelector('#submitSpinner');
+            
+            // Show loading state
+            submitText.textContent = 'Processing...';
+            submitSpinner.classList.remove('d-none');
+            submitBtn.disabled = true;
+            
+            try {
+                // Get form values
+                const formData = {
+                    name: document.getElementById('name').value,
+                    phone: document.getElementById('phone').value,
+                    email: document.getElementById('email').value,
+                    guests: document.getElementById('guests').value,
+                    date: document.getElementById('date').value,
+                    time: document.getElementById('time').value,
+                    specialRequests: document.getElementById('specialRequests').value,
+                    status: 'pending',
+                    timestamp: window.firebaseModules.serverTimestamp()
+                };
+                
+                // Add to Firestore
+                await window.firebaseModules.addDoc(
+                    window.firebaseModules.collection(window.db, 'bookings'), 
+                    formData
+                );
+                
+                // Show success toast
+                showToast('Reservation submitted successfully!', 'success');
+                
+                // Reset form
+                e.target.reset();
+                
+            } catch (error) {
+                console.error('Error adding reservation: ', error);
+                showToast('There was an error submitting your reservation. Please try again.', 'error');
+            } finally {
+                // Reset button state
+                submitText.textContent = 'Confirm Reservation';
+                submitSpinner.classList.add('d-none');
+                submitBtn.disabled = false;
+            }
+        }
+        
+        async function handleAdminLogin(e) {
+            e.preventDefault();
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const submitText = submitBtn.querySelector('#adminSubmitText');
+            const submitSpinner = submitBtn.querySelector('#adminSubmitSpinner');
+            
+            // Show loading state
+            submitText.textContent = 'Authenticating...';
+            submitSpinner.classList.remove('d-none');
+            submitBtn.disabled = true;
+            
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            try {
+                import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
+// Replace with your actual Firebase config
+const auth = getAuth();
+
+async function loginAdmin(email, password) {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    
+    // Check if the user is an admin (this should be done via backend or Firestore)
+    const isAdmin = await checkIfAdmin(user.uid);
+    
+    if (isAdmin) {
+      console.log("Admin logged in successfully");
+      return true;
+    } else {
+      console.log("User is not an admin");
+      await auth.signOut();
+      return false;
+    }
+  } catch (error) {
+    console.error("Login error:", error.message);
+    return false;
+  }
+}
+
+// Example function to check admin status (should be secured)
+async function checkIfAdmin(uid) {
+  // In a real app, this should check Firestore or call a secure backend function
+  // For demo, you might have a collection of admin UIDs
+  const adminUids = ["P906BU5sR6VZOOrAgX4R3EfrmCq2"]; // Get this from Firestore
+  return adminUids.includes(uid);
+}
+                    
+                    // Hide modal
+                    const adminModal = bootstrap.Modal.getInstance(document.getElementById('adminLoginModal'));
+                    adminModal.hide();
+                    
+                    // Show admin dashboard
+                    document.getElementById('adminDashboard').style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                    
+                    // Load dashboard data
+                    await loadDashboardData();
+                    
+                    // Reset form
+                    e.target.reset();
+                    
+                    showToast('Welcome back, Admin!', 'success');
+                } else {
+                    throw new Error('Invalid credentials');
+                }
+                
+            } catch (error) {
+                console.error('Login error:', error);
+                showToast('Invalid email or password. Please try again.', 'error');
+            } finally {
+                // Reset button state
+                submitText.textContent = 'Login';
+                submitSpinner.classList.add('d-none');
+                submitBtn.disabled = false;
+            }
+        }
+        
+        function handleAdminLogout() {
+            isAdminLoggedIn = false;
+            document.getElementById('adminDashboard').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            showToast('Logged out successfully', 'success');
+        }
+        
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.admin-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Remove active class from all nav links
+            document.querySelectorAll('.admin-nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Show selected section
+            const targetSection = document.getElementById(sectionName + 'Section');
+            if (targetSection) {
+                targetSection.style.display = 'block';
+            }
+            
+            // Add active class to clicked nav link
+            const activeLink = document.querySelector(`[data-section="${sectionName}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+            
+            // Load section-specific data
+            switch(sectionName) {
+                case 'dashboard':
+                    loadDashboardData();
+                    break;
+                case 'bookings':
+                    loadAllBookings();
+                    break;
+                case 'customers':
+                    loadCustomers();
+                    break;
+            }
+        }
+        
+        async function loadDashboardData() {
+            try {
+                // Load bookings data
+                const bookingsSnapshot = await window.firebaseModules.getDocs(
+                    window.firebaseModules.collection(window.db, 'bookings')
+                );
+                
+                bookingsData = [];
+                bookingsSnapshot.forEach((doc) => {
+                    bookingsData.push({ id: doc.id, ...doc.data() });
                 });
                 
-            // Logout button
-            document.getElementById('logoutBtn').addEventListener('click', () => {
-                auth.signOut().then(() => {
-                    location.reload();
+                // Calculate statistics
+                const today = new Date().toISOString().split('T')[0];
+                const todayReservations = bookingsData.filter(booking => booking.date === today).length;
+                const totalReservations = bookingsData.length;
+                const pendingReservations = bookingsData.filter(booking => booking.status === 'pending').length;
+                
+                // Update dashboard stats
+                document.getElementById('todayReservations').textContent = todayReservations;
+                document.getElementById('totalReservations').textContent = totalReservations;
+                document.getElementById('pendingReservations').textContent = pendingReservations;
+                
+                // Load recent bookings
+                loadRecentBookings();
+                
+                // Calculate unique customers
+                const uniqueEmails = [...new Set(bookingsData.map(booking => booking.email))];
+                document.getElementById('totalCustomers').textContent = uniqueEmails.length;
+                
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+                showToast('Error loading dashboard data', 'error');
+            }
+        }
+        
+        function loadRecentBookings() {
+            const recentBookings = bookingsData
+                .sort((a, b) => {
+                    // Sort by timestamp if available, otherwise by date
+                    if (a.timestamp && b.timestamp) {
+                        return b.timestamp.seconds - a.timestamp.seconds;
+                    }
+                    return new Date(b.date) - new Date(a.date);
+                })
+                .slice(0, 5);
+            
+            const tbody = document.getElementById('recentBookingsList');
+            if (!tbody) return;
+            
+            if (recentBookings.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center">No reservations found</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = recentBookings.map(booking => `
+                <tr>
+                    <td>${booking.name}</td>
+                    <td>${formatDate(booking.date)} ${booking.time}</td>
+                    <td>${booking.guests}</td>
+                    <td><span class="status-badge status-${booking.status}">${booking.status}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick="updateBookingStatus('${booking.id}', 'confirmed')">
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger ms-1" onclick="updateBookingStatus('${booking.id}', 'cancelled')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        async function loadAllBookings() {
+            try {
+                if (bookingsData.length === 0) {
+                    const bookingsSnapshot = await window.firebaseModules.getDocs(
+                        window.firebaseModules.collection(window.db, 'bookings')
+                    );
+                    
+                    bookingsData = [];
+                    bookingsSnapshot.forEach((doc) => {
+                        bookingsData.push({ id: doc.id, ...doc.data() });
+                    });
+                }
+                
+                displayAllBookings(bookingsData);
+                
+            } catch (error) {
+                console.error('Error loading bookings:', error);
+                showToast('Error loading bookings', 'error');
+            }
+        }
+        
+        function displayAllBookings(bookings) {
+            const tbody = document.getElementById('allBookingsList');
+            if (!tbody) return;
+            
+            if (bookings.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="text-center">No reservations found</td></tr>';
+                return;
+            }
+            
+            const sortedBookings = bookings.sort((a, b) => {
+                if (a.timestamp && b.timestamp) {
+                    return b.timestamp.seconds - a.timestamp.seconds;
+                }
+                return new Date(b.date) - new Date(a.date);
+            });
+            
+            tbody.innerHTML = sortedBookings.map(booking => `
+                <tr>
+                    <td>${booking.name}</td>
+                    <td>${booking.email}</td>
+                    <td>${booking.phone}</td>
+                    <td>${formatDate(booking.date)}</td>
+                    <td>${booking.time}</td>
+                    <td>${booking.guests}</td>
+                    <td><span class="status-badge status-${booking.status}">${booking.status}</span></td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-sm btn-outline-success" onclick="updateBookingStatus('${booking.id}', 'confirmed')" title="Confirm">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="updateBookingStatus('${booking.id}', 'cancelled')" title="Cancel">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-info" onclick="viewBookingDetails('${booking.id}')" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        function filterBookings() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            let filteredBookings = bookingsData;
+            
+            if (statusFilter !== 'all') {
+                filteredBookings = bookingsData.filter(booking => booking.status === statusFilter);
+            }
+            
+            displayAllBookings(filteredBookings);
+        }
+        
+        async function updateBookingStatus(bookingId, newStatus) {
+            try {
+                await window.firebaseModules.updateDoc(
+                    window.firebaseModules.doc(window.db, 'bookings', bookingId),
+                    { status: newStatus }
+                );
+                
+                // Update local data
+                const bookingIndex = bookingsData.findIndex(b => b.id === bookingId);
+                if (bookingIndex !== -1) {
+                    bookingsData[bookingIndex].status = newStatus;
+                }
+                
+                // Refresh displays
+                loadRecentBookings();
+                loadAllBookings();
+                loadDashboardData();
+                
+                showToast(`Reservation ${newStatus} successfully`, 'success');
+                
+            } catch (error) {
+                console.error('Error updating booking status:', error);
+                showToast('Error updating reservation status', 'error');
+            }
+        }
+        
+        function viewBookingDetails(bookingId) {
+            const booking = bookingsData.find(b => b.id === bookingId);
+            if (booking) {
+                alert(`
+Booking Details:
+Name: ${booking.name}
+Email: ${booking.email}
+Phone: ${booking.phone}
+Date: ${formatDate(booking.date)}
+Time: ${booking.time}
+Guests: ${booking.guests}
+Status: ${booking.status}
+Special Requests: ${booking.specialRequests || 'None'}
+                `);
+            }
+        }
+        
+        async function loadCustomers() {
+            try {
+                // Group bookings by email to get unique customers
+                const customerMap = new Map();
+                
+                bookingsData.forEach(booking => {
+                    if (!customerMap.has(booking.email)) {
+                        customerMap.set(booking.email, {
+                            name: booking.name,
+                            email: booking.email,
+                            phone: booking.phone,
+                            reservations: [],
+                            totalReservations: 0,
+                            lastVisit: null
+                        });
+                    }
+                    
+                    const customer = customerMap.get(booking.email);
+                    customer.reservations.push(booking);
+                    customer.totalReservations++;
+                    
+                    // Update last visit date
+                    const bookingDate = new Date(booking.date);
+                    if (!customer.lastVisit || bookingDate > customer.lastVisit) {
+                        customer.lastVisit = bookingDate;
+                    }
                 });
+                
+                customersData = Array.from(customerMap.values());
+                displayCustomers();
+                
+            } catch (error) {
+                console.error('Error loading customers:', error);
+                showToast('Error loading customers', 'error');
+            }
+        }
+        
+        function displayCustomers() {
+            const tbody = document.getElementById('customersList');
+            if (!tbody) return;
+            
+            if (customersData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center">No customers found</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = customersData.map(customer => `
+                <tr>
+                    <td>${customer.name}</td>
+                    <td>${customer.email}</td>
+                    <td>${customer.phone}</td>
+                    <td>${customer.totalReservations}</td>
+                    <td>${customer.lastVisit ? formatDate(customer.lastVisit.toISOString().split('T')[0]) : 'N/A'}</td>
+                </tr>
+            `).join('');
+        }
+        
+        function refreshDashboard() {
+            loadDashboardData();
+            showToast('Dashboard refreshed', 'success');
+        }
+        
+        function refreshBookings() {
+            bookingsData = []; // Clear cache
+            loadAllBookings();
+            showToast('Bookings refreshed', 'success');
+        }
+        
+        function refreshCustomers() {
+            loadCustomers();
+            showToast('Customers refreshed', 'success');
+        }
+        
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
             });
         }
         
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', () => {
-            loadMenuItems();
+        function showToast(message, type = 'success') {
+            const toastId = type === 'success' ? 'successToast' : 'errorToast';
+            const messageId = type === 'success' ? 'toastMessage' : 'errorMessage';
             
-            // Check if user is already logged in
-            auth.onAuthStateChanged((user) => {
-                if (user && (user.email === 'theroyalmandii@gmail.com' || user.email === 'the.royalmandi@gmail.com')) {
-                    document.querySelector('body > :not(#adminDashboard)').style.display = 'none';
-                    adminDashboard.style.display = 'block';
-                    loadAdminDashboard();
-                }
-            });
-        });
+            document.getElementById(messageId).textContent = message;
+            const toast = new bootstrap.Toast(document.getElementById(toastId));
+            toast.show();
+        }
+        
+        // Make functions globally available
+        window.showSection = showSection;
+        window.updateBookingStatus = updateBookingStatus;
+        window.viewBookingDetails = viewBookingDetails;
+        window.refreshDashboard = refreshDashboard;
+        window.refreshBookings = refreshBookings;
+        window.refreshCustomers = refreshCustomers;
     </script>
 </body>
 </html>
