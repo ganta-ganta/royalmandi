@@ -409,6 +409,120 @@
                 font-size: 1.1rem;
             }
         }
+        /* Menu Item Container */
+.menu-item {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.menu-item:hover {
+    transform: translateY(-5px);
+}
+
+/* Menu Item Image */
+.menu-item-img {
+    height: 180px;
+    overflow: hidden;
+    position: relative;
+}
+
+.menu-item-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.menu-item:hover .menu-item-img img {
+    transform: scale(1.05);
+}
+
+/* Menu Content */
+.menu-item-header, 
+.menu-item-desc, 
+.spice-level {
+    padding: 0 15px;
+}
+
+.menu-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    padding-bottom: 10px;
+}
+
+.menu-item-name {
+    font-weight: 600;
+    font-size: 18px;
+    color: #333;
+}
+
+.menu-item-price {
+    font-weight: 700;
+    color: #d35400;
+    font-size: 18px;
+}
+
+.menu-item-desc {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+/* Spice Level Icons */
+.spice-level {
+    padding-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.spice-label {
+    margin-right: 8px;
+    font-size: 13px;
+    color: #888;
+}
+
+.spice-icon {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-right: 3px;
+}
+
+/* Category Headers */
+.menu-category {
+    color: #333;
+    border-bottom: 2px solid #e67e22;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+    display: inline-block;
+}
+
+/* Vegetarian/Non-Veg Icons */
+.veg-icon {
+    color: #27ae60;
+    margin-left: 5px;
+}
+
+.non-veg-icon {
+    color: #e74c3c;
+    margin-left: 5px;
+}
+
+.special-badge {
+    background: #e67e22;
+    color: white;
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: 8px;
+    display: inline-block;
+}
         
         @media (max-width: 767.98px) {
             .hero-section {
@@ -475,624 +589,714 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero-section">
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">The Royal Mandi</h1>
-                <p class="hero-subtitle">Experience the authentic flavors of India in the heart of Middlesbrough</p>
-                <div class="d-flex justify-content-center gap-3">
-                    <a href="#menu" class="btn btn-primary btn-lg"><i class="fas fa-utensils me-2"></i>View Menu</a>
-                    <a href="#booking" class="btn btn-outline-light btn-lg"><i class="fas fa-calendar-alt me-2"></i>Book a Table</a>
-                </div>
+        <!-- Non-Veg Curries -->
+<div class="row mb-5">
+    <div class="col-12">
+        <h3 class="menu-category"><i class="fas fa-drumstick-bite me-2"></i>Non-Veg Curries</h3>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/butter-chicken.jpg" alt="Butter Chicken Masala">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Butter Chicken Masala
+                    <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                </span>
+                <span class="menu-item-price">6.50€</span>
+            </div>
+            <p class="menu-item-desc">Chicken cooked with onion, tomato, cashew</p>
+            <div class="spice-level">
+                <span class="spice-label">Spice:</span>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
             </div>
         </div>
-    </section>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/hyderabadi-chicken.jpg" alt="Hyderabadi Chicken Masala">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Hyderabadi Chicken Masala
+                    <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                </span>
+                <span class="menu-item-price">5.50€</span>
+            </div>
+            <p class="menu-item-desc">Chicken cooked with onion, tomato, spices</p>
+            <div class="spice-level">
+                <span class="spice-label">Spice:</span>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/tikka-chicken.jpg" alt="Tikka Chicken Masala">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Tikka Chicken Masala
+                    <span class="special-badge">Special</span>
+                    <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                </span>
+                <span class="menu-item-price">6.50€</span>
+            </div>
+            <p class="menu-item-desc">Chicken tikka boiled cooked with Indian spicy</p>
+            <div class="spice-level">
+                <span class="spice-label">Spice:</span>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/gongura-chicken.jpg" alt="Gongura Chicken Curry">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Gongura Chicken Curry
+                    <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                </span>
+                <span class="menu-item-price">6.99€</span>
+            </div>
+            <p class="menu-item-desc">Chicken cooked with gongura leaves and spices</p>
+            <div class="spice-level">
+                <span class="spice-label">Spice:</span>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/chicken-kurma.jpg" alt="Chicken Kurma">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Chicken Kurma
+                    <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                </span>
+                <span class="menu-item-price">6.50€</span>
+            </div>
+            <p class="menu-item-desc">Mild and creamy chicken curry with cashews</p>
+            <div class="spice-level">
+                <span class="spice-label">Spice:</span>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/palak-chicken.jpg" alt="Palak Chicken Curry">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Palak Chicken Curry
+                    <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                </span>
+                <span class="menu-item-price">6.99€</span>
+            </div>
+            <p class="menu-item-desc">Chicken cooked with spinach and mild spices</p>
+            <div class="spice-level">
+                <span class="spice-label">Spice:</span>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/lamb-curry.jpg" alt="Lamb Curry">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Lamb Curry
+                    <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                </span>
+                <span class="menu-item-price">7.50€</span>
+            </div>
+            <p class="menu-item-desc">Tender lamb pieces in rich curry sauce</p>
+            <div class="spice-level">
+                <span class="spice-label">Spice:</span>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/lamb-rogan.jpg" alt="Lamb Rogan Josh">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Lamb Rogan Josh
+                    <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                </span>
+                <span class="menu-item-price">7.99€</span>
+            </div>
+            <p class="menu-item-desc">Aromatic lamb curry with Kashmiri spices</p>
+            <div class="spice-level">
+                <span class="spice-label">Spice:</span>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/butter-lamb.jpg" alt="Butter Lamb Masala">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Butter Lamb Masala
+                    <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                </span>
+                <span class="menu-item-price">7.50€</span>
+            </div>
+            <p class="menu-item-desc">Lamb in rich buttery tomato sauce</p>
+            <div class="spice-level">
+                <span class="spice-label">Spice:</span>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/gongura-lamb.jpg" alt="Gongura Lamb Curry">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Gongura Lamb Curry
+                    <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                </span>
+                <span class="menu-item-price">7.99€</span>
+            </div>
+            <p class="menu-item-desc">Lamb cooked with sour gongura leaves</p>
+            <div class="spice-level">
+                <span class="spice-label">Spice:</span>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/chittinod-lamb.jpg" alt="Chittinod Lamb Curry">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Chittinod Lamb Curry
+                    <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                </span>
+                <span class="menu-item-price">7.50€</span>
+            </div>
+            <p class="menu-item-desc">Spicy lamb curry from Andhra region</p>
+            <div class="spice-level">
+                <span class="spice-label">Spice:</span>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/prawns-curry.jpg" alt="Prawns Curry">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Prawns Curry
+                    <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                </span>
+                <span class="menu-item-price">8.50€</span>
+            </div>
+            <p class="menu-item-desc">Fresh prawns in coconut based curry</p>
+            <div class="spice-level">
+                <span class="spice-label">Spice:</span>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/gongura-prawns.jpg" alt="Gongura Prawns Curry">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Gongura Prawns Curry
+                    <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                </span>
+                <span class="menu-item-price">8.99€</span>
+            </div>
+            <p class="menu-item-desc">Prawns cooked with gongura leaves and spices</p>
+            <div class="spice-level">
+                <span class="spice-label">Spice:</span>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <!-- Menu Section -->
-    <section id="menu" class="section bg-white">
-        <div class="container">
-            <h2 class="section-title">Our Exquisite Menu</h2>
-            
-            <!-- Non-Veg Curries -->
-            <div class="row mb-5">
-                <div class="col-12">
-                    <h3 class="menu-category"><i class="fas fa-drumstick-bite me-2"></i>Non-Veg Curries</h3>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Butter Chicken Masala
-                                <i class="fas fa-drumstick-bite non-veg-icon"></i>
-                            </span>
-                            <span class="menu-item-price">6.50€</span>
-                        </div>
-                        <p class="menu-item-desc">Chicken cooked with onion, tomato, cashew</p>
-                        <div class="spice-level">
-                            <span class="spice-label">Spice:</span>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Hyderabadi Chicken Masala
-                                <i class="fas fa-drumstick-bite non-veg-icon"></i>
-                            </span>
-                            <span class="menu-item-price">5.50€</span>
-                        </div>
-                        <p class="menu-item-desc">Chicken cooked with onion, tomato, spices</p>
-                        <div class="spice-level">
-                            <span class="spice-label">Spice:</span>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Tikka Chicken Masala
-                                <span class="special-badge">Special</span>
-                                <i class="fas fa-drumstick-bite non-veg-icon"></i>
-                            </span>
-                            <span class="menu-item-price">6.50€</span>
-                        </div>
-                        <p class="menu-item-desc">Chicken tikka boiled cooked with Indian spicy</p>
-                        <div class="spice-level">
-                            <span class="spice-label">Spice:</span>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Gongura Chicken Curry
-                                <i class="fas fa-drumstick-bite non-veg-icon"></i>
-                            </span>
-                            <span class="menu-item-price">6.99€</span>
-                        </div>
-                        <p class="menu-item-desc">Chicken cooked with gongura leaves and spices</p>
-                        <div class="spice-level">
-                            <span class="spice-label">Spice:</span>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Chicken Kurma
-                                <i class="fas fa-drumstick-bite non-veg-icon"></i>
-                            </span>
-                            <span class="menu-item-price">6.50€</span>
-                        </div>
-                        <p class="menu-item-desc">Mild and creamy chicken curry with cashews</p>
-                        <div class="spice-level">
-                            <span class="spice-label">Spice:</span>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Palak Chicken Curry
-                                <i class="fas fa-drumstick-bite non-veg-icon"></i>
-                            </span>
-                            <span class="menu-item-price">6.99€</span>
-                        </div>
-                        <p class="menu-item-desc">Chicken cooked with spinach and mild spices</p>
-                        <div class="spice-level">
-                            <span class="spice-label">Spice:</span>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Lamb Curry
-                                <i class="fas fa-drumstick-bite non-veg-icon"></i>
-                            </span>
-                            <span class="menu-item-price">7.50€</span>
-                        </div>
-                        <p class="menu-item-desc">Tender lamb pieces in rich curry sauce</p>
-                        <div class="spice-level">
-                            <span class="spice-label">Spice:</span>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Lamb Rogan Josh
-                                <i class="fas fa-drumstick-bite non-veg-icon"></i>
-                            </span>
-                            <span class="menu-item-price">7.99€</span>
-                        </div>
-                        <p class="menu-item-desc">Aromatic lamb curry with Kashmiri spices</p>
-                        <div class="spice-level">
-                            <span class="spice-label">Spice:</span>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Butter Lamb Masala
-                                <i class="fas fa-drumstick-bite non-veg-icon"></i>
-                            </span>
-                            <span class="menu-item-price">7.50€</span>
-                        </div>
-                        <p class="menu-item-desc">Lamb in rich buttery tomato sauce</p>
-                        <div class="spice-level">
-                            <span class="spice-label">Spice:</span>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Gongura Lamb Curry
-                                <i class="fas fa-drumstick-bite non-veg-icon"></i>
-                            </span>
-                            <span class="menu-item-price">7.99€</span>
-                        </div>
-                        <p class="menu-item-desc">Lamb cooked with sour gongura leaves</p>
-                        <div class="spice-level">
-                            <span class="spice-label">Spice:</span>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Chittinod Lamb Curry
-                                <i class="fas fa-drumstick-bite non-veg-icon"></i>
-                            </span>
-                            <span class="menu-item-price">7.50€</span>
-                        </div>
-                        <p class="menu-item-desc">Spicy lamb curry from Andhra region</p>
-                        <div class="spice-level">
-                            <span class="spice-label">Spice:</span>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Prawns Curry
-                                <i class="fas fa-drumstick-bite non-veg-icon"></i>
-                            </span>
-                            <span class="menu-item-price">8.50€</span>
-                        </div>
-                        <p class="menu-item-desc">Fresh prawns in coconut based curry</p>
-                        <div class="spice-level">
-                            <span class="spice-label">Spice:</span>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Gongura Prawns Curry
-                                <i class="fas fa-drumstick-bite non-veg-icon"></i>
-                            </span>
-                            <span class="menu-item-price">8.99€</span>
-                        </div>
-                        <p class="menu-item-desc">Prawns cooked with gongura leaves and spices</p>
-                        <div class="spice-level">
-                            <span class="spice-label">Spice:</span>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                        </div>
-                    </div>
-                </div>
+<!-- Veg Curries -->
+<div class="row mb-5">
+    <div class="col-12">
+        <h3 class="menu-category"><i class="fas fa-carrot me-2"></i>Veg Curries</h3>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/paneer-butter.jpg" alt="Paneer Butter Masala">
             </div>
-            
-            <!-- Veg Curries -->
-            <div class="row mb-5">
-                <div class="col-12">
-                    <h3 class="menu-category"><i class="fas fa-carrot me-2"></i>Veg Curries</h3>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Paneer Butter Masala
-                                <i class="fas fa-leaf veg-icon"></i>
-                            </span>
-                            <span class="menu-item-price">6.99€</span>
-                        </div>
-                        <p class="menu-item-desc">Cottage cheese in rich creamy tomato sauce</p>
-                        <div class="spice-level">
-                            <span class="spice-label">Spice:</span>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Mixed Vegetable Curry
-                                <i class="fas fa-leaf veg-icon"></i>
-                            </span>
-                            <span class="menu-item-price">5.99€</span>
-                        </div>
-                        <p class="menu-item-desc">Seasonal vegetables in light curry sauce</p>
-                        <div class="spice-level">
-                            <span class="spice-label">Spice:</span>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Bagora Baigan Masala
-                                <i class="fas fa-leaf veg-icon"></i>
-                            </span>
-                            <span class="menu-item-price">5.99€</span>
-                        </div>
-                        <p class="menu-item-desc">Eggplant cooked with onions and spices</p>
-                        <div class="spice-level">
-                            <span class="spice-label">Spice:</span>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Rajma Curry
-                                <i class="fas fa-leaf veg-icon"></i>
-                            </span>
-                            <span class="menu-item-price">5.99€</span>
-                        </div>
-                        <p class="menu-item-desc">Red kidney beans in thick gravy</p>
-                        <div class="spice-level">
-                            <span class="spice-label">Spice:</span>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Dal Curry
-                                <i class="fas fa-leaf veg-icon"></i>
-                            </span>
-                            <span class="menu-item-price">5.50€</span>
-                        </div>
-                        <p class="menu-item-desc">Yellow lentils tempered with spices</p>
-                        <div class="spice-level">
-                            <span class="spice-label">Spice:</span>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Tamota Dal
-                                <i class="fas fa-leaf veg-icon"></i>
-                            </span>
-                            <span class="menu-item-price">5.99€</span>
-                        </div>
-                        <p class="menu-item-desc">Lentils cooked with tomatoes and spices</p>
-                        <div class="spice-level">
-                            <span class="spice-label">Spice:</span>
-                            <i class="fas fa-pepper-hot spice-icon"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                            <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
-                        </div>
-                    </div>
-                </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Paneer Butter Masala
+                    <i class="fas fa-leaf veg-icon"></i>
+                </span>
+                <span class="menu-item-price">6.99€</span>
             </div>
-            
-            <!-- Rice -->
-            <div class="row mb-5">
-                <div class="col-12">
-                    <h3 class="menu-category"><i class="fas fa-utensils me-2"></i>Rice</h3>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Plain White Rice
-                            </span>
-                            <span class="menu-item-price">2.99€</span>
-                        </div>
-                        <p class="menu-item-desc">Steamed basmati rice</p>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Plain Biryani Rice
-                            </span>
-                            <span class="menu-item-price">3.50€</span>
-                        </div>
-                        <p class="menu-item-desc">Fragrant basmati rice with whole spices</p>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Bagora Rice
-                            </span>
-                            <span class="menu-item-price">3.50€</span>
-                        </div>
-                        <p class="menu-item-desc">Rice cooked with special spices</p>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Jira Rice
-                            </span>
-                            <span class="menu-item-price">3.50€</span>
-                        </div>
-                        <p class="menu-item-desc">Cumin flavored rice</p>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Veg Fried Rice
-                            </span>
-                            <span class="menu-item-price">3.50€</span>
-                        </div>
-                        <p class="menu-item-desc">Stir-fried rice with vegetables</p>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Gobi Fried Rice
-                            </span>
-                            <span class="menu-item-price">3.99€</span>
-                        </div>
-                        <p class="menu-item-desc">Fried rice with cauliflower and spices</p>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Paneer Fried Rice
-                            </span>
-                            <span class="menu-item-price">4.50€</span>
-                        </div>
-                        <p class="menu-item-desc">Fried rice with cottage cheese</p>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Egg Fried Rice
-                            </span>
-                            <span class="menu-item-price">3.50€</span>
-                        </div>
-                        <p class="menu-item-desc">Fried rice with scrambled eggs</p>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Chicken Fried Rice
-                            </span>
-                            <span class="menu-item-price">4.50€</span>
-                        </div>
-                        <p class="menu-item-desc">Fried rice with chicken pieces</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Noodles -->
-            <div class="row mb-5">
-                <div class="col-12">
-                    <h3 class="menu-category"><i class="fas fa-utensils me-2"></i>Noodles</h3>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Veg Noodles
-                            </span>
-                            <span class="menu-item-price">3.99€</span>
-                        </div>
-                        <p class="menu-item-desc">Stir-fried noodles with vegetables</p>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Gobi Noodles
-                            </span>
-                            <span class="menu-item-price">4.50€</span>
-                        </div>
-                        <p class="menu-item-desc">Noodles with cauliflower and spices</p>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Paneer Noodles
-                            </span>
-                            <span class="menu-item-price">4.50€</span>
-                        </div>
-                        <p class="menu-item-desc">Noodles with cottage cheese</p>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Egg Fried Noodles
-                            </span>
-                            <span class="menu-item-price">3.50€</span>
-                        </div>
-                        <p class="menu-item-desc">Noodles with scrambled eggs</p>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Chicken Fried Noodles
-                            </span>
-                            <span class="menu-item-price">4.50€</span>
-                        </div>
-                        <p class="menu-item-desc">Noodles with chicken pieces</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Nans -->
-            <div class="row">
-                <div class="col-12">
-                    <h3 class="menu-category"><i class="fas fa-bread-slice me-2"></i>Nans</h3>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Plain Nan
-                            </span>
-                            <span class="menu-item-price">0.99€</span>
-                        </div>
-                        <p class="menu-item-desc">Traditional tandoori bread</p>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Garlic Nan
-                            </span>
-                            <span class="menu-item-price">1.50€</span>
-                        </div>
-                        <p class="menu-item-desc">Tandoori bread with garlic butter</p>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">
-                                Butter Nan
-                            </span>
-                            <span class="menu-item-price">1.50€</span>
-                        </div>
-                        <p class="menu-item-desc">Tandoori bread with butter</p>
-                    </div>
-                </div>
+            <p class="menu-item-desc">Cottage cheese in rich creamy tomato sauce</p>
+            <div class="spice-level">
+                <span class="spice-label">Spice:</span>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
             </div>
         </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/mixed-veg.jpg" alt="Mixed Vegetable Curry">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Mixed Vegetable Curry
+                    <i class="fas fa-leaf veg-icon"></i>
+                </span>
+                <span class="menu-item-price">5.99€</span>
+            </div>
+            <p class="menu-item-desc">Seasonal vegetables in light curry sauce</p>
+            <div class="spice-level">
+                <span class="spice-label">Spice:</span>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/baigan-masala.jpg" alt="Bagora Baigan Masala">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Bagora Baigan Masala
+                    <i class="fas fa-leaf veg-icon"></i>
+                </span>
+                <span class="menu-item-price">5.99€</span>
+            </div>
+            <p class="menu-item-desc">Eggplant cooked with onions and spices</p>
+            <div class="spice-level">
+                <span class="spice-label">Spice:</span>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/rajma.jpg" alt="Rajma Curry">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Rajma Curry
+                    <i class="fas fa-leaf veg-icon"></i>
+                </span>
+                <span class="menu-item-price">5.99€</span>
+            </div>
+            <p class="menu-item-desc">Red kidney beans in thick gravy</p>
+            <div class="spice-level">
+                <span class="spice-label">Spice:</span>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/dal-curry.jpg" alt="Dal Curry">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Dal Curry
+                    <i class="fas fa-leaf veg-icon"></i>
+                </span>
+                <span class="menu-item-price">5.50€</span>
+            </div>
+            <p class="menu-item-desc">Yellow lentils tempered with spices</p>
+            <div class="spice-level">
+                <span class="spice-label">Spice:</span>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/tamota-dal.jpg" alt="Tamota Dal">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Tamota Dal
+                    <i class="fas fa-leaf veg-icon"></i>
+                </span>
+                <span class="menu-item-price">5.99€</span>
+            </div>
+            <p class="menu-item-desc">Lentils cooked with tomatoes and spices</p>
+            <div class="spice-level">
+                <span class="spice-label">Spice:</span>
+                <i class="fas fa-pepper-hot spice-icon"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Rice -->
+<div class="row mb-5">
+    <div class="col-12">
+        <h3 class="menu-category"><i class="fas fa-utensils me-2"></i>Rice</h3>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/plain-rice.jpg" alt="Plain White Rice">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Plain White Rice
+                </span>
+                <span class="menu-item-price">2.99€</span>
+            </div>
+            <p class="menu-item-desc">Steamed basmati rice</p>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/biryani-rice.jpg" alt="Plain Biryani Rice">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Plain Biryani Rice
+                </span>
+                <span class="menu-item-price">3.50€</span>
+            </div>
+            <p class="menu-item-desc">Fragrant basmati rice with whole spices</p>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/bagora-rice.jpg" alt="Bagora Rice">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Bagora Rice
+                </span>
+                <span class="menu-item-price">3.50€</span>
+            </div>
+            <p class="menu-item-desc">Rice cooked with special spices</p>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/jeera-rice.jpg" alt="Jira Rice">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Jira Rice
+                </span>
+                <span class="menu-item-price">3.50€</span>
+            </div>
+            <p class="menu-item-desc">Cumin flavored rice</p>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/veg-fried-rice.jpg" alt="Veg Fried Rice">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Veg Fried Rice
+                </span>
+                <span class="menu-item-price">3.50€</span>
+            </div>
+            <p class="menu-item-desc">Stir-fried rice with vegetables</p>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/gobi-fried-rice.jpg" alt="Gobi Fried Rice">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Gobi Fried Rice
+                </span>
+                <span class="menu-item-price">3.99€</span>
+            </div>
+            <p class="menu-item-desc">Fried rice with cauliflower and spices</p>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/paneer-fried-rice.jpg" alt="Paneer Fried Rice">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Paneer Fried Rice
+                </span>
+                <span class="menu-item-price">4.50€</span>
+            </div>
+            <p class="menu-item-desc">Fried rice with cottage cheese</p>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/egg-fried-rice.jpg" alt="Egg Fried Rice">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Egg Fried Rice
+                </span>
+                <span class="menu-item-price">3.50€</span>
+            </div>
+            <p class="menu-item-desc">Fried rice with scrambled eggs</p>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/chicken-fried-rice.jpg" alt="Chicken Fried Rice">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Chicken Fried Rice
+                </span>
+                <span class="menu-item-price">4.50€</span>
+            </div>
+            <p class="menu-item-desc">Fried rice with chicken pieces</p>
+        </div>
+    </div>
+</div>
+
+<!-- Noodles -->
+<div class="row mb-5">
+    <div class="col-12">
+        <h3 class="menu-category"><i class="fas fa-utensils me-2"></i>Noodles</h3>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/veg-noodles.jpg" alt="Veg Noodles">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Veg Noodles
+                </span>
+                <span class="menu-item-price">3.99€</span>
+            </div>
+            <p class="menu-item-desc">Stir-fried noodles with vegetables</p>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/gobi-noodles.jpg" alt="Gobi Noodles">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Gobi Noodles
+                </span>
+                <span class="menu-item-price">4.50€</span>
+            </div>
+            <p class="menu-item-desc">Noodles with cauliflower and spices</p>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/paneer-noodles.jpg" alt="Paneer Noodles">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Paneer Noodles
+                </span>
+                <span class="menu-item-price">4.50€</span>
+            </div>
+            <p class="menu-item-desc">Noodles with cottage cheese</p>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/egg-noodles.jpg" alt="Egg Fried Noodles">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Egg Fried Noodles
+                </span>
+                <span class="menu-item-price">3.50€</span>
+            </div>
+            <p class="menu-item-desc">Noodles with scrambled eggs</p>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/chicken-noodles.jpg" alt="Chicken Fried Noodles">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Chicken Fried Noodles
+                </span>
+                <span class="menu-item-price">4.50€</span>
+            </div>
+            <p class="menu-item-desc">Noodles with chicken pieces</p>
+        </div>
+    </div>
+</div>
+
+<!-- Nans -->
+<div class="row">
+    <div class="col-12">
+        <h3 class="menu-category"><i class="fas fa-bread-slice me-2"></i>Nans</h3>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/plain-naan.jpg" alt="Plain Nan">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Plain Nan
+                </span>
+                <span class="menu-item-price">0.99€</span>
+            </div>
+            <p class="menu-item-desc">Traditional tandoori bread</p>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/garlic-naan.jpg" alt="Garlic Nan">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Garlic Nan
+                </span>
+                <span class="menu-item-price">1.50€</span>
+            </div>
+            <p class="menu-item-desc">Tandoori bread with garlic butter</p>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="menu-item">
+            <div class="menu-item-img">
+                <img src="images/butter-naan.jpg" alt="Butter Nan">
+            </div>
+            <div class="menu-item-header">
+                <span class="menu-item-name">
+                    Butter Nan
+                </span>
+                <span class="menu-item-price">1.50€</span>
+            </div>
+            <p class="menu-item-desc">Tandoori bread with butter</p>
+        </div>
+    </div>
+</div>
     </section>
 
     <!-- Booking Section -->
