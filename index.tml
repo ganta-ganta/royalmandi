@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Royal Mandi - Authentic Indian Cuisine</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js"></script>
+    
+    <script>
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC7Y0BVRoH9m1B8jzYKvI61csT4bnifXEU",
+            authDomain: "royal-mandi.firebaseapp.com",
+            projectId: "royal-mandi",
+            storageBucket: "royal-mandi.appspot.com",
+            messagingSenderId: "285256672352",
+            appId: "1:285256672352:web:9cee8057176e4885ed8f05",
+            measurementId: "G-YC7ZK7Y81H"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+        const analytics = firebase.analytics();
+    </script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #d35400;
+            --secondary-color: #e67e22;
+            --dark-color: #333;
+            --light-color: #f4f4f4;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fff9f5;
+        }
+        
+        .navbar {
+            background-color: var(--dark-color);
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1601050690597-df0568f70950');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+        }
+        
+        .menu-category {
+            margin-bottom: 30px;
+        }
+        
+        .menu-item {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .price {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .special-badge {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        
+        .spice-level {
+            margin-top: 5px;
+        }
+        
+        .spice-icon {
+            color: #ff6b6b;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="logo.png" alt="The Royal Mandi" height="40">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#menu">Menu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#booking">Book a Table</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" id="adminLoginLink">Admin Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold">The Royal Mandi</h1>
+            <p class="lead">Authentic Indian Cuisine in Middlesbrough</p>
+            <a href="#booking" class="btn btn-primary btn-lg mt-3">Book a Table</a>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Our Menu</h2>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="menu-category"><i class="fas fa-drumstick-bite me-2"></i>Non-Veg Curries</h3>
+                    <div id="nonVegMenuItems"></div>
+                </div>
+                
+                <div class="col-md-6">
+                    <h3 class="menu-category"><i class="fas fa-carrot me-2"></i>Veg Curries</h3>
+                    <div id="vegMenuItems"></div>
+                </div>
+            </div>
+            
+            <!-- More menu sections would go here -->
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+    <section id="booking" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">Book a Table</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="bookingForm">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="name" class="form-label">Full Name</label>
+                                        <input type="text" class="form-control" id="name" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="phone" class="form-label">Phone Number</label>
+                                        <input type="tel" class="form-control" id="phone" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="guests" class="form-label">Number of Guests</label>
+                                        <select class="form-select" id="guests" required>
+                                            <option value="1">1 Person</option>
+                                            <option value="2">2 People</option>
+                                            <option value="3">3 People</option>
+                                            <option value="4">4 People</option>
+                                            <option value="5">5 People</option>
+                                            <option value="6">6+ People</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="date" class="form-label">Date</label>
+                                        <input type="date" class="form-control" id="date" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="time" class="form-label">Time</label>
+                                        <select class="form-select" id="time" required>
+                                            <option value="12:00">12:00 PM</option>
+                                            <option value="12:30">12:30 PM</option>
+                                            <!-- More time slots would go here -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="specialRequests" class="form-label">Special Requests</label>
+                                    <textarea class="form-control" id="specialRequests" rows="3"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Book Now</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Contact Us</h2>
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4><i class="fas fa-map-marker-alt me-2"></i>Address</h4>
+                            <p>48 Borough Road, TS1 5DW<br>Middlesbrough, North Yorkshire<br>United Kingdom</p>
+                            
+                            <h4 class="mt-4"><i class="fas fa-phone me-2"></i>Phone</h4>
+                            <p><a href="tel:07467473372">07467473372</a></p>
+                            
+                            <h4 class="mt-4"><i class="fas fa-envelope me-2"></i>Email</h4>
+                            <p><a href="mailto:The.royalmandi@gmail.com">The.royalmandi@gmail.com</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4><i class="fas fa-clock me-2"></i>Opening Hours</h4>
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td>Monday - Thursday</td>
+                                        <td>11:00 AM - 10:00 PM</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Friday - Saturday</td>
+                                        <td>11:00 AM - 11:00 PM</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sunday</td>
+                                        <td>12:00 PM - 9:00 PM</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>The Royal Mandi</h5>
+                    <p>Authentic Indian cuisine with traditional flavors and modern presentation.</p>
+                </div>
+                <div class="col-md-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">Home</a></li>
+                        <li><a href="#menu" class="text-white">Menu</a></li>
+                        <li><a href="#booking" class="text-white">Book a Table</a></li>
+                        <li><a href="#contact" class="text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Follow Us</h5>
+                    <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <p class="mb-0">&copy; 2023 The Royal Mandi. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Admin Login Modal -->
+    <div class="modal fade" id="adminLoginModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Admin Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="adminLoginForm">
+                        <div class="mb-3">
+                            <label for="adminEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="adminEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="adminPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="adminPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard (hidden by default) -->
+    <div id="adminDashboard" style="display: none;">
+        <!-- Admin content would go here -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Firebase initialization is already done in the head section
+        
+        // DOM elements
+        const adminLoginLink = document.getElementById('adminLoginLink');
+        const adminLoginModal = new bootstrap.Modal(document.getElementById('adminLoginModal'));
+        const adminLoginForm = document.getElementById('adminLoginForm');
+        const adminDashboard = document.getElementById('adminDashboard');
+        const bookingForm = document.getElementById('bookingForm');
+        
+        // Menu items from Firestore
+        const nonVegMenuItems = document.getElementById('nonVegMenuItems');
+        const vegMenuItems = document.getElementById('vegMenuItems');
+        
+        // Show admin login modal
+        adminLoginLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            adminLoginModal.show();
+        });
+        
+        // Admin login
+        adminLoginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Check if the email is one of the authorized admin emails
+                    if (email === 'theroyalmandii@gmail.com' || email === 'the.royalmandi@gmail.com') {
+                        adminLoginModal.hide();
+                        // Hide main content and show admin dashboard
+                        document.querySelector('body > :not(#adminDashboard)').style.display = 'none';
+                        adminDashboard.style.display = 'block';
+                        loadAdminDashboard();
+                    } else {
+                        auth.signOut();
+                        alert('You are not authorized to access the admin panel.');
+                    }
+                })
+                .catch((error) => {
+                    alert('Login failed: ' + error.message);
+                });
+        });
+        
+        // Load menu items from Firestore
+        function loadMenuItems() {
+            db.collection('menuItems').where('category', '==', 'non-veg').get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        const item = doc.data();
+                        nonVegMenuItems.innerHTML += `
+                            <div class="menu-item">
+                                <div class="d-flex justify-content-between">
+                                    <h5>${item.name} ${item.special ? '<span class="special-badge">Special</span>' : ''}</h5>
+                                    <span class="price">${item.price}€</span>
+                                </div>
+                                <p class="text-muted">${item.description}</p>
+                                <div class="spice-level">
+                                    ${'<i class="fas fa-pepper-hot spice-icon"></i>'.repeat(item.spiceLevel)}
+                                </div>
+                            </div>
+                        `;
+                    });
+                });
+                
+            db.collection('menuItems').where('category', '==', 'veg').get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        const item = doc.data();
+                        vegMenuItems.innerHTML += `
+                            <div class="menu-item">
+                                <div class="d-flex justify-content-between">
+                                    <h5>${item.name}</h5>
+                                    <span class="price">${item.price}€</span>
+                                </div>
+                                <p class="text-muted">${item.description}</p>
+                                <div class="spice-level">
+                                    ${'<i class="fas fa-pepper-hot spice-icon"></i>'.repeat(item.spiceLevel)}
+                                </div>
+                            </div>
+                        `;
+                    });
+                });
+        }
+        
+        // Handle table bookings
+        bookingForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const booking = {
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                guests: document.getElementById('guests').value,
+                date: document.getElementById('date').value,
+                time: document.getElementById('time').value,
+                specialRequests: document.getElementById('specialRequests').value,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                status: 'confirmed'
+            };
+            
+            db.collection('bookings').add(booking)
+                .then(() => {
+                    alert('Your table has been booked successfully!');
+                    bookingForm.reset();
+                })
+                .catch((error) => {
+                    alert('Error booking table: ' + error.message);
+                });
+        });
+        
+        // Load admin dashboard
+        function loadAdminDashboard() {
+            // This would be more complex in a real implementation
+            adminDashboard.innerHTML = `
+                <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                    <div class="container">
+                        <span class="navbar-brand">Admin Dashboard</span>
+                        <button class="btn btn-light ms-auto" id="logoutBtn">Logout</button>
+                    </div>
+                </nav>
+                
+                <div class="container mt-4">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="list-group">
+                                <a href="#" class="list-group-item list-group-item-action active" data-section="bookings">Bookings</a>
+                                <a href="#" class="list-group-item list-group-item-action" data-section="menu">Menu Management</a>
+                                <a href="#" class="list-group-item list-group-item-action" data-section="settings">Settings</a>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div id="bookingsSection">
+                                <h3>Recent Bookings</h3>
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Date/Time</th>
+                                                <th>Guests</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="bookingsList">
+                                            <!-- Bookings will be loaded here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <!-- Other sections would be here but hidden by default -->
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Load bookings
+            db.collection('bookings').orderBy('timestamp', 'desc').limit(10).get()
+                .then((querySnapshot) => {
+                    const bookingsList = document.getElementById('bookingsList');
+                    querySnapshot.forEach((doc) => {
+                        const booking = doc.data();
+                        bookingsList.innerHTML += `
+                            <tr>
+                                <td>${booking.name}</td>
+                                <td>${booking.date} at ${booking.time}</td>
+                                <td>${booking.guests}</td>
+                                <td>${booking.status}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary">View</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                });
+                
+            // Logout button
+            document.getElementById('logoutBtn').addEventListener('click', () => {
+                auth.signOut().then(() => {
+                    location.reload();
+                });
+            });
+        }
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            loadMenuItems();
+            
+            // Check if user is already logged in
+            auth.onAuthStateChanged((user) => {
+                if (user && (user.email === 'theroyalmandii@gmail.com' || user.email === 'the.royalmandi@gmail.com')) {
+                    document.querySelector('body > :not(#adminDashboard)').style.display = 'none';
+                    adminDashboard.style.display = 'block';
+                    loadAdminDashboard();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
