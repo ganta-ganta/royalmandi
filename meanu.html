@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curry House Menu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9f5f0;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: #b33c2e;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: "";
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: #e67e22;
+            margin: 10px auto;
+        }
+        
+        /* Menu Filter - Mobile Optimized */
+        .menu-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+            padding: 0 5px;
+        }
+        
+        .filter-btn {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            background: #fff;
+            border: 1px solid #e67e22;
+            color: #e67e22;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: #e67e22;
+            color: #fff;
+        }
+        
+        /* Menu Categories */
+        .menu-category {
+            font-size: 1.4rem;
+            margin: 30px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #e67e22;
+            color: #b33c2e;
+        }
+        
+        /* Menu Items - Mobile Grid */
+        .menu-items-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .menu-item {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-3px);
+        }
+        
+        .menu-item-img {
+            height: 120px;
+            overflow: hidden;
+        }
+        
+        .menu-item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .menu-item-content {
+            padding: 12px;
+        }
+        
+        .menu-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .menu-item-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex: 1;
+            min-width: 60%;
+        }
+        
+        .menu-item-price {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #e67e22;
+            white-space: nowrap;
+        }
+        
+        .menu-item-desc {
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+        
+        .spice-level {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 0.8rem;
+        }
+        
+        .spice-label {
+            color: #666;
+            margin-right: 3px;
+        }
+        
+        .spice-icon {
+            color: #e74c3c;
+            font-size: 0.7rem;
+        }
+        
+        /* Icons */
+        .non-veg-icon {
+            color: #e74c3c;
+            font-size: 0.7rem;
+        }
+        
+        .veg-icon {
+            color: #27ae60;
+            font-size: 0.7rem;
+        }
+        
+        .special-badge {
+            background: #e67e22;
+            color: white;
+            font-size: 0.6rem;
+            padding: 1px 6px;
+            border-radius: 8px;
+            margin-left: 5px;
+            display: inline-block;
+        }
+        
+        /* Larger phones/tablets */
+        @media (min-width: 480px) {
+            .menu-items-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .menu-item-img {
+                height: 140px;
+            }
+        }
+        
+        /* Small tablets */
+        @media (min-width: 600px) {
+            .menu-items-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        /* Larger screens */
+        @media (min-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .menu-items-container {
+                gap: 20px;
+            }
+            
+            .menu-item-img {
+                height: 160px;
+            }
+            
+            .menu-item-name {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Menu Section -->
+<section id="menu" class="section bg-light">
+    <div class="container">
+        <h2 class="section-title">Our Menu</h2>
+        
+        <div class="menu-filter mb-5">
+            <button class="filter-btn active" data-filter="all">All Items</button>
+            <button class="filter-btn" data-filter="non-veg">Non-Veg</button>
+            <button class="filter-btn" data-filter="veg">Vegetarian</button>
+            <button class="filter-btn" data-filter="rice">Rice</button>
+            <button class="filter-btn" data-filter="noodles">Noodles</button>
+            <button class="filter-btn" data-filter="bread">Bread</button>
+        </div>
+        
+        <!-- Non-Veg Curries -->
+        <div class="menu-category" id="non-veg"><i class="fas fa-drumstick-bite me-2"></i>Non-Veg Curries</div>
+        <div class="row menu-items-container">
+            <!-- Butter Chicken Masala -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="non-veg">
+                <div class="menu-item-img">
+                    <img src="img/butter-chicken.jpg" alt="Butter Chicken Masala">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Butter Chicken Masala
+                            <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                        </span>
+                        <span class="menu-item-price">6.50€</span>
+                    </div>
+                    <p class="menu-item-desc">Chicken cooked with onion, tomato, cashew</p>
+                    <div class="spice-level">
+                        <span class="spice-label">Spice:</span>
+                        <i class="fas fa-pepper-hot spice-icon"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hyderabadi Chicken Masala -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="non-veg">
+                <div class="menu-item-img">
+                    <img src="img/hyderabadi-chicken.jpg" alt="Hyderabadi Chicken Masala">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Hyderabadi Chicken Masala
+                            <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                        </span>
+                        <span class="menu-item-price">5.50€</span>
+                    </div>
+                    <p class="menu-item-desc">Chicken cooked with onion, tomato, spices</p>
+                    <div class="spice-level">
+                        <span class="spice-label">Spice:</span>
+                        <i class="fas fa-pepper-hot spice-icon"></i>
+                        <i class="fas fa-pepper-hot spice-icon"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tikka Chicken Masala -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="non-veg">
+                <div class="menu-item-img">
+                    <img src="img/tikka-chicken.jpg" alt="Tikka Chicken Masala">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Tikka Chicken Masala
+                            <span class="special-badge">Special</span>
+                            <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                        </span>
+                        <span class="menu-item-price">6.50€</span>
+                    </div>
+                    <p class="menu-item-desc">Chicken tikka cooked with Indian spices</p>
+                    <div class="spice-level">
+                        <span class="spice-label">Spice:</span>
+                        <i class="fas fa-pepper-hot spice-icon"></i>
+                        <i class="fas fa-pepper-hot spice-icon"></i>
+                        <i class="fas fa-pepper-hot spice-icon"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Gongura Chicken Curry -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="non-veg">
+                <div class="menu-item-img">
+                    <img src="img/gongura-chicken.jpg" alt="Gongura Chicken Curry">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Gongura Chicken Curry
+                            <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                        </span>
+                        <span class="menu-item-price">6.99€</span>
+                    </div>
+                    <p class="menu-item-desc">Chicken cooked with gongura leaves and spices</p>
+                    <div class="spice-level">
+                        <span class="spice-label">Spice:</span>
+                        <i class="fas fa-pepper-hot spice-icon"></i>
+                        <i class="fas fa-pepper-hot spice-icon"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chicken Kurma -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="non-veg">
+                <div class="menu-item-img">
+                    <img src="img/chicken-kurma.jpg" alt="Chicken Kurma">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Chicken Kurma
+                            <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                        </span>
+                        <span class="menu-item-price">6.50€</span>
+                    </div>
+                    <p class="menu-item-desc">Mild chicken curry with coconut and cashew gravy</p>
+                    <div class="spice-level">
+                        <span class="spice-label">Spice:</span>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Palak Chicken Curry -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="non-veg">
+                <div class="menu-item-img">
+                    <img src="img/palak-chicken.jpg" alt="Palak Chicken Curry">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Palak Chicken Curry
+                            <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                        </span>
+                        <span class="menu-item-price">6.99€</span>
+                    </div>
+                    <p class="menu-item-desc">Chicken cooked with spinach and mild spices</p>
+                    <div class="spice-level">
+                        <span class="spice-label">Spice:</span>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Lamb Curry -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="non-veg">
+                <div class="menu-item-img">
+                    <img src="img/lamb-curry.jpg" alt="Lamb Curry">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Lamb Curry
+                            <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                        </span>
+                        <span class="menu-item-price">7.50€</span>
+                    </div>
+                    <p class="menu-item-desc">Tender lamb pieces in rich curry sauce</p>
+                    <div class="spice-level">
+                        <span class="spice-label">Spice:</span>
+                        <i class="fas fa-pepper-hot spice-icon"></i>
+                        <i class="fas fa-pepper-hot spice-icon"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Lamb Rogan Gosh -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="non-veg">
+                <div class="menu-item-img">
+                    <img src="img/lamb-rogan.jpg" alt="Lamb Rogan Gosh">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Lamb Rogan Gosh
+                            <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                        </span>
+                        <span class="menu-item-price">7.99€</span>
+                    </div>
+                    <p class="menu-item-desc">Traditional lamb curry with aromatic spices</p>
+                    <div class="spice-level">
+                        <span class="spice-label">Spice:</span>
+                        <i class="fas fa-pepper-hot spice-icon"></i>
+                        <i class="fas fa-pepper-hot spice-icon"></i>
+                        <i class="fas fa-pepper-hot spice-icon"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Butter Lamb Masala -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="non-veg">
+                <div class="menu-item-img">
+                    <img src="img/butter-lamb.jpg" alt="Butter Lamb Masala">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Butter Lamb Masala
+                            <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                        </span>
+                        <span class="menu-item-price">7.50€</span>
+                    </div>
+                    <p class="menu-item-desc">Lamb cooked in rich buttery tomato sauce</p>
+                    <div class="spice-level">
+                        <span class="spice-label">Spice:</span>
+                        <i class="fas fa-pepper-hot spice-icon"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Gongura Lamb Curry -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="non-veg">
+                <div class="menu-item-img">
+                    <img src="img/gongura-lamb.jpg" alt="Gongura Lamb Curry">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Gongura Lamb Curry
+                            <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                        </span>
+                        <span class="menu-item-price">7.99€</span>
+                    </div>
+                    <p class="menu-item-desc">Lamb cooked with gongura leaves and spices</p>
+                    <div class="spice-level">
+                        <span class="spice-label">Spice:</span>
+                        <i class="fas fa-pepper-hot spice-icon"></i>
+                        <i class="fas fa-pepper-hot spice-icon"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chittinod Lamb Curry -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="non-veg">
+                <div class="menu-item-img">
+                    <img src="img/chittinod-lamb.jpg" alt="Chittinod Lamb Curry">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Chittinod Lamb Curry
+                            <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                        </span>
+                        <span class="menu-item-price">7.50€</span>
+                    </div>
+                    <p class="menu-item-desc">Spicy lamb curry from Chittinod region</p>
+                    <div class="spice-level">
+                        <span class="spice-label">Spice:</span>
+                        <i class="fas fa-pepper-hot spice-icon"></i>
+                        <i class="fas fa-pepper-hot spice-icon"></i>
+                        <i class="fas fa-pepper-hot spice-icon"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Prawns Curry -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="non-veg">
+                <div class="menu-item-img">
+                    <img src="img/prawns-curry.jpg" alt="Prawns Curry">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Prawns Curry
+                            <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                        </span>
+                        <span class="menu-item-price">8.50€</span>
+                    </div>
+                    <p class="menu-item-desc">Fresh prawns in coconut based curry</p>
+                    <div class="spice-level">
+                        <span class="spice-label">Spice:</span>
+                        <i class="fas fa-pepper-hot spice-icon"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Gongura Prawns Curry -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="non-veg">
+                <div class="menu-item-img">
+                    <img src="img/gongura-prawns.jpg" alt="Gongura Prawns Curry">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Gongura Prawns Curry
+                            <i class="fas fa-drumstick-bite non-veg-icon"></i>
+                        </span>
+                        <span class="menu-item-price">8.99€</span>
+                    </div>
+                    <p class="menu-item-desc">Prawns cooked with gongura leaves and spices</p>
+                    <div class="spice-level">
+                        <span class="spice-label">Spice:</span>
+                        <i class="fas fa-pepper-hot spice-icon"></i>
+                        <i class="fas fa-pepper-hot spice-icon"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Veg Curries -->
+        <div class="menu-category" id="veg"><i class="fas fa-carrot me-2"></i>Veg Curries</div>
+        <div class="row menu-items-container">
+            <!-- Paneer Butter Masala -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="veg">
+                <div class="menu-item-img">
+                    <img src="img/paneer-butter.jpg" alt="Paneer Butter Masala">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Paneer Butter Masala
+                            <i class="fas fa-leaf veg-icon"></i>
+                        </span>
+                        <span class="menu-item-price">6.99€</span>
+                    </div>
+                    <p class="menu-item-desc">Cottage cheese in rich creamy tomato sauce</p>
+                    <div class="spice-level">
+                        <span class="spice-label">Spice:</span>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mixed Vegetable Curry -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="veg">
+                <div class="menu-item-img">
+                    <img src="img/mixed-veg.jpg" alt="Mixed Vegetable Curry">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Mixed Vegetable Curry
+                            <i class="fas fa-leaf veg-icon"></i>
+                        </span>
+                        <span class="menu-item-price">5.99€</span>
+                    </div>
+                    <p class="menu-item-desc">Seasonal vegetables in light curry sauce</p>
+                    <div class="spice-level">
+                        <span class="spice-label">Spice:</span>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bagora Baigan Masala -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="veg">
+                <div class="menu-item-img">
+                    <img src="img/baigan-masala.jpg" alt="Bagora Baigan Masala">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Bagora Baigan Masala
+                            <i class="fas fa-leaf veg-icon"></i>
+                        </span>
+                        <span class="menu-item-price">5.99€</span>
+                    </div>
+                    <p class="menu-item-desc">Eggplant cooked with spices in traditional style</p>
+                    <div class="spice-level">
+                        <span class="spice-label">Spice:</span>
+                        <i class="fas fa-pepper-hot spice-icon"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Rajma Curry -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="veg">
+                <div class="menu-item-img">
+                    <img src="img/rajma-curry.jpg" alt="Rajma Curry">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Rajma Curry
+                            <i class="fas fa-leaf veg-icon"></i>
+                        </span>
+                        <span class="menu-item-price">5.99€</span>
+                    </div>
+                    <p class="menu-item-desc">Kidney beans in thick spicy gravy</p>
+                    <div class="spice-level">
+                        <span class="spice-label">Spice:</span>
+                        <i class="fas fa-pepper-hot spice-icon"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dal Curry -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="veg">
+                <div class="menu-item-img">
+                    <img src="img/dal-curry.jpg" alt="Dal Curry">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Dal Curry
+                            <i class="fas fa-leaf veg-icon"></i>
+                        </span>
+                        <span class="menu-item-price">5.50€</span>
+                    </div>
+                    <p class="menu-item-desc">Lentils cooked with mild spices</p>
+                    <div class="spice-level">
+                        <span class="spice-label">Spice:</span>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tamota Dal -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="veg">
+                <div class="menu-item-img">
+                    <img src="img/tamota-dal.jpg" alt="Tamota Dal">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Tamota Dal
+                            <i class="fas fa-leaf veg-icon"></i>
+                        </span>
+                        <span class="menu-item-price">5.99€</span>
+                    </div>
+                    <p class="menu-item-desc">Lentils cooked with tomatoes and spices</p>
+                    <div class="spice-level">
+                        <span class="spice-label">Spice:</span>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                        <i class="fas fa-pepper-hot spice-icon" style="opacity:0.3"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Rice -->
+        <div class="menu-category" id="rice"><i class="fas fa-utensils me-2"></i>Rice</div>
+        <div class="row menu-items-container">
+            <!-- Plain White Rice -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="rice">
+                <div class="menu-item-img">
+                    <img src="img/white-rice.jpg" alt="Plain White Rice">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Plain White Rice
+                        </span>
+                        <span class="menu-item-price">2.99€</span>
+                    </div>
+                    <p class="menu-item-desc">Steamed basmati rice</p>
+                </div>
+            </div>
+            
+            <!-- Plain Biryani Rice -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="rice">
+                <div class="menu-item-img">
+                    <img src="img/biryani-rice.jpg" alt="Plain Biryani Rice">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Plain Biryani Rice
+                        </span>
+                        <span class="menu-item-price">3.50€</span>
+                    </div>
+                    <p class="menu-item-desc">Fragrant basmati rice cooked with whole spices</p>
+                </div>
+            </div>
+            
+            <!-- Bagora Rice -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="rice">
+                <div class="menu-item-img">
+                    <img src="img/bagora-rice.jpg" alt="Bagora Rice">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Bagora Rice
+                        </span>
+                        <span class="menu-item-price">3.50€</span>
+                    </div>
+                    <p class="menu-item-desc">Rice cooked with special Bagora spices</p>
+                </div>
+            </div>
+            
+            <!-- Jira Rice -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="rice">
+                <div class="menu-item-img">
+                    <img src="img/jira-rice.jpg" alt="Jira Rice">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Jira Rice
+                        </span>
+                        <span class="menu-item-price">3.50€</span>
+                    </div>
+                    <p class="menu-item-desc">Cumin flavored basmati rice</p>
+                </div>
+            </div>
+            
+            <!-- Veg Fried Rice -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="rice">
+                <div class="menu-item-img">
+                    <img src="img/veg-fried-rice.jpg" alt="Veg Fried Rice">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Veg Fried Rice
+                        </span>
+                        <span class="menu-item-price">3.50€</span>
+                    </div>
+                    <p class="menu-item-desc">Stir-fried rice with fresh vegetables</p>
+                </div>
+            </div>
+            
+            <!-- Gobi Fried Rice -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="rice">
+                <div class="menu-item-img">
+                    <img src="img/gobi-fried-rice.jpg" alt="Gobi Fried Rice">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Gobi Fried Rice
+                        </span>
+                        <span class="menu-item-price">3.99€</span>
+                    </div>
+                    <p class="menu-item-desc">Fried rice with cauliflower and spices</p>
+                </div>
+            </div>
+            
+            <!-- Paneer Fried Rice -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="rice">
+                <div class="menu-item-img">
+                    <img src="img/paneer-fried-rice.jpg" alt="Paneer Fried Rice">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Paneer Fried Rice
+                        </span>
+                        <span class="menu-item-price">4.50€</span>
+                    </div>
+                    <p class="menu-item-desc">Fried rice with cottage cheese cubes</p>
+                </div>
+            </div>
+            
+            <!-- Egg Fried Rice -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="rice">
+                <div class="menu-item-img">
+                    <img src="img/egg-fried-rice.jpg" alt="Egg Fried Rice">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Egg Fried Rice
+                        </span>
+                        <span class="menu-item-price">3.50€</span>
+                    </div>
+                    <p class="menu-item-desc">Fried rice with scrambled eggs</p>
+                </div>
+            </div>
+            
+            <!-- Chicken Fried Rice -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="rice">
+                <div class="menu-item-img">
+                    <img src="img/chicken-fried-rice.jpg" alt="Chicken Fried Rice">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Chicken Fried Rice
+                        </span>
+                        <span class="menu-item-price">4.50€</span>
+                    </div>
+                    <p class="menu-item-desc">Fried rice with chicken pieces</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Noodles -->
+        <div class="menu-category" id="noodles"><i class="fas fa-utensils me-2"></i>Noodles</div>
+        <div class="row menu-items-container">
+            <!-- Veg Noodles -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="noodles">
+                <div class="menu-item-img">
+                    <img src="img/veg-noodles.jpg" alt="Veg Noodles">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Veg Noodles
+                        </span>
+                        <span class="menu-item-price">3.99€</span>
+                    </div>
+                    <p class="menu-item-desc">Stir-fried noodles with fresh vegetables</p>
+                </div>
+            </div>
+            
+            <!-- Gobi Noodles -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="noodles">
+                <div class="menu-item-img">
+                    <img src="img/gobi-noodles.jpg" alt="Gobi Noodles">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Gobi Noodles
+                        </span>
+                        <span class="menu-item-price">4.50€</span>
+                    </div>
+                    <p class="menu-item-desc">Noodles with cauliflower and spices</p>
+                </div>
+            </div>
+            
+            <!-- Paneer Noodles -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="noodles">
+                <div class="menu-item-img">
+                    <img src="img/paneer-noodles.jpg" alt="Paneer Noodles">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Paneer Noodles
+                        </span>
+                        <span class="menu-item-price">4.50€</span>
+                    </div>
+                    <p class="menu-item-desc">Noodles with cottage cheese cubes</p>
+                </div>
+            </div>
+            
+            <!-- Egg Fried Noodles -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="noodles">
+                <div class="menu-item-img">
+                    <img src="img/egg-noodles.jpg" alt="Egg Fried Noodles">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Egg Fried Noodles
+                        </span>
+                        <span class="menu-item-price">3.50€</span>
+                    </div>
+                    <p class="menu-item-desc">Noodles with scrambled eggs</p>
+                </div>
+            </div>
+            
+            <!-- Chicken Fried Noodles -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="noodles">
+                <div class="menu-item-img">
+                    <img src="img/chicken-noodles.jpg" alt="Chicken Fried Noodles">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Chicken Fried Noodles
+                        </span>
+                        <span class="menu-item-price">4.50€</span>
+                    </div>
+                    <p class="menu-item-desc">Noodles with chicken pieces</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Nans -->
+        <div class="menu-category" id="bread"><i class="fas fa-bread-slice me-2"></i>Nans</div>
+        <div class="row menu-items-container">
+            <!-- Plain Nan -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="bread">
+                <div class="menu-item-img">
+                    <img src="img/plain-nan.jpg" alt="Plain Nan">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Plain Nan
+                        </span>
+                        <span class="menu-item-price">0.99€</span>
+                    </div>
+                    <p class="menu-item-desc">Traditional tandoori bread</p>
+                </div>
+            </div>
+            
+            <!-- Garlic Nan -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="bread">
+                <div class="menu-item-img">
+                    <img src="img/garlic-nan.jpg" alt="Garlic Nan">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Garlic Nan
+                        </span>
+                        <span class="menu-item-price">1.50€</span>
+                    </div>
+                    <p class="menu-item-desc">Tandoori bread with garlic butter</p>
+                </div>
+            </div>
+            
+            <!-- Butter Nan -->
+            <div class="col-md-6 col-lg-4 menu-item" data-category="bread">
+                <div class="menu-item-img">
+                    <img src="img/butter-nan.jpg" alt="Butter Nan">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            Butter Nan
+                        </span>
+                        <span class="menu-item-price">1.50€</span>
+                    </div>
+                    <p class="menu-item-desc">Tandoori bread brushed with butter</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <script>
+        // Simple filtering functionality
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active button
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const filter = btn.dataset.filter;
+                const categories = document.querySelectorAll('.menu-category');
+                const containers = document.querySelectorAll('.menu-items-container');
+                
+                if (filter === 'all') {
+                    categories.forEach(cat => cat.style.display = 'block');
+                    containers.forEach(cont => cont.style.display = 'grid');
+                } else {
+                    categories.forEach(cat => cat.style.display = 'none');
+                    containers.forEach(cont => cont.style.display = 'none');
+                    
+                    document.querySelectorAll(`.menu-item[data-category="${filter}"]`).forEach(item => {
+                        item.style.display = 'block';
+                    });
+                    
+                    // Show the relevant category heading
+                    const categoryHeadings = {
+                        'non-veg': 'Non-Veg',
+                        'veg': 'Veg',
+                        'rice': 'Rice',
+                        'noodles': 'Noodles',
+                        'bread': 'Bread'
+                    };
+                    
+                    if (categoryHeadings[filter]) {
+                        const heading = document.createElement('div');
+                        heading.className = 'menu-category';
+                        heading.innerHTML = `<i class="fas ${filter === 'non-veg' ? 'fa-drumstick-bite' : 
+                                            filter === 'veg' ? 'fa-carrot' : 
+                                            filter === 'rice' || filter === 'noodles' ? 'fa-utensils' : 
+                                            'fa-bread-slice'}"></i> ${categoryHeadings[filter]}`;
+                                            
+                        const firstContainer = document.querySelector('.menu-items-container');
+                        firstContainer.parentNode.insertBefore(heading, firstContainer);
+                        heading.style.display = 'block';
+                        
+                        const relevantContainer = document.querySelector(`.menu-items-container`);
+                        relevantContainer.style.display = 'grid';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
