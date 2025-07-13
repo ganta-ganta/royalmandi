@@ -1009,16 +1009,18 @@
         <div class="container">
             <h2 class="section-title">Our Menu</h2>
             
-            <div class="menu-filter">
-                <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="non-veg">Non-Veg</button>
-                <button class="filter-btn" data-filter="veg">Veg</button>
-                <button class="filter-btn" data-filter="mandi">Mandi</button>
-                <button class="filter-btn" data-filter="biryani">Biryani</button>
-                <button class="filter-btn" data-filter="starters">Starters</button>
-                <button class="filter-btn" data-filter="rice">Rice</button>
-                <button class="filter-btn" data-filter="bread">Bread</button>
-            </div>
+           <div class="menu-filter">
+              <button class="filter-btn active" data-filter="all">All</button>
+              <button class="filter-btn" data-filter="non-veg">Non-Veg</button>
+              <button class="filter-btn" data-filter="veg">Veg</button>
+              <button class="filter-btn" data-filter="mandi">Mandi</button>
+              <button class="filter-btn" data-filter="biryani">Biryani</button>
+              <button class="filter-btn" data-filter="starters">Starters</button>
+              <button class="filter-btn" data-filter="rice">Rice</button>
+              <button class="filter-btn" data-filter="bread">Bread</button>
+              <button class="filter-btn" data-filter="desserts">Desserts</button>
+              <button class="filter-btn" data-filter="drinks">Drinks</button>
+           </div>
             
             <!-- Menu Content Will Be Dynamically Inserted Here -->
             <div id="menu-content"></div>
@@ -3228,114 +3230,130 @@ Special Requests: ${booking.specialRequests || 'None'}
             setupEventListeners();
         }
         
-        // Render menu based on filter
         function renderMenu(filter) {
-            menuContent.innerHTML = '';
-            
-            if (filter === 'all') {
-                // Group items by category
-                const categories = {
-                    'mandi': [],
-                    'biryani': [],
-                    'non-veg': [],
-                    'veg': [],
-                    'starters': [],
-                    'specials': [],
-                    'rice': [],
-                    'bread': []
-                };
-                
-                menuData.forEach(item => {
-                    categories[item.category].push(item);
-                });
-                
-                // Render each category
-                for (const [category, items] of Object.entries(categories)) {
-                    if (items.length > 0) {
-                        renderCategory(category, items);
-                    }
-                }
-            } else {
-                // Filter items by selected category
-                const filteredItems = menuData.filter(item => item.category === filter);
-                
-                if (filteredItems.length > 0) {
-                    renderCategory(filter, filteredItems);
-                } else {
-                    // Show empty state
-                    menuContent.innerHTML = `
-                        <div style="text-align: center; padding: 30px; color: #666;">
-                            <p>No items found in this category</p>
-                        </div>
-                    `;
-                }
+    menuContent.innerHTML = '';
+    
+    if (filter === 'all') {
+        // Group items by category - initialize all possible categories
+        const categories = {
+            'mandi': [],
+            'biryani': [],
+            'non-veg': [],
+            'veg': [],
+            'starters': [],
+            'specials': [],
+            'rice': [],
+            'bread': [],
+            'tea_coffee': [],
+            'desserts': [],
+            'drinks': []
+        };
+        
+        // Now safely push items to their categories
+        menuData.forEach(item => {
+            if (categories[item.category]) {
+                categories[item.category].push(item);
+            }
+        });
+        
+        // Render each category
+        for (const [category, items] of Object.entries(categories)) {
+            if (items.length > 0) {
+                renderCategory(category, items);
             }
         }
+    } else {
+        // Filter items by selected category
+        const filteredItems = menuData.filter(item => item.category === filter);
+        
+        if (filteredItems.length > 0) {
+            renderCategory(filter, filteredItems);
+        } else {
+            // Show empty state
+            menuContent.innerHTML = `
+                <div style="text-align: center; padding: 30px; color: #666;">
+                    <p>No items found in this category</p>
+                </div>
+            `;
+        }
+    }
+}
         // Automatically update the year
     document.getElementById('current-year').textContent = new Date().getFullYear();
         
-        // Render a category with its items
         function renderCategory(category, items) {
-            // Create category heading
-            const categoryHeading = document.createElement('div');
-            categoryHeading.className = 'menu-category';
-            
-            // Set icon based on category
-            let iconClass = '';
-            let categoryName = '';
-            
-            switch(category) {
-                case 'non-veg':
-                    iconClass = 'fa-drumstick-bite';
-                    categoryName = 'Non-Veg Curries';
-                    break;
-                case 'veg':
-                    iconClass = 'fa-carrot';
-                    categoryName = 'Vegetarian Curries';
-                    break;
-                case 'mandi':
-                    iconClass = 'fa-utensils';
-                    categoryName = 'Mandi Specials';
-                    break;
-                case 'biryani':
-                    iconClass = 'fa-utensils';
-                    categoryName = 'Biryani';
-                    break;
-                case 'starters':
-                    iconClass = 'fa-pepper-hot';
-                    categoryName = 'Starters';
-                    break;
-                case 'specials':
-                    iconClass = 'fa-star';
-                    categoryName = 'House Specials';
-                    break;
-                case 'rice':
-                    iconClass = 'fa-utensils';
-                    categoryName = 'Rice & Noodles';
-                    break;
-                case 'bread':
-                    iconClass = 'fa-bread-slice';
-                    categoryName = 'Breads';
-                    break;
-            }
-            
-            categoryHeading.innerHTML = `
-                <i class="fas ${iconClass}"></i>
-                <span>${categoryName}</span>
-            `;
-            menuContent.appendChild(categoryHeading);
-            
-            // Create items container
-            const itemsContainer = document.createElement('div');
-            itemsContainer.className = 'menu-items-container';
-            
-            // Add items to container
-            items.forEach(item => {
-                itemsContainer.appendChild(createMenuItem(item));
-            });
-            
-            menuContent.appendChild(itemsContainer);
-        }
+    // Create category heading
+    const categoryHeading = document.createElement('div');
+    categoryHeading.className = 'menu-category';
+    
+    // Set icon based on category
+    let iconClass = '';
+    let categoryName = '';
+    
+    switch(category) {
+        case 'non-veg':
+            iconClass = 'fa-drumstick-bite';
+            categoryName = 'Non-Veg Curries';
+            break;
+        case 'veg':
+            iconClass = 'fa-carrot';
+            categoryName = 'Vegetarian Curries';
+            break;
+        case 'mandi':
+            iconClass = 'fa-utensils';
+            categoryName = 'Mandi Specials';
+            break;
+        case 'biryani':
+            iconClass = 'fa-utensils';
+            categoryName = 'Biryani';
+            break;
+        case 'starters':
+            iconClass = 'fa-pepper-hot';
+            categoryName = 'Starters';
+            break;
+        case 'specials':
+            iconClass = 'fa-star';
+            categoryName = 'House Specials';
+            break;
+        case 'rice':
+            iconClass = 'fa-utensils';
+            categoryName = 'Rice & Noodles';
+            break;
+        case 'bread':
+            iconClass = 'fa-bread-slice';
+            categoryName = 'Breads';
+            break;
+        case 'tea_coffee':
+            iconClass = 'fa-mug-hot';
+            categoryName = 'Tea & Coffee';
+            break;
+        case 'desserts':
+            iconClass = 'fa-ice-cream';
+            categoryName = 'Desserts';
+            break;
+        case 'drinks':
+            iconClass = 'fa-glass-whiskey';
+            categoryName = 'Drinks';
+            break;
+    }
+    
+    categoryHeading.innerHTML = `
+        <i class="fas ${iconClass}"></i>
+        <span>${categoryName}</span>
+    `;
+    menuContent.appendChild(categoryHeading);
+    
+    // Create items container
+    const itemsContainer = document.createElement('div');
+    itemsContainer.className = 'menu-items-container';
+    
+    // Add items to container
+    items.forEach(item => {
+        itemsContainer.appendChild(createMenuItem(item));
+    });
+    
+    menuContent.appendChild(itemsContainer);
+}
         
         // Create a menu item element
         function createMenuItem(item) {
