@@ -184,7 +184,7 @@
         
         /* Hero Section */
         .hero-section {
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://theroyalmandi.gantasolutions.com/img/bg-logo3.jpg');
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://theroyalmandi.co.uk/img/bg-logo3.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -662,6 +662,21 @@
             height: 10px;
             background: linear-gradient(to right, var(--primary), var(--primary-dark));
         }
+        .copyright {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.dev-credit a {
+    color: #dc3545; /* Or your brand color */
+    font-weight: 500;
+}
+
+.dev-credit a:hover {
+    color: #b02a37; /* Slightly darker on hover */
+    text-decoration: underline;
+}
         
         .footer-logo {
             height: 50px;
@@ -932,26 +947,45 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="img/bg-logo.jpg" alt="The Royal Mandi" class="img-fluid">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#menu">Menu</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#booking">Reservations</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" id="adminLoginLink"><i class="fas fa-lock"></i> Admin</a></li>
-                </ul>
-            </div>
+   <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img src="img/logo.png" alt="The Royal Mandi" class="img-fluid">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#home">
+                        <i class="fas fa-home me-1"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#menu">
+                        <i class="fas fa-utensils me-1"></i> Menu
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#booking">
+                        <i class="fas fa-calendar-check me-1"></i> Reservations
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact">
+                        <i class="fas fa-phone-alt me-1"></i> Contact
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="adminLoginLink">
+                        <i class="fas fa-lock me-1"></i> Admin
+                    </a>
+                </li>
+            </ul>
         </div>
-    </nav>
-
+    </div>
+</nav>
     <!-- Hero Section -->
     <section id="home" class="hero-section">
         <div class="container">
@@ -1086,7 +1120,7 @@
                         <h4>Phone</h4>
                         <p><a href="tel:07467473372" class="text-decoration-none">07467 473372</a></p>
                         <h4 class="mt-3">Email</h4>
-                        <p><a href="mailto:theroyalmandi@gmail.com" class="text-decoration-none">theroyalmandi@gmail.com</a></p>
+                        <p><a href="mailto:contact@theroyalmandico.uk" class="text-decoration-none">contact@theroyalmandico.uk</a></p>
                     </div>
                 </div>
                 
@@ -1123,13 +1157,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 mb-5 mb-lg-0">
-                    <img src="img/bg-logo.jpg" alt="The Royal Mandi" class="footer-logo">
+                    <img src="img/logo.png" alt="The Royal Mandi" class="footer-logo">
                     <p>Bringing authentic Indian flavors to Middlesbrough since 2015. Our passion for traditional cooking techniques and premium ingredients ensures an unforgettable dining experience.</p>
                     <div class="social-icons">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-instagram"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-tripadvisor"></i></a>
+                        
                     </div>
                 </div>
                 
@@ -1163,14 +1197,17 @@
                         <ul>
                             <li><a href="https://maps.google.com?q=48+Borough+Road+TS1+5DW">48 Borough Road, TS1 5DW</a></li>
                             <li><a href="tel:07467473372">07467 473372</a></li>
-                            <li><a href="mailto:theroyalmandi@gmail.com">theroyalmandi@gmail.com</a></li>
+                            <li><a href="mailto:theroyalmandi@gmail.com">contact@theroyalmandi.co.uk</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
             
-            <div class="copyright">
-                &copy; 2023 The Royal Mandi. All rights reserved.
+            <div class="copyright text-center py-3">
+                 &copy; <span id="current-year">2024</span> The Royal Mandi. All rights reserved.
+               <div class="dev-credit mt-2">
+                 Developed by <a href="https://gantasolutions.com" target="_blank" class="text-decoration-none">Ganta Solutions</a>
+              </div>
             </div>
         </div>
     </footer>
@@ -3059,6 +3096,8 @@ Special Requests: ${booking.specialRequests || 'None'}
                 }
             }
         }
+        // Automatically update the year
+    document.getElementById('current-year').textContent = new Date().getFullYear();
         
         // Render a category with its items
         function renderCategory(category, items) {
