@@ -88,10 +88,9 @@
             overflow-x: hidden;
         }
         .hero-title {
-    color: #FFA500; /* Orange color */
-    text-shadow: 2px 2px 5px rgba(0,0,0,0.3); /* Adjust shadow as needed */
-}
-        
+           color: #FFA500; /* Orange color */
+          text-shadow: 2px 2px 5px rgba(0,0,0,0.3); /* Adjust shadow as needed */
+        }
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Playfair Display', serif;
             font-weight: 700;
@@ -667,7 +666,7 @@
             background: linear-gradient(to right, var(--primary), var(--primary-dark));
         }
         .copyright {
-    background-color: #f8f9fa;
+    background-color: #7e7f80;
     color: #6c757d;
     font-size: 0.9rem;
 }
@@ -723,7 +722,7 @@
         }
         
         .footer-links a:hover {
-            color: white;
+            color: rgb(225, 183, 0);
             padding-left: 5px;
         }
         
@@ -948,88 +947,6 @@
             100% { transform: rotate(360deg); }
         }
     </style>
-    
-
-<style>
-    /* WhatsApp Floating Button */
-    .whatsapp-float {
-        position: fixed;
-        bottom: 30px;
-        left: 30px;
-        width: 60px;
-        height: 60px;
-        background-color: #25D366;
-        color: #FFF;
-        border-radius: 50%;
-        text-align: center;
-        font-size: 30px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        z-index: 100;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
-    }
-
-    .whatsapp-float:hover {
-        background-color: #128C7E;
-        transform: scale(1.1);
-    }
-
-    .whatsapp-icon {
-        margin-top: 4px;
-    }
-
-    /* Scroll to Top Button */
-    .scroll-to-top {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 50px;
-        height: 50px;
-        background-color: #e67e22;
-        color: #FFF;
-        border: none;
-        border-radius: 50%;
-        font-size: 20px;
-        cursor: pointer;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        z-index: 100;
-        display: none; /* Hidden by default */
-        transition: all 0.3s ease;
-    }
-
-    .scroll-to-top:hover {
-        background-color: #d35400;
-        transform: scale(1.1);
-    }
-    .hero-title {
-    color: #FFA500; /* Orange color */
-    text-shadow: 2px 2px 5px rgba(0,0,0,0.3); /* Adjust shadow as needed */
-}
-</style>
-
-<script>
-    // Scroll to Top Function
-    function scrollToTop() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    }
-
-    // Show/Hide Scroll to Top Button
-    window.onscroll = function() {
-        var scrollButton = document.querySelector('.scroll-to-top');
-        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-            scrollButton.style.display = 'flex';
-            scrollButton.style.alignItems = 'center';
-            scrollButton.style.justifyContent = 'center';
-        } else {
-            scrollButton.style.display = 'none';
-        }
-    };
-</script>
 </head>
 <body>
     <!-- Navigation -->
@@ -1077,7 +994,7 @@
         <div class="container">
             <div class="hero-content">
                 <img src="img/logo1.png" alt="The Royal Mandi" class="img-fluid">
-                <h1 class="hero-title">The Royal Mandi</h1>
+                <h1 class="hero-title">The Teast Of Asia</h1>
                 <p class="hero-subtitle">Experience authentic Indian cuisine with royal flavors and traditional cooking techniques</p>
                 <div class="hero-buttons">
                     <a href="#menu" class="btn btn-primary btn-lg me-3">View Menu</a>
@@ -1101,8 +1018,6 @@
                 <button class="filter-btn" data-filter="starters">Starters</button>
                 <button class="filter-btn" data-filter="rice">Rice</button>
                 <button class="filter-btn" data-filter="bread">Bread</button>
-                <button class="filter-btn" data-filter="desserts">desserts</button>
-                <button class="filter-btn" data-filter="drinks">drinks</button>
             </div>
             
             <!-- Menu Content Will Be Dynamically Inserted Here -->
@@ -1585,15 +1500,6 @@
             </div>
         </div>
     </div>
-    <!-- WhatsApp Chat Button (Left Side) --
-<a href="https://wa.me/+447467473372" class="whatsapp-float" target="_blank">
-    <i class="fab fa-whatsapp whatsapp-icon"></i>
-</a>
-
-<!-- Scroll to Top Button (Right Side) -->
-<button class="scroll-to-top" onclick="scrollToTop()">
-    <i class="fas fa-arrow-up"></i>
-</button>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -3139,179 +3045,7 @@ Special Requests: ${booking.specialRequests || 'None'}
         category: "bread",
         spice: 0,
         special: false
-    },
-     {
-            "name": "Tea (Bawarchi special)",
-            "price": "£2.00",
-            "desc": "Our signature blend of aromatic spices with premium tea leaves",
-            "image": "img/bawarchi-tea.jpg",
-            "category": "tea_coffee",
-            "spice": 0,
-            "special": true
-        },
-        {
-            "name": "Coffee",
-            "price": "£2.00",
-            "desc": "Rich South Indian filter coffee with frothy milk",
-            "image": "img/indian-coffee.jpg",
-            "category": "tea_coffee",
-            "spice": 0,
-            "special": false
-        },
-        {
-            "name": "Ice cream (all flavours)",
-            "price": "£3.49",
-            "desc": "Creamy homemade ice cream in vanilla, mango, pistachio & rose",
-            "image": "img/indian-icecream.jpg",
-            "category": "desserts",
-            "spice": 0,
-            "special": false
-        },
-        {
-            "name": "Gulab jamun (3 pcs)",
-            "price": "£3.49",
-            "desc": "Soft milk dumplings soaked in rose-scented sugar syrup",
-            "image": "img/gulab-jamun.jpg",
-            "category": "desserts",
-            "spice": 0,
-            "special": false
-        },
-        {
-            "name": "Double ka meeta",
-            "price": "£3.49",
-            "desc": "Traditional bread pudding with dry fruits in sweet milk sauce",
-            "image": "img/double-ka-meetha.jpg",
-            "category": "desserts",
-            "spice": 0,
-            "special": true
-        },
-        {
-            "name": "Gulab jamun with ice cream",
-            "price": "£4.49",
-            "desc": "Warm gulab jamun served with cold vanilla ice cream",
-            "image": "img/gulab-jamun-icecream.jpg",
-            "category": "desserts",
-            "spice": 0,
-            "special": true
-        },
-        {
-            "name": "Rasmalai (2 pcs)",
-            "price": "£3.99",
-            "desc": "Soft cottage cheese patties in sweetened, flavored milk",
-            "image": "img/rasmalai.jpg",
-            "category": "desserts",
-            "spice": 0,
-            "special": true
-        },
-        {
-            "name": "Soft drink cans",
-            "price": "£1.49",
-            "desc": "Assorted soft drinks (Coke, Pepsi, Sprite, Fanta)",
-            "image": "img/soft-drinks.jpg",
-            "category": "drinks",
-            "spice": 0,
-            "special": false
-        },
-        {
-            "name": "Water",
-            "price": "£1.49",
-            "desc": "Mineral water (500ml bottle)",
-            "image": "img/water-bottle.jpg",
-            "category": "drinks",
-            "spice": 0,
-            "special": false
-        },
-        {
-            "name": "Thums up",
-            "price": "£2.00",
-            "desc": "Popular Indian cola with strong fizzy flavor",
-            "image": "img/thums-up.jpg",
-            "category": "drinks",
-            "spice": 0,
-            "special": false
-        },
-        {
-            "name": "Limca",
-            "price": "£2.00",
-            "desc": "Refreshing lemon-lime flavored soda",
-            "image": "img/limca.jpg",
-            "category": "drinks",
-            "spice": 0,
-            "special": false
-        },
-        {
-            "name": "Goli soda (all flavours)",
-            "price": "£1.49",
-            "desc": "Traditional Indian carbonated drink in glass bottles",
-            "image": "img/goli-soda.jpg",
-            "category": "drinks",
-            "spice": 0,
-            "special": true
-        },
-        {
-            "name": "Schweppes Tonic water",
-            "price": "£1.49",
-            "desc": "Classic tonic water with quinine",
-            "image": "img/tonic-water.jpg",
-            "category": "drinks",
-            "spice": 0,
-            "special": false
-        },
-        {
-            "name": "Red bull energy drink",
-            "price": "£2.79",
-            "desc": "Energy drink to boost your vitality",
-            "image": "img/red-bull.jpg",
-            "category": "drinks",
-            "spice": 0,
-            "special": false
-        },
-        {
-            "name": "Mango lassi",
-            "price": "£3.49",
-            "desc": "Sweet yogurt drink with real mango pulp",
-            "image": "img/mango-lassi.jpg",
-            "category": "drinks",
-            "spice": 0,
-            "special": true
-        },
-        {
-            "name": "Sweet lassi",
-            "price": "£3.49",
-            "desc": "Traditional sweetened yogurt drink",
-            "image": "img/sweet-lassi.jpg",
-            "category": "drinks",
-            "spice": 0,
-            "special": false
-        },
-        {
-            "name": "Salt lassi",
-            "price": "£3.49",
-            "desc": "Refreshing salted yogurt drink with cumin",
-            "image": "img/salt-lassi.jpg",
-            "category": "drinks",
-            "spice": 1,
-            "special": false
-        },
-        {
-            "name": "Lemon juice salt (Fresh)",
-            "price": "£3.49",
-            "desc": "Freshly squeezed lemon with salt and spices",
-            "image": "img/salt-lemon.jpg",
-            "category": "drinks",
-            "spice": 1,
-            "special": false
-        },
-        {
-            "name": "Lemon juice sweet (Fresh)",
-            "price": "£3.49",
-            "desc": "Fresh lemonade with sugar and mint",
-            "image": "img/sweet-lemon.jpg",
-            "category": "drinks",
-            "spice": 0,
-            "special": false
-        }
-             
+    }
 ];
         // DOM Elements
         const menuContent = document.getElementById('menu-content');
@@ -3337,10 +3071,7 @@ Special Requests: ${booking.specialRequests || 'None'}
                     'starters': [],
                     'specials': [],
                     'rice': [],
-                    'bread': [],
-                    'drinks': [],
-                    'desserts': []
-                    
+                    'bread': []
                 };
                 
                 menuData.forEach(item => {
@@ -3414,14 +3145,6 @@ Special Requests: ${booking.specialRequests || 'None'}
                 case 'bread':
                     iconClass = 'fa-bread-slice';
                     categoryName = 'Breads';
-                    break;
-                case 'desserts':
-                    iconClass = 'fa-bread-slice';
-                    categoryName = 'desserts';
-                    break;
-                case 'drinks':
-                    iconClass = 'fa-bread-slice';
-                    categoryName = 'drinks';
                     break;
             }
             
