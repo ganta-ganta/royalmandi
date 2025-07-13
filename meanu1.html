@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curry House Menu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9f5f0;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #b33c2e;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: "";
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: #e67e22;
+            margin: 15px auto;
+        }
+        
+        /* Menu Filter */
+        .menu-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .filter-btn {
+            padding: 8px 20px;
+            background: #fff;
+            border: 2px solid #e67e22;
+            color: #e67e22;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: #e67e22;
+            color: #fff;
+        }
+        
+        /* Menu Categories */
+        .menu-category {
+            font-size: 1.6rem;
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px dashed #e67e22;
+            color: #b33c2e;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Menu Items Grid - Responsive 2-4 columns */
+        .menu-items-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .menu-item {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .menu-item-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .menu-item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .menu-item:hover .menu-item-img img {
+            transform: scale(1.05);
+        }
+        
+        .menu-item-content {
+            padding: 20px;
+        }
+        
+        .menu-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .menu-item-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .menu-item-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #e67e22;
+        }
+        
+        .menu-item-desc {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .spice-level {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .spice-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .spice-icon {
+            color: #e74c3c;
+            font-size: 0.9rem;
+        }
+        
+        /* Icons */
+        .non-veg-icon {
+            color: #e74c3c;
+            font-size: 0.9rem;
+        }
+        
+        .veg-icon {
+            color: #27ae60;
+            font-size: 0.9rem;
+        }
+        
+        .special-badge {
+            background: #e67e22;
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 8px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .menu-items-container {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .menu-items-container {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-items-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .menu-items-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .menu-filter {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Menu Section -->
+    <section id="menu" class="section">
+        <div class="container">
+            <h2 class="section-title">Our Menu</h2>
+            
+            <div class="menu-filter">
+                <button class="filter-btn active" data-filter="all">All Items</button>
+                <button class="filter-btn" data-filter="non-veg">Non-Veg</button>
+                <button class="filter-btn" data-filter="veg">Vegetarian</button>
+                <button class="filter-btn" data-filter="rice">Rice</button>
+                <button class="filter-btn" data-filter="noodles">Noodles</button>
+                <button class="filter-btn" data-filter="bread">Bread</button>
+            </div>
+            
+            <!-- Menu Content Will Be Dynamically Inserted Here -->
+            <div id="menu-content"></div>
+        </div>
+    </section>
+
+    <script>
+        // Menu Data
+        const menuData = [
+            // Non-Veg Items
+            {
+                name: "Butter Chicken Masala",
+                price: "6.50€",
+                desc: "Chicken cooked with onion, tomato, cashew",
+                image: "img/butter-chicken.jpg",
+                category: "non-veg",
+                spice: 1,
+                special: false
+            },
+            {
+                name: "Hyderabadi Chicken Masala",
+                price: "5.50€",
+                desc: "Chicken cooked with onion, tomato, spices",
+                image: "img/hyderabadi-chicken.jpg",
+                category: "non-veg",
+                spice: 2,
+                special: false
+            },
+            {
+                name: "Tikka Chicken Masala",
+                price: "6.50€",
+                desc: "Chicken tikka cooked with Indian spices",
+                image: "img/tikka-chicken.jpg",
+                category: "non-veg",
+                spice: 3,
+                special: true
+            },
+            {
+                name: "Gongura Chicken Curry",
+                price: "6.99€",
+                desc: "Chicken cooked with gongura leaves and spices",
+                image: "img/gongura-chicken.jpg",
+                category: "non-veg",
+                spice: 2,
+                special: false
+            },
+            {
+                name: "Chicken Kurma",
+                price: "6.50€",
+                desc: "Mild chicken curry with coconut and cashew",
+                image: "img/chicken-kurma.jpg",
+                category: "non-veg",
+                spice: 1,
+                special: false
+            },
+            {
+                name: "Palak Chicken Curry",
+                price: "6.99€",
+                desc: "Chicken cooked with spinach and spices",
+                image: "img/palak-chicken.jpg",
+                category: "non-veg",
+                spice: 1,
+                special: false
+            },
+            {
+                name: "Lamb Curry",
+                price: "7.50€",
+                desc: "Tender lamb pieces in rich curry sauce",
+                image: "img/lamb-curry.jpg",
+                category: "non-veg",
+                spice: 2,
+                special: false
+            },
+            {
+                name: "Lamb Rogan Josh",
+                price: "7.99€",
+                desc: "Aromatic lamb curry with Kashmiri spices",
+                image: "img/rogan-josh.jpg",
+                category: "non-veg",
+                spice: 3,
+                special: false
+            },
+            {
+                name: "Butter Lamb Masala",
+                price: "7.50€",
+                desc: "Lamb cooked in rich buttery tomato sauce",
+                image: "img/butter-lamb.jpg",
+                category: "non-veg",
+                spice: 2,
+                special: false
+            },
+            {
+                name: "Gongura Lamb Curry",
+                price: "7.99€",
+                desc: "Lamb cooked with gongura leaves and spices",
+                image: "img/gongura-lamb.jpg",
+                category: "non-veg",
+                spice: 3,
+                special: false
+            },
+            {
+                name: "Chittinod Lamb Curry",
+                price: "7.50€",
+                desc: "Special lamb curry with unique spices",
+                image: "img/chittinod-lamb.jpg",
+                category: "non-veg",
+                spice: 3,
+                special: false
+            },
+            {
+                name: "Prawns Curry",
+                price: "8.50€",
+                desc: "Fresh prawns in coconut based curry",
+                image: "img/prawns-curry.jpg",
+                category: "non-veg",
+                spice: 2,
+                special: false
+            },
+            {
+                name: "Gongura Prawns Curry",
+                price: "8.99€",
+                desc: "Prawns cooked with gongura leaves",
+                image: "img/gongura-prawns.jpg",
+                category: "non-veg",
+                spice: 3,
+                special: false
+            },
+
+            // Veg Items
+            {
+                name: "Paneer Butter Masala",
+                price: "6.99€",
+                desc: "Cottage cheese in rich creamy tomato sauce",
+                image: "img/paneer-butter.jpg",
+                category: "veg",
+                spice: 1,
+                special: false
+            },
+            {
+                name: "Mixed Vegetable Curry",
+                price: "5.99€",
+                desc: "Seasonal vegetables in light curry sauce",
+                image: "img/mixed-veg.jpg",
+                category: "veg",
+                spice: 1,
+                special: false
+            },
+            {
+                name: "Bagora Baigan Masala",
+                price: "5.99€",
+                desc: "Eggplant cooked with special spices",
+                image: "img/baigan-masala.jpg",
+                category: "veg",
+                spice: 2,
+                special: false
+            },
+            {
+                name: "Rajma Curry",
+                price: "5.99€",
+                desc: "Kidney beans in thick gravy",
+                image: "img/rajma-curry.jpg",
+                category: "veg",
+                spice: 2,
+                special: false
+            },
+            {
+                name: "Dal Curry",
+                price: "5.50€",
+                desc: "Traditional lentil curry",
+                image: "img/dal-curry.jpg",
+                category: "veg",
+                spice: 1,
+                special: false
+            },
+            {
+                name: "Tamota Dal",
+                price: "5.99€",
+                desc: "Lentils cooked with tomatoes",
+                image: "img/tamota-dal.jpg",
+                category: "veg",
+                spice: 1,
+                special: false
+            },
+
+            // Rice Items
+            {
+                name: "Plain White Rice",
+                price: "2.99€",
+                desc: "Steamed basmati rice",
+                image: "img/white-rice.jpg",
+                category: "rice",
+                spice: 0,
+                special: false
+            },
+            {
+                name: "Plain Biryani Rice",
+                price: "3.50€",
+                desc: "Fragrant basmati rice cooked with whole spices",
+                image: "img/biryani-rice.jpg",
+                category: "rice",
+                spice: 0,
+                special: false
+            },
+            {
+                name: "Bagora Rice",
+                price: "3.50€",
+                desc: "Rice cooked with special spices",
+                image: "img/bagora-rice.jpg",
+                category: "rice",
+                spice: 1,
+                special: false
+            },
+            {
+                name: "Jira Rice",
+                price: "3.50€",
+                desc: "Cumin flavored rice",
+                image: "img/jira-rice.jpg",
+                category: "rice",
+                spice: 0,
+                special: false
+            },
+            {
+                name: "Veg Fried Rice",
+                price: "3.50€",
+                desc: "Rice stir-fried with vegetables",
+                image: "img/veg-fried-rice.jpg",
+                category: "rice",
+                spice: 1,
+                special: false
+            },
+            {
+                name: "Gobi Fried Rice",
+                price: "3.99€",
+                desc: "Rice stir-fried with cauliflower",
+                image: "img/gobi-fried-rice.jpg",
+                category: "rice",
+                spice: 1,
+                special: false
+            },
+            {
+                name: "Paneer Fried Rice",
+                price: "4.50€",
+                desc: "Rice stir-fried with paneer",
+                image: "img/paneer-fried-rice.jpg",
+                category: "rice",
+                spice: 1,
+                special: false
+            },
+            {
+                name: "Egg Fried Rice",
+                price: "3.50€",
+                desc: "Rice stir-fried with egg",
+                image: "img/egg-fried-rice.jpg",
+                category: "rice",
+                spice: 1,
+                special: false
+            },
+            {
+                name: "Chicken Fried Rice",
+                price: "4.50€",
+                desc: "Rice stir-fried with chicken",
+                image: "img/chicken-fried-rice.jpg",
+                category: "rice",
+                spice: 1,
+                special: false
+            },
+
+            // Noodles Items
+            {
+                name: "Veg Noodles",
+                price: "3.99€",
+                desc: "Noodles with mixed vegetables",
+                image: "img/veg-noodles.jpg",
+                category: "noodles",
+                spice: 1,
+                special: false
+            },
+            {
+                name: "Gobi Noodles",
+                price: "4.50€",
+                desc: "Noodles with cauliflower",
+                image: "img/gobi-noodles.jpg",
+                category: "noodles",
+                spice: 1,
+                special: false
+            },
+            {
+                name: "Paneer Noodles",
+                price: "4.50€",
+                desc: "Noodles with paneer pieces",
+                image: "img/paneer-noodles.jpg",
+                category: "noodles",
+                spice: 1,
+                special: false
+            },
+            {
+                name: "Egg Fried Noodles",
+                price: "3.50€",
+                desc: "Noodles with egg",
+                image: "img/egg-noodles.jpg",
+                category: "noodles",
+                spice: 1,
+                special: false
+            },
+            {
+                name: "Chicken Fried Noodles",
+                price: "4.50€",
+                desc: "Noodles with chicken pieces",
+                image: "img/chicken-noodles.jpg",
+                category: "noodles",
+                spice: 1,
+                special: false
+            },
+
+            // Bread Items
+            {
+                name: "Plain Nan",
+                price: "0.99€",
+                desc: "Traditional tandoori bread",
+                image: "img/plain-nan.jpg",
+                category: "bread",
+                spice: 0,
+                special: false
+            },
+            {
+                name: "Garlic Nan",
+                price: "1.50€",
+                desc: "Tandoori bread with garlic butter",
+                image: "img/garlic-nan.jpg",
+                category: "bread",
+                spice: 0,
+                special: false
+            },
+            {
+                name: "Butter Nan",
+                price: "1.50€",
+                desc: "Tandoori bread with butter",
+                image: "img/butter-nan.jpg",
+                category: "bread",
+                spice: 0,
+                special: false
+            }
+        ];
+
+        // DOM Elements
+        const menuContent = document.getElementById('menu-content');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        
+        // Initialize the menu
+        function initMenu() {
+            renderMenu('all');
+            setupEventListeners();
+        }
+        
+        // Render menu based on filter
+        function renderMenu(filter) {
+            menuContent.innerHTML = '';
+            
+            if (filter === 'all') {
+                // Group items by category
+                const categories = {
+                    'non-veg': [],
+                    'veg': [],
+                    'rice': [],
+                    'noodles': [],
+                    'bread': []
+                };
+                
+                menuData.forEach(item => {
+                    categories[item.category].push(item);
+                });
+                
+                // Render each category
+                for (const [category, items] of Object.entries(categories)) {
+                    if (items.length > 0) {
+                        renderCategory(category, items);
+                    }
+                }
+            } else {
+                // Filter items by selected category
+                const filteredItems = menuData.filter(item => item.category === filter);
+                
+                if (filteredItems.length > 0) {
+                    renderCategory(filter, filteredItems);
+                } else {
+                    // Show empty state
+                    menuContent.innerHTML = `
+                        <div class="empty-state">
+                            <p>No items found in this category</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+        
+        // Render a category with its items
+        function renderCategory(category, items) {
+            // Create category heading
+            const categoryHeading = document.createElement('div');
+            categoryHeading.className = 'menu-category';
+            
+            // Set icon based on category
+            let iconClass = '';
+            let categoryName = '';
+            
+            switch(category) {
+                case 'non-veg':
+                    iconClass = 'fa-drumstick-bite';
+                    categoryName = 'Non-Veg Curries';
+                    break;
+                case 'veg':
+                    iconClass = 'fa-carrot';
+                    categoryName = 'Vegetarian Curries';
+                    break;
+                case 'rice':
+                    iconClass = 'fa-utensils';
+                    categoryName = 'Rice Dishes';
+                    break;
+                case 'noodles':
+                    iconClass = 'fa-utensils';
+                    categoryName = 'Noodles';
+                    break;
+                case 'bread':
+                    iconClass = 'fa-bread-slice';
+                    categoryName = 'Breads';
+                    break;
+            }
+            
+            categoryHeading.innerHTML = `
+                <i class="fas ${iconClass}"></i>
+                <span>${categoryName}</span>
+            `;
+            menuContent.appendChild(categoryHeading);
+            
+            // Create items container
+            const itemsContainer = document.createElement('div');
+            itemsContainer.className = 'menu-items-container';
+            
+            // Add items to container
+            items.forEach(item => {
+                itemsContainer.appendChild(createMenuItem(item));
+            });
+            
+            menuContent.appendChild(itemsContainer);
+        }
+        
+        // Create a menu item element
+        function createMenuItem(item) {
+            const menuItem = document.createElement('div');
+            menuItem.className = 'menu-item';
+            menuItem.dataset.category = item.category;
+            
+            // Determine icon
+            const icon = item.category === 'veg' || item.category === 'bread' 
+                ? '<i class="fas fa-leaf veg-icon"></i>' 
+                : item.category === 'non-veg' 
+                    ? '<i class="fas fa-drumstick-bite non-veg-icon"></i>' 
+                    : '';
+            
+            // Create spice indicators
+            let spiceIcons = '';
+            for (let i = 0; i < 3; i++) {
+                const opacity = i < item.spice ? 1 : 0.3;
+                spiceIcons += `<i class="fas fa-pepper-hot spice-icon" style="opacity:${opacity}"></i>`;
+            }
+            
+            menuItem.innerHTML = `
+                <div class="menu-item-img">
+                    <img src="${item.image}" alt="${item.name}">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            ${item.name}
+                            ${item.special ? '<span class="special-badge">Special</span>' : ''}
+                            ${icon}
+                        </span>
+                        <span class="menu-item-price">${item.price}</span>
+                    </div>
+                    <p class="menu-item-desc">${item.desc}</p>
+                    ${item.spice > 0 ? `
+                    <div class="spice-level">
+                        <span class="spice-label">Spice:</span>
+                        ${spiceIcons}
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            return menuItem;
+        }
+        
+        // Setup event listeners
+        function setupEventListeners() {
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderMenu(btn.dataset.filter);
+                });
+            });
+        }
+        
+        // Initialize the menu
+        document.addEventListener('DOMContentLoaded', initMenu);
+    </script>
+</body>
+</html>
