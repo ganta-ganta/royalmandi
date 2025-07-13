@@ -1093,6 +1093,8 @@
                 <button class="filter-btn" data-filter="starters">Starters</button>
                 <button class="filter-btn" data-filter="rice">Rice</button>
                 <button class="filter-btn" data-filter="bread">Bread</button>
+                <button class="filter-btn" data-filter="desserts">desserts</button>
+                <button class="filter-btn" data-filter="drinks">drinks</button>
             </div>
             
             <!-- Menu Content Will Be Dynamically Inserted Here -->
@@ -3130,6 +3132,178 @@ Special Requests: ${booking.specialRequests || 'None'}
         spice: 0,
         special: false
     }
+     {
+            "name": "Tea (Bawarchi special)",
+            "price": "£2.00",
+            "desc": "Our signature blend of aromatic spices with premium tea leaves",
+            "image": "img/bawarchi-tea.jpg",
+            "category": "tea_coffee",
+            "spice": 0,
+            "special": true
+        },
+        {
+            "name": "Coffee",
+            "price": "£2.00",
+            "desc": "Rich South Indian filter coffee with frothy milk",
+            "image": "img/indian-coffee.jpg",
+            "category": "tea_coffee",
+            "spice": 0,
+            "special": false
+        },
+        {
+            "name": "Ice cream (all flavours)",
+            "price": "£3.49",
+            "desc": "Creamy homemade ice cream in vanilla, mango, pistachio & rose",
+            "image": "img/indian-icecream.jpg",
+            "category": "desserts",
+            "spice": 0,
+            "special": false
+        },
+        {
+            "name": "Gulab jamun (3 pcs)",
+            "price": "£3.49",
+            "desc": "Soft milk dumplings soaked in rose-scented sugar syrup",
+            "image": "img/gulab-jamun.jpg",
+            "category": "desserts",
+            "spice": 0,
+            "special": false
+        },
+        {
+            "name": "Double ka meeta",
+            "price": "£3.49",
+            "desc": "Traditional bread pudding with dry fruits in sweet milk sauce",
+            "image": "img/double-ka-meetha.jpg",
+            "category": "desserts",
+            "spice": 0,
+            "special": true
+        },
+        {
+            "name": "Gulab jamun with ice cream",
+            "price": "£4.49",
+            "desc": "Warm gulab jamun served with cold vanilla ice cream",
+            "image": "img/gulab-jamun-icecream.jpg",
+            "category": "desserts",
+            "spice": 0,
+            "special": true
+        },
+        {
+            "name": "Rasmalai (2 pcs)",
+            "price": "£3.99",
+            "desc": "Soft cottage cheese patties in sweetened, flavored milk",
+            "image": "img/rasmalai.jpg",
+            "category": "desserts",
+            "spice": 0,
+            "special": true
+        },
+        {
+            "name": "Soft drink cans",
+            "price": "£1.49",
+            "desc": "Assorted soft drinks (Coke, Pepsi, Sprite, Fanta)",
+            "image": "img/soft-drinks.jpg",
+            "category": "drinks",
+            "spice": 0,
+            "special": false
+        },
+        {
+            "name": "Water",
+            "price": "£1.49",
+            "desc": "Mineral water (500ml bottle)",
+            "image": "img/water-bottle.jpg",
+            "category": "drinks",
+            "spice": 0,
+            "special": false
+        },
+        {
+            "name": "Thums up",
+            "price": "£2.00",
+            "desc": "Popular Indian cola with strong fizzy flavor",
+            "image": "img/thums-up.jpg",
+            "category": "drinks",
+            "spice": 0,
+            "special": false
+        },
+        {
+            "name": "Limca",
+            "price": "£2.00",
+            "desc": "Refreshing lemon-lime flavored soda",
+            "image": "img/limca.jpg",
+            "category": "drinks",
+            "spice": 0,
+            "special": false
+        },
+        {
+            "name": "Goli soda (all flavours)",
+            "price": "£1.49",
+            "desc": "Traditional Indian carbonated drink in glass bottles",
+            "image": "img/goli-soda.jpg",
+            "category": "drinks",
+            "spice": 0,
+            "special": true
+        },
+        {
+            "name": "Schweppes Tonic water",
+            "price": "£1.49",
+            "desc": "Classic tonic water with quinine",
+            "image": "img/tonic-water.jpg",
+            "category": "drinks",
+            "spice": 0,
+            "special": false
+        },
+        {
+            "name": "Red bull energy drink",
+            "price": "£2.79",
+            "desc": "Energy drink to boost your vitality",
+            "image": "img/red-bull.jpg",
+            "category": "drinks",
+            "spice": 0,
+            "special": false
+        },
+        {
+            "name": "Mango lassi",
+            "price": "£3.49",
+            "desc": "Sweet yogurt drink with real mango pulp",
+            "image": "img/mango-lassi.jpg",
+            "category": "drinks",
+            "spice": 0,
+            "special": true
+        },
+        {
+            "name": "Sweet lassi",
+            "price": "£3.49",
+            "desc": "Traditional sweetened yogurt drink",
+            "image": "img/sweet-lassi.jpg",
+            "category": "drinks",
+            "spice": 0,
+            "special": false
+        },
+        {
+            "name": "Salt lassi",
+            "price": "£3.49",
+            "desc": "Refreshing salted yogurt drink with cumin",
+            "image": "img/salt-lassi.jpg",
+            "category": "drinks",
+            "spice": 1,
+            "special": false
+        },
+        {
+            "name": "Lemon juice salt (Fresh)",
+            "price": "£3.49",
+            "desc": "Freshly squeezed lemon with salt and spices",
+            "image": "img/salt-lemon.jpg",
+            "category": "drinks",
+            "spice": 1,
+            "special": false
+        },
+        {
+            "name": "Lemon juice sweet (Fresh)",
+            "price": "£3.49",
+            "desc": "Fresh lemonade with sugar and mint",
+            "image": "img/sweet-lemon.jpg",
+            "category": "drinks",
+            "spice": 0,
+            "special": false
+        }
+             
 ];
         // DOM Elements
         const menuContent = document.getElementById('menu-content');
@@ -3155,7 +3329,10 @@ Special Requests: ${booking.specialRequests || 'None'}
                     'starters': [],
                     'specials': [],
                     'rice': [],
-                    'bread': []
+                    'bread': [],
+                    'drinks': [],
+                    'desserts': []
+                    
                 };
                 
                 menuData.forEach(item => {
@@ -3229,6 +3406,14 @@ Special Requests: ${booking.specialRequests || 'None'}
                 case 'bread':
                     iconClass = 'fa-bread-slice';
                     categoryName = 'Breads';
+                    break;
+                case 'desserts':
+                    iconClass = 'fa-bread-slice';
+                    categoryName = 'desserts';
+                    break;
+                case 'drinks':
+                    iconClass = 'fa-bread-slice';
+                    categoryName = 'drinks';
                     break;
             }
             
