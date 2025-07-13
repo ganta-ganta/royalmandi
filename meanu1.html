@@ -19,13 +19,13 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 15px;
         }
         
         .section-title {
             text-align: center;
-            font-size: 2rem;
-            margin-bottom: 30px;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
             color: #b33c2e;
             position: relative;
         }
@@ -33,10 +33,10 @@
         .section-title:after {
             content: "";
             display: block;
-            width: 100px;
-            height: 4px;
+            width: 80px;
+            height: 3px;
             background: #e67e22;
-            margin: 15px auto;
+            margin: 10px auto;
         }
         
         /* Menu Filter */
@@ -44,17 +44,18 @@
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 30px;
+            gap: 8px;
+            margin-bottom: 20px;
         }
         
         .filter-btn {
-            padding: 8px 20px;
+            padding: 6px 15px;
             background: #fff;
             border: 2px solid #e67e22;
             color: #e67e22;
             border-radius: 30px;
             font-weight: 600;
+            font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -66,38 +67,38 @@
         
         /* Menu Categories */
         .menu-category {
-            font-size: 1.6rem;
-            margin: 40px 0 20px;
-            padding-bottom: 10px;
+            font-size: 1.4rem;
+            margin: 30px 0 15px;
+            padding-bottom: 8px;
             border-bottom: 2px dashed #e67e22;
             color: #b33c2e;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         
-        /* Menu Items Grid - Responsive 2-4 columns */
+        /* Menu Items Grid - Responsive 1-4 columns */
         .menu-items-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
         }
         
         .menu-item {
             background: #fff;
-            border-radius: 10px;
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
             transition: transform 0.3s ease;
         }
         
         .menu-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
         }
         
         .menu-item-img {
-            height: 200px;
+            height: 180px;
             overflow: hidden;
         }
         
@@ -113,104 +114,173 @@
         }
         
         .menu-item-content {
-            padding: 20px;
+            padding: 15px;
         }
         
         .menu-item-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
         
         .menu-item-name {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: #333;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
         
         .menu-item-price {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: #e67e22;
         }
         
         .menu-item-desc {
             color: #666;
-            margin-bottom: 15px;
-            font-size: 0.95rem;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            line-height: 1.4;
         }
         
         .spice-level {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
         
         .spice-label {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #666;
         }
         
         .spice-icon {
             color: #e74c3c;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         
         /* Icons */
         .non-veg-icon {
             color: #e74c3c;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         
         .veg-icon {
             color: #27ae60;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         
         .special-badge {
             background: #e67e22;
             color: white;
-            font-size: 0.7rem;
-            padding: 2px 8px;
-            border-radius: 10px;
-            margin-left: 8px;
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 8px;
+            margin-left: 6px;
         }
         
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .menu-items-container {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            }
-        }
-        
-        @media (max-width: 900px) {
+        /* Responsive Adjustments */
+        @media (max-width: 1024px) {
             .menu-items-container {
                 grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             }
         }
         
         @media (max-width: 768px) {
-            .menu-items-container {
-                grid-template-columns: repeat(2, 1fr);
+            .container {
+                padding: 10px;
             }
             
             .section-title {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
+                margin-bottom: 15px;
+            }
+            
+            .menu-filter {
+                gap: 6px;
+                margin-bottom: 15px;
+            }
+            
+            .filter-btn {
+                padding: 5px 12px;
+                font-size: 0.85rem;
+            }
+            
+            .menu-category {
+                font-size: 1.3rem;
+                margin: 25px 0 12px;
+            }
+            
+            .menu-items-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            
+            .menu-item-img {
+                height: 150px;
+            }
+            
+            .menu-item-content {
+                padding: 12px;
+            }
+            
+            .menu-item-name {
+                font-size: 1rem;
+            }
+            
+            .menu-item-price {
+                font-size: 1rem;
             }
         }
         
         @media (max-width: 480px) {
-            .menu-items-container {
-                grid-template-columns: 1fr;
+            .section-title {
+                font-size: 1.4rem;
             }
             
             .menu-filter {
-                flex-direction: column;
-                align-items: center;
+                flex-direction: row;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .menu-items-container {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .menu-item-img {
+                height: 160px;
+            }
+            
+            .menu-item-name, .menu-item-price {
+                font-size: 1.05rem;
+            }
+            
+            .menu-item-desc {
+                font-size: 0.88rem;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .container {
+                padding: 8px;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .filter-btn {
+                padding: 4px 10px;
+                font-size: 0.8rem;
+            }
+            
+            .menu-category {
+                font-size: 1.2rem;
             }
         }
     </style>
@@ -222,9 +292,9 @@
             <h2 class="section-title">Our Menu</h2>
             
             <div class="menu-filter">
-                <button class="filter-btn active" data-filter="all">All Items</button>
+                <button class="filter-btn active" data-filter="all">All</button>
                 <button class="filter-btn" data-filter="non-veg">Non-Veg</button>
-                <button class="filter-btn" data-filter="veg">Vegetarian</button>
+                <button class="filter-btn" data-filter="veg">Veg</button>
                 <button class="filter-btn" data-filter="rice">Rice</button>
                 <button class="filter-btn" data-filter="noodles">Noodles</button>
                 <button class="filter-btn" data-filter="bread">Bread</button>
@@ -237,342 +307,341 @@
 
     <script>
         // Menu Data
-        const menuData = [
-            // Non-Veg Items
-            {
-                name: "Butter Chicken Masala",
-                price: "6.50€",
-                desc: "Chicken cooked with onion, tomato, cashew",
-                image: "img/butter-chicken.jpg",
-                category: "non-veg",
-                spice: 1,
-                special: false
-            },
-            {
-                name: "Hyderabadi Chicken Masala",
-                price: "5.50€",
-                desc: "Chicken cooked with onion, tomato, spices",
-                image: "img/hyderabadi-chicken.jpg",
-                category: "non-veg",
-                spice: 2,
-                special: false
-            },
-            {
-                name: "Tikka Chicken Masala",
-                price: "6.50€",
-                desc: "Chicken tikka cooked with Indian spices",
-                image: "img/tikka-chicken.jpg",
-                category: "non-veg",
-                spice: 3,
-                special: true
-            },
-            {
-                name: "Gongura Chicken Curry",
-                price: "6.99€",
-                desc: "Chicken cooked with gongura leaves and spices",
-                image: "img/gongura-chicken.jpg",
-                category: "non-veg",
-                spice: 2,
-                special: false
-            },
-            {
-                name: "Chicken Kurma",
-                price: "6.50€",
-                desc: "Mild chicken curry with coconut and cashew",
-                image: "img/chicken-kurma.jpg",
-                category: "non-veg",
-                spice: 1,
-                special: false
-            },
-            {
-                name: "Palak Chicken Curry",
-                price: "6.99€",
-                desc: "Chicken cooked with spinach and spices",
-                image: "img/palak-chicken.jpg",
-                category: "non-veg",
-                spice: 1,
-                special: false
-            },
-            {
-                name: "Lamb Curry",
-                price: "7.50€",
-                desc: "Tender lamb pieces in rich curry sauce",
-                image: "img/lamb-curry.jpg",
-                category: "non-veg",
-                spice: 2,
-                special: false
-            },
-            {
-                name: "Lamb Rogan Josh",
-                price: "7.99€",
-                desc: "Aromatic lamb curry with Kashmiri spices",
-                image: "img/rogan-josh.jpg",
-                category: "non-veg",
-                spice: 3,
-                special: false
-            },
-            {
-                name: "Butter Lamb Masala",
-                price: "7.50€",
-                desc: "Lamb cooked in rich buttery tomato sauce",
-                image: "img/butter-lamb.jpg",
-                category: "non-veg",
-                spice: 2,
-                special: false
-            },
-            {
-                name: "Gongura Lamb Curry",
-                price: "7.99€",
-                desc: "Lamb cooked with gongura leaves and spices",
-                image: "img/gongura-lamb.jpg",
-                category: "non-veg",
-                spice: 3,
-                special: false
-            },
-            {
-                name: "Chittinod Lamb Curry",
-                price: "7.50€",
-                desc: "Special lamb curry with unique spices",
-                image: "img/chittinod-lamb.jpg",
-                category: "non-veg",
-                spice: 3,
-                special: false
-            },
-            {
-                name: "Prawns Curry",
-                price: "8.50€",
-                desc: "Fresh prawns in coconut based curry",
-                image: "img/prawns-curry.jpg",
-                category: "non-veg",
-                spice: 2,
-                special: false
-            },
-            {
-                name: "Gongura Prawns Curry",
-                price: "8.99€",
-                desc: "Prawns cooked with gongura leaves",
-                image: "img/gongura-prawns.jpg",
-                category: "non-veg",
-                spice: 3,
-                special: false
-            },
+const menuData = [
+    // Non-Veg Items
+    {
+        name: "Butter Chicken Masala",
+        price: "6.50€",
+        desc: "Chicken cooked with onion, tomato, cashew",
+        image: "img/butter-chicken.jpg",
+        category: "non-veg",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Hyderabadi Chicken Masala",
+        price: "5.50€",
+        desc: "Chicken cooked with onion, tomato, spices",
+        image: "img/hyderabadi-chicken.jpg",
+        category: "non-veg",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Tikka Chicken Masala",
+        price: "6.50€",
+        desc: "Chicken tikka cooked with Indian spices",
+        image: "img/tikka-chicken.jpg",
+        category: "non-veg",
+        spice: 3,
+        special: true
+    },
+    {
+        name: "Gongura Chicken Curry",
+        price: "6.99€",
+        desc: "Chicken cooked with gongura leaves and spices",
+        image: "img/gongura-chicken.jpg",
+        category: "non-veg",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Chicken Kurma",
+        price: "6.50€",
+        desc: "Mild chicken curry with coconut and cashew",
+        image: "img/chicken-kurma.jpg",
+        category: "non-veg",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Palak Chicken Curry",
+        price: "6.99€",
+        desc: "Chicken cooked with spinach and spices",
+        image: "img/palak-chicken.jpg",
+        category: "non-veg",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Lamb Curry",
+        price: "7.50€",
+        desc: "Tender lamb pieces in rich curry sauce",
+        image: "img/lamb-curry.jpg",
+        category: "non-veg",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Lamb Rogan Josh",
+        price: "7.99€",
+        desc: "Aromatic lamb curry with Kashmiri spices",
+        image: "img/rogan-josh.jpg",
+        category: "non-veg",
+        spice: 3,
+        special: false
+    },
+    {
+        name: "Butter Lamb Masala",
+        price: "7.50€",
+        desc: "Lamb cooked in rich buttery tomato sauce",
+        image: "img/butter-lamb.jpg",
+        category: "non-veg",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Gongura Lamb Curry",
+        price: "7.99€",
+        desc: "Lamb cooked with gongura leaves and spices",
+        image: "img/gongura-lamb.jpg",
+        category: "non-veg",
+        spice: 3,
+        special: false
+    },
+    {
+        name: "Chittinod Lamb Curry",
+        price: "7.50€",
+        desc: "Special lamb curry with unique spices",
+        image: "img/chittinod-lamb.jpg",
+        category: "non-veg",
+        spice: 3,
+        special: false
+    },
+    {
+        name: "Prawns Curry",
+        price: "8.50€",
+        desc: "Fresh prawns in coconut based curry",
+        image: "img/prawns-curry.jpg",
+        category: "non-veg",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Gongura Prawns Curry",
+        price: "8.99€",
+        desc: "Prawns cooked with gongura leaves",
+        image: "img/gongura-prawns.jpg",
+        category: "non-veg",
+        spice: 3,
+        special: false
+    },
 
-            // Veg Items
-            {
-                name: "Paneer Butter Masala",
-                price: "6.99€",
-                desc: "Cottage cheese in rich creamy tomato sauce",
-                image: "img/paneer-butter.jpg",
-                category: "veg",
-                spice: 1,
-                special: false
-            },
-            {
-                name: "Mixed Vegetable Curry",
-                price: "5.99€",
-                desc: "Seasonal vegetables in light curry sauce",
-                image: "img/mixed-veg.jpg",
-                category: "veg",
-                spice: 1,
-                special: false
-            },
-            {
-                name: "Bagora Baigan Masala",
-                price: "5.99€",
-                desc: "Eggplant cooked with special spices",
-                image: "img/baigan-masala.jpg",
-                category: "veg",
-                spice: 2,
-                special: false
-            },
-            {
-                name: "Rajma Curry",
-                price: "5.99€",
-                desc: "Kidney beans in thick gravy",
-                image: "img/rajma-curry.jpg",
-                category: "veg",
-                spice: 2,
-                special: false
-            },
-            {
-                name: "Dal Curry",
-                price: "5.50€",
-                desc: "Traditional lentil curry",
-                image: "img/dal-curry.jpg",
-                category: "veg",
-                spice: 1,
-                special: false
-            },
-            {
-                name: "Tamota Dal",
-                price: "5.99€",
-                desc: "Lentils cooked with tomatoes",
-                image: "img/tamota-dal.jpg",
-                category: "veg",
-                spice: 1,
-                special: false
-            },
+    // Veg Items
+    {
+        name: "Paneer Butter Masala",
+        price: "6.99€",
+        desc: "Cottage cheese in rich creamy tomato sauce",
+        image: "img/paneer-butter.jpg",
+        category: "veg",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Mixed Vegetable Curry",
+        price: "5.99€",
+        desc: "Seasonal vegetables in light curry sauce",
+        image: "img/mixed-veg.jpg",
+        category: "veg",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Bagora Baigan Masala",
+        price: "5.99€",
+        desc: "Eggplant cooked with special spices",
+        image: "img/baigan-masala.jpg",
+        category: "veg",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Rajma Curry",
+        price: "5.99€",
+        desc: "Kidney beans in thick gravy",
+        image: "img/rajma-curry.jpg",
+        category: "veg",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Dal Curry",
+        price: "5.50€",
+        desc: "Traditional lentil curry",
+        image: "img/dal-curry.jpg",
+        category: "veg",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Tamota Dal",
+        price: "5.99€",
+        desc: "Lentils cooked with tomatoes",
+        image: "img/tamota-dal.jpg",
+        category: "veg",
+        spice: 1,
+        special: false
+    },
 
-            // Rice Items
-            {
-                name: "Plain White Rice",
-                price: "2.99€",
-                desc: "Steamed basmati rice",
-                image: "img/white-rice.jpg",
-                category: "rice",
-                spice: 0,
-                special: false
-            },
-            {
-                name: "Plain Biryani Rice",
-                price: "3.50€",
-                desc: "Fragrant basmati rice cooked with whole spices",
-                image: "img/biryani-rice.jpg",
-                category: "rice",
-                spice: 0,
-                special: false
-            },
-            {
-                name: "Bagora Rice",
-                price: "3.50€",
-                desc: "Rice cooked with special spices",
-                image: "img/bagora-rice.jpg",
-                category: "rice",
-                spice: 1,
-                special: false
-            },
-            {
-                name: "Jira Rice",
-                price: "3.50€",
-                desc: "Cumin flavored rice",
-                image: "img/jira-rice.jpg",
-                category: "rice",
-                spice: 0,
-                special: false
-            },
-            {
-                name: "Veg Fried Rice",
-                price: "3.50€",
-                desc: "Rice stir-fried with vegetables",
-                image: "img/veg-fried-rice.jpg",
-                category: "rice",
-                spice: 1,
-                special: false
-            },
-            {
-                name: "Gobi Fried Rice",
-                price: "3.99€",
-                desc: "Rice stir-fried with cauliflower",
-                image: "img/gobi-fried-rice.jpg",
-                category: "rice",
-                spice: 1,
-                special: false
-            },
-            {
-                name: "Paneer Fried Rice",
-                price: "4.50€",
-                desc: "Rice stir-fried with paneer",
-                image: "img/paneer-fried-rice.jpg",
-                category: "rice",
-                spice: 1,
-                special: false
-            },
-            {
-                name: "Egg Fried Rice",
-                price: "3.50€",
-                desc: "Rice stir-fried with egg",
-                image: "img/egg-fried-rice.jpg",
-                category: "rice",
-                spice: 1,
-                special: false
-            },
-            {
-                name: "Chicken Fried Rice",
-                price: "4.50€",
-                desc: "Rice stir-fried with chicken",
-                image: "img/chicken-fried-rice.jpg",
-                category: "rice",
-                spice: 1,
-                special: false
-            },
+    // Rice Items
+    {
+        name: "Plain White Rice",
+        price: "2.99€",
+        desc: "Steamed basmati rice",
+        image: "img/white-rice.jpg",
+        category: "rice",
+        spice: 0,
+        special: false
+    },
+    {
+        name: "Plain Biryani Rice",
+        price: "3.50€",
+        desc: "Fragrant basmati rice cooked with whole spices",
+        image: "img/biryani-rice.jpg",
+        category: "rice",
+        spice: 0,
+        special: false
+    },
+    {
+        name: "Bagora Rice",
+        price: "3.50€",
+        desc: "Rice cooked with special spices",
+        image: "img/bagora-rice.jpg",
+        category: "rice",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Jira Rice",
+        price: "3.50€",
+        desc: "Cumin flavored rice",
+        image: "img/jira-rice.jpg",
+        category: "rice",
+        spice: 0,
+        special: false
+    },
+    {
+        name: "Veg Fried Rice",
+        price: "3.50€",
+        desc: "Rice stir-fried with vegetables",
+        image: "img/veg-fried-rice.jpg",
+        category: "rice",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Gobi Fried Rice",
+        price: "3.99€",
+        desc: "Rice stir-fried with cauliflower",
+        image: "img/gobi-fried-rice.jpg",
+        category: "rice",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Paneer Fried Rice",
+        price: "4.50€",
+        desc: "Rice stir-fried with paneer",
+        image: "img/paneer-fried-rice.jpg",
+        category: "rice",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Egg Fried Rice",
+        price: "3.50€",
+        desc: "Rice stir-fried with egg",
+        image: "img/egg-fried-rice.jpg",
+        category: "rice",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Chicken Fried Rice",
+        price: "4.50€",
+        desc: "Rice stir-fried with chicken",
+        image: "img/chicken-fried-rice.jpg",
+        category: "rice",
+        spice: 1,
+        special: false
+    },
 
-            // Noodles Items
-            {
-                name: "Veg Noodles",
-                price: "3.99€",
-                desc: "Noodles with mixed vegetables",
-                image: "img/veg-noodles.jpg",
-                category: "noodles",
-                spice: 1,
-                special: false
-            },
-            {
-                name: "Gobi Noodles",
-                price: "4.50€",
-                desc: "Noodles with cauliflower",
-                image: "img/gobi-noodles.jpg",
-                category: "noodles",
-                spice: 1,
-                special: false
-            },
-            {
-                name: "Paneer Noodles",
-                price: "4.50€",
-                desc: "Noodles with paneer pieces",
-                image: "img/paneer-noodles.jpg",
-                category: "noodles",
-                spice: 1,
-                special: false
-            },
-            {
-                name: "Egg Fried Noodles",
-                price: "3.50€",
-                desc: "Noodles with egg",
-                image: "img/egg-noodles.jpg",
-                category: "noodles",
-                spice: 1,
-                special: false
-            },
-            {
-                name: "Chicken Fried Noodles",
-                price: "4.50€",
-                desc: "Noodles with chicken pieces",
-                image: "img/chicken-noodles.jpg",
-                category: "noodles",
-                spice: 1,
-                special: false
-            },
+    // Noodles Items
+    {
+        name: "Veg Noodles",
+        price: "3.99€",
+        desc: "Noodles with mixed vegetables",
+        image: "img/veg-noodles.jpg",
+        category: "noodles",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Gobi Noodles",
+        price: "4.50€",
+        desc: "Noodles with cauliflower",
+        image: "img/gobi-noodles.jpg",
+        category: "noodles",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Paneer Noodles",
+        price: "4.50€",
+        desc: "Noodles with paneer pieces",
+        image: "img/paneer-noodles.jpg",
+        category: "noodles",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Egg Fried Noodles",
+        price: "3.50€",
+        desc: "Noodles with egg",
+        image: "img/egg-noodles.jpg",
+        category: "noodles",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Chicken Fried Noodles",
+        price: "4.50€",
+        desc: "Noodles with chicken pieces",
+        image: "img/chicken-noodles.jpg",
+        category: "noodles",
+        spice: 1,
+        special: false
+    },
 
-            // Bread Items
-            {
-                name: "Plain Nan",
-                price: "0.99€",
-                desc: "Traditional tandoori bread",
-                image: "img/plain-nan.jpg",
-                category: "bread",
-                spice: 0,
-                special: false
-            },
-            {
-                name: "Garlic Nan",
-                price: "1.50€",
-                desc: "Tandoori bread with garlic butter",
-                image: "img/garlic-nan.jpg",
-                category: "bread",
-                spice: 0,
-                special: false
-            },
-            {
-                name: "Butter Nan",
-                price: "1.50€",
-                desc: "Tandoori bread with butter",
-                image: "img/butter-nan.jpg",
-                category: "bread",
-                spice: 0,
-                special: false
-            }
-        ];
-
+    // Bread Items
+    {
+        name: "Plain Nan",
+        price: "0.99€",
+        desc: "Traditional tandoori bread",
+        image: "img/plain-nan.jpg",
+        category: "bread",
+        spice: 0,
+        special: false
+    },
+    {
+        name: "Garlic Nan",
+        price: "1.50€",
+        desc: "Tandoori bread with garlic butter",
+        image: "img/garlic-nan.jpg",
+        category: "bread",
+        spice: 0,
+        special: false
+    },
+    {
+        name: "Butter Nan",
+        price: "1.50€",
+        desc: "Tandoori bread with butter",
+        image: "img/butter-nan.jpg",
+        category: "bread",
+        spice: 0,
+        special: false
+    }
+];
         // DOM Elements
         const menuContent = document.getElementById('menu-content');
         const filterButtons = document.querySelectorAll('.filter-btn');
@@ -616,7 +685,7 @@
                 } else {
                     // Show empty state
                     menuContent.innerHTML = `
-                        <div class="empty-state">
+                        <div style="text-align: center; padding: 30px; color: #666;">
                             <p>No items found in this category</p>
                         </div>
                     `;
