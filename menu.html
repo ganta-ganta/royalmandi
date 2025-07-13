@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Royal Mandi Menu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9f5f0;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #b33c2e;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: "";
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: #e67e22;
+            margin: 10px auto;
+        }
+        
+        /* Menu Filter */
+        .menu-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .filter-btn {
+            padding: 6px 15px;
+            background: #fff;
+            border: 2px solid #e67e22;
+            color: #e67e22;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: #e67e22;
+            color: #fff;
+        }
+        
+        /* Menu Categories */
+        .menu-category {
+            font-size: 1.4rem;
+            margin: 30px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px dashed #e67e22;
+            color: #b33c2e;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Menu Items Grid - Responsive 1-4 columns */
+        .menu-items-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .menu-item {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-3px);
+        }
+        
+        .menu-item-img {
+            height: 180px;
+            overflow: hidden;
+        }
+        
+        .menu-item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .menu-item:hover .menu-item-img img {
+            transform: scale(1.05);
+        }
+        
+        .menu-item-content {
+            padding: 15px;
+        }
+        
+        .menu-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .menu-item-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .menu-item-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #e67e22;
+        }
+        
+        .menu-item-desc {
+            color: #666;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .spice-level {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .spice-label {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .spice-icon {
+            color: #e74c3c;
+            font-size: 0.85rem;
+        }
+        
+        /* Icons */
+        .non-veg-icon {
+            color: #e74c3c;
+            font-size: 0.85rem;
+        }
+        
+        .veg-icon {
+            color: #27ae60;
+            font-size: 0.85rem;
+        }
+        
+        .special-badge {
+            background: #e67e22;
+            color: white;
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 8px;
+            margin-left: 6px;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 1024px) {
+            .menu-items-container {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+                margin-bottom: 15px;
+            }
+            
+            .menu-filter {
+                gap: 6px;
+                margin-bottom: 15px;
+            }
+            
+            .filter-btn {
+                padding: 5px 12px;
+                font-size: 0.85rem;
+            }
+            
+            .menu-category {
+                font-size: 1.3rem;
+                margin: 25px 0 12px;
+            }
+            
+            .menu-items-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            
+            .menu-item-img {
+                height: 150px;
+            }
+            
+            .menu-item-content {
+                padding: 12px;
+            }
+            
+            .menu-item-name {
+                font-size: 1rem;
+            }
+            
+            .menu-item-price {
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .section-title {
+                font-size: 1.4rem;
+            }
+            
+            .menu-filter {
+                flex-direction: row;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .menu-items-container {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .menu-item-img {
+                height: 160px;
+            }
+            
+            .menu-item-name, .menu-item-price {
+                font-size: 1.05rem;
+            }
+            
+            .menu-item-desc {
+                font-size: 0.88rem;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .container {
+                padding: 8px;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .filter-btn {
+                padding: 4px 10px;
+                font-size: 0.8rem;
+            }
+            
+            .menu-category {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Menu Section -->
+    <section id="menu" class="section">
+        <div class="container">
+            <h2 class="section-title">Our Menu</h2>
+            
+            <div class="menu-filter">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="non-veg">Non-Veg</button>
+                <button class="filter-btn" data-filter="veg">Veg</button>
+                <button class="filter-btn" data-filter="mandi">Mandi</button>
+                <button class="filter-btn" data-filter="biryani">Biryani</button>
+                <button class="filter-btn" data-filter="starters">Starters</button>
+                <button class="filter-btn" data-filter="rice">Rice</button>
+                <button class="filter-btn" data-filter="bread">Bread</button>
+            </div>
+            
+            <!-- Menu Content Will Be Dynamically Inserted Here -->
+            <div id="menu-content"></div>
+        </div>
+    </section>
+
+    <script>
+        const menuData = [
+    // Mandi Dishes
+    {
+        name: "Chicken Mandi",
+        price: "7.99€",
+        desc: "Basmati rice cooked with Indian aromatic spices, served with dry fruits",
+        image: "img/chicken-mandi.jpg",
+        category: "mandi",
+        spice: 2,
+        special: false,
+        options: [
+            { portion: "1 person", price: "7.99€" },
+            { portion: "2 persons", price: "14.99€" }
+        ]
+    },
+    {
+        name: "Tandoori Chicken Mandi",
+        price: "8.99€",
+        desc: "Basmati rice with tandoori chicken and aromatic spices",
+        image: "img/tandoori-mandi.jpg",
+        category: "mandi",
+        spice: 3,
+        special: true,
+        options: [
+            { portion: "1 person", price: "8.99€" },
+            { portion: "2 persons", price: "16.99€" }
+        ]
+    },
+    {
+        name: "Chicken Juicy Mandi",
+        price: "9.99€",
+        desc: "Juicy chicken with aromatic mandi rice",
+        image: "img/juicy-mandi.jpg",
+        category: "mandi",
+        spice: 2,
+        special: true,
+        options: [
+            { portion: "1 person", price: "9.99€" },
+            { portion: "2 persons", price: "18.99€" }
+        ]
+    },
+    {
+        name: "Whole Mix Chicken Family Mandi",
+        price: "35.99€",
+        desc: "Family portion of mixed chicken mandi",
+        image: "img/family-mandi.jpg",
+        category: "mandi",
+        spice: 2,
+        special: true,
+        options: [
+            { portion: "4 persons", price: "35.99€" }
+        ]
+    },
+    {
+        name: "Lamb Mandi",
+        price: "10.99€",
+        desc: "Tender lamb with aromatic mandi rice",
+        image: "img/lamb-mandi.jpg",
+        category: "mandi",
+        spice: 2,
+        special: false,
+        options: [
+            { portion: "1 person", price: "10.99€" },
+            { portion: "2 persons", price: "20.99€" }
+        ]
+    },
+    {
+        name: "Fish Mandi",
+        price: "8.99€",
+        desc: "Fresh fish with mandi rice and spices",
+        image: "img/fish-mandi.jpg",
+        category: "mandi",
+        spice: 2,
+        special: false,
+        options: [
+            { portion: "1 person", price: "8.99€" },
+            { portion: "2 persons", price: "16.99€" }
+        ]
+    },
+    {
+        name: "Veg Mandi",
+        price: "6.99€",
+        desc: "Vegetarian version with mixed vegetables",
+        image: "img/veg-mandi.jpg",
+        category: "mandi",
+        spice: 1,
+        special: false,
+        options: [
+            { portion: "1 person", price: "6.99€" },
+            { portion: "2 persons", price: "12.99€" }
+        ]
+    },
+
+    // Biryani
+    {
+        name: "Chicken Dum Biryani",
+        price: "4.50€",
+        desc: "Chicken mixed with yogurt, Indian spices, mint, onion & garlic mixed with basmati rice",
+        image: "img/chicken-biryani.jpg",
+        category: "biryani",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Chicken Fry Piece Biryani",
+        price: "5.99€",
+        desc: "Basmati biryani rice, with chicken spicy fry",
+        image: "img/fry-biryani.jpg",
+        category: "biryani",
+        spice: 3,
+        special: false
+    },
+    {
+        name: "Chicken Pot Biryani",
+        price: "8.50€",
+        desc: "Chicken biryani cooked with pot",
+        image: "img/pot-biryani.jpg",
+        category: "biryani",
+        spice: 2,
+        special: true
+    },
+    {
+        name: "Chicken 65 Biryani",
+        price: "5.99€",
+        desc: "Chicken biryani rice with chicken 65",
+        image: "img/chicken65-biryani.jpg",
+        category: "biryani",
+        spice: 3,
+        special: false
+    },
+    {
+        name: "Chicken Tikka Biryani",
+        price: "6.99€",
+        desc: "Biryani rice with chicken tikka",
+        image: "img/tikka-biryani.jpg",
+        category: "biryani",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Restaurant Special Chicken Biryani",
+        price: "7.50€",
+        desc: "Special chicken biryani with chef's secret recipe",
+        image: "img/special-biryani.jpg",
+        category: "biryani",
+        spice: 2,
+        special: true
+    },
+    {
+        name: "Lamb Dum Biryani",
+        price: "6.50€",
+        desc: "Lamb mixed with yogurt, Indian spices, and garlic with basmati rice",
+        image: "img/lamb-biryani.jpg",
+        category: "biryani",
+        spice: 3,
+        special: false
+    },
+    {
+        name: "Lamb Pot Biryani",
+        price: "9.99€",
+        desc: "Lamb biryani cooked with pot",
+        image: "img/lamb-pot-biryani.jpg",
+        category: "biryani",
+        spice: 3,
+        special: true
+    },
+    {
+        name: "Lamb Fry Piece Biryani",
+        price: "7.50€",
+        desc: "Biryani rice with lamb special fry",
+        image: "img/lamb-fry-biryani.jpg",
+        category: "biryani",
+        spice: 3,
+        special: false
+    },
+    {
+        name: "Nihari Lamb Biryani",
+        price: "9.50€",
+        desc: "Biryani with lamb shank special fry",
+        image: "img/nihari-biryani.jpg",
+        category: "biryani",
+        spice: 3,
+        special: true
+    },
+    {
+        name: "Restaurant Special Lamb Biryani",
+        price: "9.50€",
+        desc: "Special lamb biryani with chef's secret recipe",
+        image: "img/special-lamb-biryani.jpg",
+        category: "biryani",
+        spice: 3,
+        special: true
+    },
+    {
+        name: "Prawns Dum Biryani",
+        price: "6.99€",
+        desc: "Fresh prawns cooked with aromatic spices and rice",
+        image: "img/prawn-biryani.jpg",
+        category: "biryani",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Prawns Pot Biryani",
+        price: "9.50€",
+        desc: "Prawn biryani cooked with pot",
+        image: "img/prawn-pot-biryani.jpg",
+        category: "biryani",
+        spice: 2,
+        special: true
+    },
+    {
+        name: "Prawns Fry Piece Biryani",
+        price: "7.50€",
+        desc: "Biryani rice with fried prawns",
+        image: "img/prawn-fry-biryani.jpg",
+        category: "biryani",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Fish Fry Piece Biryani",
+        price: "8.50€",
+        desc: "Biryani rice with fried fish pieces",
+        image: "img/fish-fry-biryani.jpg",
+        category: "biryani",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Gongura Chicken Biryani",
+        price: "7.50€",
+        desc: "Chicken biryani with gongura leaves",
+        image: "img/gongura-chicken-biryani.jpg",
+        category: "biryani",
+        spice: 3,
+        special: true
+    },
+    {
+        name: "Gongura Lamb Biryani",
+        price: "8.99€",
+        desc: "Lamb biryani with gongura leaves",
+        image: "img/gongura-lamb-biryani.jpg",
+        category: "biryani",
+        spice: 3,
+        special: true
+    },
+    {
+        name: "Gongura Prawns Biryani",
+        price: "8.99€",
+        desc: "Prawn biryani with gongura leaves",
+        image: "img/gongura-prawn-biryani.jpg",
+        category: "biryani",
+        spice: 3,
+        special: true
+    },
+    {
+        name: "Vegetable Biryani",
+        price: "5.99€",
+        desc: "Mixed vegetables with fragrant basmati rice",
+        image: "img/vegetable-biryani.jpg",
+        category: "biryani",
+        spice: 1,
+        special: false
+    },
+
+    // Non-Veg Main
+    {
+        name: "Butter Chicken Masala",
+        price: "6.50€",
+        desc: "Chicken cooked with onion, tomato, cashew",
+        image: "img/butter-chicken.jpg",
+        category: "non-veg",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Hyderabadi Chicken Masala",
+        price: "5.50€",
+        desc: "Chicken cooked with onion, tomato, spices",
+        image: "img/hyderabadi-chicken.jpg",
+        category: "non-veg",
+        spice: 3,
+        special: false
+    },
+    {
+        name: "Tikka Chicken Masala",
+        price: "6.50€",
+        desc: "Chicken tikka boiled cooked with Indian spicy",
+        image: "img/tikka-chicken.jpg",
+        category: "non-veg",
+        spice: 2,
+        special: true
+    },
+    {
+        name: "Gongura Chicken Curry",
+        price: "6.99€",
+        desc: "Chicken cooked with gongura leaves and spices",
+        image: "img/gongura-chicken.jpg",
+        category: "non-veg",
+        spice: 3,
+        special: true
+    },
+    {
+        name: "Chicken Kurma",
+        price: "6.50€",
+        desc: "Mild chicken curry with cashew paste",
+        image: "img/chicken-kurma.jpg",
+        category: "non-veg",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Palak Chicken Curry",
+        price: "6.99€",
+        desc: "Chicken cooked with spinach and spices",
+        image: "img/palak-chicken.jpg",
+        category: "non-veg",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Lamb Curry",
+        price: "7.50€",
+        desc: "Traditional lamb curry with spices",
+        image: "img/lamb-curry.jpg",
+        category: "non-veg",
+        spice: 3,
+        special: false
+    },
+    {
+        name: "Lamb Rogan Josh",
+        price: "7.99€",
+        desc: "Aromatic lamb curry with Kashmiri spices",
+        image: "img/rogan-josh.jpg",
+        category: "non-veg",
+        spice: 3,
+        special: false
+    },
+    {
+        name: "Butter Lamb Masala",
+        price: "7.50€",
+        desc: "Lamb cooked in rich tomato and butter sauce",
+        image: "img/butter-lamb.jpg",
+        category: "non-veg",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Gongura Lamb Curry",
+        price: "7.99€",
+        desc: "Lamb cooked with gongura leaves and spices",
+        image: "img/gongura-lamb.jpg",
+        category: "non-veg",
+        spice: 3,
+        special: true
+    },
+    {
+        name: "Chittinod Lamb Curry",
+        price: "7.50€",
+        desc: "Lamb curry with special Chittinod spices",
+        image: "img/chittinod-lamb.jpg",
+        category: "non-veg",
+        spice: 3,
+        special: true
+    },
+    {
+        name: "Prawns Curry",
+        price: "8.50€",
+        desc: "Prawns cooked in coconut based curry",
+        image: "img/prawns-curry.jpg",
+        category: "non-veg",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Gongura Prawns Curry",
+        price: "8.99€",
+        desc: "Prawns cooked with gongura leaves and spices",
+        image: "img/gongura-prawns.jpg",
+        category: "non-veg",
+        spice: 3,
+        special: true
+    },
+
+    // Veg Main
+    {
+        name: "Paneer Butter Masala",
+        price: "6.99€",
+        desc: "Cottage cheese in rich creamy tomato sauce",
+        image: "img/paneer-butter.jpg",
+        category: "veg",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Mixed Vegetable Curry",
+        price: "5.99€",
+        desc: "Assorted vegetables cooked in mild spices",
+        image: "img/mixed-veg.jpg",
+        category: "veg",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Bagora Baigan Masala",
+        price: "5.99€",
+        desc: "Eggplant cooked in special Bagora style",
+        image: "img/baigan-masala.jpg",
+        category: "veg",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Rajma Curry",
+        price: "5.99€",
+        desc: "Kidney beans cooked in onion-tomato gravy",
+        image: "img/rajma-curry.jpg",
+        category: "veg",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Dal Curry",
+        price: "5.50€",
+        desc: "Yellow lentils tempered with spices",
+        image: "img/dal-curry.jpg",
+        category: "veg",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Tamota Dal",
+        price: "5.99€",
+        desc: "Lentils cooked with tomatoes and spices",
+        image: "img/tamota-dal.jpg",
+        category: "veg",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Dal Makhani",
+        price: "5.50€",
+        desc: "Creamy black lentils cooked with butter",
+        image: "img/dal-makhani.jpg",
+        category: "veg",
+        spice: 1,
+        special: false
+    },
+
+    // Veg Starters
+    {
+        name: "Paneer Manchuria",
+        price: "5.99€",
+        desc: "Marinated paneer, onion, chillies, curry leaves, sauces & spices",
+        image: "img/paneer-manchuria.jpg",
+        category: "starters",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Chilli Paneer",
+        price: "5.99€",
+        desc: "Marinated paneer, bell pepper, onion, sauces & spices",
+        image: "img/chilli-paneer.jpg",
+        category: "starters",
+        spice: 3,
+        special: false
+    },
+    {
+        name: "Paneer Pepper Roast",
+        price: "5.99€",
+        desc: "Paneer mixed with onion, leaves, chillies, pepper & spices",
+        image: "img/paneer-pepper.jpg",
+        category: "starters",
+        spice: 3,
+        special: false
+    },
+    {
+        name: "Paneer 65 Dry",
+        price: "5.50€",
+        desc: "Marinated paneer with oil deep fry",
+        image: "img/paneer-65.jpg",
+        category: "starters",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Paneer Tikka",
+        price: "6.99€",
+        desc: "Marinated paneer with tandoori steam",
+        image: "img/paneer-tikka.jpg",
+        category: "starters",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Veg Manchuria",
+        price: "4.99€",
+        desc: "Carrot, cabbage, cauliflower, mixed with spices",
+        image: "img/veg-manchuria.jpg",
+        category: "starters",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Gobi Manchuria",
+        price: "5.50€",
+        desc: "Cauliflower mixed with cornflour, toss with sauces & spices",
+        image: "img/gobi-manchuria.jpg",
+        category: "starters",
+        spice: 3,
+        special: false
+    },
+    {
+        name: "Gobi 65 Dry",
+        price: "5.50€",
+        desc: "Marinated cauliflower mixed with cornflour, crispy deep fry",
+        image: "img/gobi-65.jpg",
+        category: "starters",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Spicy Gobi Roast",
+        price: "5.99€",
+        desc: "Marinated cauliflower, toss with chilli paste & Indian spices",
+        image: "img/spicy-gobi.jpg",
+        category: "starters",
+        spice: 3,
+        special: false
+    },
+    {
+        name: "Hariyali Mushroom Roast",
+        price: "5.50€",
+        desc: "Mushroom with chillies, onion, curry leaves and spices",
+        image: "img/hariyali-mushroom.jpg",
+        category: "starters",
+        spice: 2,
+        special: false
+    },
+
+    // Non-Veg Starters
+    {
+        name: "Kodi Vepudu / Chicken Roast",
+        price: "6.50€",
+        desc: "Onions, chili, chicken, Indian spices",
+        image: "img/chicken-roast.jpg",
+        category: "starters",
+        spice: 3,
+        special: false
+    },
+    {
+        name: "Chicken 65",
+        price: "5.99€",
+        desc: "Marinated chicken, deep fry oil, garlic ginger, yogurt",
+        image: "img/chicken-65.jpg",
+        category: "starters",
+        spice: 3,
+        special: false
+    },
+    {
+        name: "Chicken Manchurian",
+        price: "5.99€",
+        desc: "Marinated chicken, tossed with sauces",
+        image: "img/chicken-manchurian.jpg",
+        category: "starters",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Chilli Chicken",
+        price: "5.99€",
+        desc: "Marinated chicken, onion, chili, mixed with sauces",
+        image: "img/chilli-chicken.jpg",
+        category: "starters",
+        spice: 3,
+        special: false
+    },
+    {
+        name: "Pepper Chicken",
+        price: "6.50€",
+        desc: "Chicken with pepper, onion, Indian spices",
+        image: "img/pepper-chicken.jpg",
+        category: "starters",
+        spice: 3,
+        special: false
+    },
+    {
+        name: "Chicken 555",
+        price: "6.99€",
+        desc: "Marinated sliced chicken, onion, chili, mixed with Indian spices",
+        image: "img/chicken-555.jpg",
+        category: "starters",
+        spice: 3,
+        special: false
+    },
+    {
+        name: "Guntur Chicken",
+        price: "6.50€",
+        desc: "Boiled chicken with Indian aromatic spices",
+        image: "img/guntur-chicken.jpg",
+        category: "starters",
+        spice: 4,
+        special: false
+    },
+    {
+        name: "Andra Style Chilli Chicken",
+        price: "6.99€",
+        desc: "Boiled chicken with chili paste, curry leaves, spices",
+        image: "img/andra-chilli-chicken.jpg",
+        category: "starters",
+        spice: 4,
+        special: false
+    },
+    {
+        name: "Chicken Lollypops",
+        price: "6.99€",
+        desc: "Marinated lollipops mixed with sauces",
+        image: "img/chicken-lollypop.jpg",
+        category: "starters",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Lamb Ghee Roast",
+        price: "8.50€",
+        desc: "Lamb with deep ghee roast, garlic, ginger, spicy",
+        image: "img/lamb-ghee.jpg",
+        category: "starters",
+        spice: 3,
+        special: true
+    },
+    {
+        name: "Lamb Pepper Fry Roast",
+        price: "8.50€",
+        desc: "Lamb deep roast with pepper & spices",
+        image: "img/lamb-pepper.jpg",
+        category: "starters",
+        spice: 3,
+        special: true
+    },
+    {
+        name: "Chilli Lamb Roast",
+        price: "8.50€",
+        desc: "Lamb with chillis, onion, with spices",
+        image: "img/chilli-lamb.jpg",
+        category: "starters",
+        spice: 3,
+        special: true
+    },
+    {
+        name: "Lamb Sukka",
+        price: "8.50€",
+        desc: "Lamb with aromatic spices",
+        image: "img/lamb-sukka.jpg",
+        category: "starters",
+        spice: 3,
+        special: true
+    },
+    {
+        name: "Chicken Liver Fry",
+        price: "5.99€",
+        desc: "Chicken liver fry with onion & chilly with spices",
+        image: "img/chicken-liver.jpg",
+        category: "starters",
+        spice: 3,
+        special: true
+    },
+    {
+        name: "Lamb Liver Fry",
+        price: "6.99€",
+        desc: "Lamb liver fry with onions and spices",
+        image: "img/lamb-liver.jpg",
+        category: "starters",
+        spice: 3,
+        special: true
+    },
+    {
+        name: "Lamb Brain Fry / Bega Fry",
+        price: "7.50€",
+        desc: "Fried lamb brain with spices",
+        image: "img/lamb-brain.jpg",
+        category: "starters",
+        spice: 2,
+        special: true
+    },
+
+    // Seafood Starters
+    {
+        name: "Apolo Fish",
+        price: "8.50€",
+        desc: "Marinated fish with deep fry toss with sauces",
+        image: "img/apolo-fish.jpg",
+        category: "starters",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Fish Tawa Fry",
+        price: "8.50€",
+        desc: "Marinated fish, yogurt, ginger garlic, spices",
+        image: "img/fish-tawa.jpg",
+        category: "starters",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Fish Deep Fry",
+        price: "8.50€",
+        desc: "Marinated fish with oil deep fry",
+        image: "img/fish-deep-fry.jpg",
+        category: "starters",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Hoigeli Fish Roast",
+        price: "8.99€",
+        desc: "Fish with green chilli paste & masala",
+        image: "img/hoigeli-fish.jpg",
+        category: "starters",
+        spice: 3,
+        special: true
+    },
+    {
+        name: "Prawn Majestic",
+        price: "8.99€",
+        desc: "Marinated prawns with garlic, ginger, spicy, yogurt",
+        image: "img/prawn-majestic.jpg",
+        category: "starters",
+        spice: 2,
+        special: true
+    },
+    {
+        name: "Chilli Prawns",
+        price: "8.99€",
+        desc: "Bell pepper, onion, yogurt, saucy",
+        image: "img/chilli-prawn.jpg",
+        category: "starters",
+        spice: 3,
+        special: false
+    },
+    {
+        name: "Prawns Manchuria",
+        price: "8.99€",
+        desc: "Onion, chilli, curry leaves, garlic, saucy",
+        image: "img/prawn-manchuria.jpg",
+        category: "starters",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Prawn 65 Dry",
+        price: "8.99€",
+        desc: "Marinated prawns deep fried with spices",
+        image: "img/prawn-65.jpg",
+        category: "starters",
+        spice: 2,
+        special: false
+    },
+
+    // Tandoori & Grill
+    {
+        name: "Tandoori Chicken",
+        price: "7.99€",
+        desc: "Chicken, yogurt, Indian spices",
+        image: "img/tandoori-chicken.jpg",
+        category: "starters",
+        spice: 2,
+        special: false
+    },
+
+    // Specials
+    {
+        name: "Paya with Parota",
+        price: "9.99€",
+        desc: "Lamb leg with onion paste & garlic paste with spices pulusu",
+        image: "img/paya-parota.jpg",
+        category: "specials",
+        spice: 3,
+        special: true
+    },
+    {
+        name: "Natu Kodi with Ragi Sangati",
+        price: "9.99€",
+        desc: "Country chicken with coconut powder, ginger, garlic paste with special masala",
+        image: "img/natu-kodi.jpg",
+        category: "specials",
+        spice: 3,
+        special: true
+    },
+    {
+        name: "Natu Kodi Fry Biryani",
+        price: "8.99€",
+        desc: "Flavored biryani rice with country chicken fry with tamarind masala",
+        image: "img/natu-biryani.jpg",
+        category: "specials",
+        spice: 3,
+        special: true
+    },
+    {
+        name: "Nellore Chepala Pulusu with White Rice",
+        price: "9.99€",
+        desc: "Fish with tamarind juice mixed with masalas with basmati rice",
+        image: "img/nellore-fish.jpg",
+        category: "specials",
+        spice: 3,
+        special: true
+    },
+    {
+        name: "Gongura Chicken",
+        price: "7.50€",
+        desc: "Chicken cooked with gongura leaves and spices",
+        image: "img/gongura-chicken.jpg",
+        category: "specials",
+        spice: 3,
+        special: true
+    },
+
+    // Rice
+    {
+        name: "Plain White Rice",
+        price: "2.99€",
+        desc: "Steamed basmati rice",
+        image: "img/white-rice.jpg",
+        category: "rice",
+        spice: 0,
+        special: false
+    },
+    {
+        name: "Plain Biryani Rice",
+        price: "3.50€",
+        desc: "Fragrant biryani rice without meat",
+        image: "img/biryani-rice.jpg",
+        category: "rice",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Bagora Rice",
+        price: "3.50€",
+        desc: "Rice tempered with special bagora spices",
+        image: "img/bagora-rice.jpg",
+        category: "rice",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Jira Rice",
+        price: "3.50€",
+        desc: "Cumin flavored rice",
+        image: "img/jeera-rice.jpg",
+        category: "rice",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Veg Fried Rice",
+        price: "3.50€",
+        desc: "Vegetable fried rice",
+        image: "img/veg-fried-rice.jpg",
+        category: "rice",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Gobi Fried Rice",
+        price: "3.99€",
+        desc: "Cauliflower fried rice",
+        image: "img/gobi-fried-rice.jpg",
+        category: "rice",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Paneer Fried Rice",
+        price: "4.50€",
+        desc: "Paneer with fried rice",
+        image: "img/paneer-fried-rice.jpg",
+        category: "rice",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Egg Fried Rice",
+        price: "3.50€",
+        desc: "Egg with fried rice",
+        image: "img/egg-fried-rice.jpg",
+        category: "rice",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Chicken Fried Rice",
+        price: "4.50€",
+        desc: "Chicken with fried rice",
+        image: "img/chicken-fried-rice.jpg",
+        category: "rice",
+        spice: 2,
+        special: false
+    },
+
+    // Noodles
+    {
+        name: "Veg Noodles",
+        price: "3.99€",
+        desc: "Vegetable noodles",
+        image: "img/veg-noodles.jpg",
+        category: "rice",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Gobi Noodles",
+        price: "4.50€",
+        desc: "Cauliflower noodles",
+        image: "img/gobi-noodles.jpg",
+        category: "rice",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Paneer Noodles",
+        price: "4.50€",
+        desc: "Paneer with noodles",
+        image: "img/paneer-noodles.jpg",
+        category: "rice",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Egg Fried Noodles",
+        price: "3.50€",
+        desc: "Egg with fried noodles",
+        image: "img/egg-noodles.jpg",
+        category: "rice",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Chicken Fried Noodles",
+        price: "4.50€",
+        desc: "Chicken with fried noodles",
+        image: "img/chicken-noodles.jpg",
+        category: "rice",
+        spice: 2,
+        special: false
+    },
+
+    // Breads
+    {
+        name: "Plain Naan",
+        price: "0.99€",
+        desc: "Traditional tandoori bread",
+        image: "img/plain-naan.jpg",
+        category: "bread",
+        spice: 0,
+        special: false
+    },
+    {
+        name: "Garlic Naan",
+        price: "1.50€",
+        desc: "Naan with garlic butter",
+        image: "img/garlic-naan.jpg",
+        category: "bread",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Butter Naan",
+        price: "1.50€",
+        desc: "Naan with butter",
+        image: "img/butter-naan.jpg",
+        category: "bread",
+        spice: 0,
+        special: false
+    }
+];
+        // DOM Elements
+        const menuContent = document.getElementById('menu-content');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        
+        // Initialize the menu
+        function initMenu() {
+            renderMenu('all');
+            setupEventListeners();
+        }
+        
+        // Render menu based on filter
+        function renderMenu(filter) {
+            menuContent.innerHTML = '';
+            
+            if (filter === 'all') {
+                // Group items by category
+                const categories = {
+                    'mandi': [],
+                    'biryani': [],
+                    'non-veg': [],
+                    'veg': [],
+                    'starters': [],
+                    'specials': [],
+                    'rice': [],
+                    'bread': []
+                };
+                
+                menuData.forEach(item => {
+                    categories[item.category].push(item);
+                });
+                
+                // Render each category
+                for (const [category, items] of Object.entries(categories)) {
+                    if (items.length > 0) {
+                        renderCategory(category, items);
+                    }
+                }
+            } else {
+                // Filter items by selected category
+                const filteredItems = menuData.filter(item => item.category === filter);
+                
+                if (filteredItems.length > 0) {
+                    renderCategory(filter, filteredItems);
+                } else {
+                    // Show empty state
+                    menuContent.innerHTML = `
+                        <div style="text-align: center; padding: 30px; color: #666;">
+                            <p>No items found in this category</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+        
+        // Render a category with its items
+        function renderCategory(category, items) {
+            // Create category heading
+            const categoryHeading = document.createElement('div');
+            categoryHeading.className = 'menu-category';
+            
+            // Set icon based on category
+            let iconClass = '';
+            let categoryName = '';
+            
+            switch(category) {
+                case 'non-veg':
+                    iconClass = 'fa-drumstick-bite';
+                    categoryName = 'Non-Veg Curries';
+                    break;
+                case 'veg':
+                    iconClass = 'fa-carrot';
+                    categoryName = 'Vegetarian Curries';
+                    break;
+                case 'mandi':
+                    iconClass = 'fa-utensils';
+                    categoryName = 'Mandi Specials';
+                    break;
+                case 'biryani':
+                    iconClass = 'fa-utensils';
+                    categoryName = 'Biryani';
+                    break;
+                case 'starters':
+                    iconClass = 'fa-pepper-hot';
+                    categoryName = 'Starters';
+                    break;
+                case 'specials':
+                    iconClass = 'fa-star';
+                    categoryName = 'House Specials';
+                    break;
+                case 'rice':
+                    iconClass = 'fa-utensils';
+                    categoryName = 'Rice & Noodles';
+                    break;
+                case 'bread':
+                    iconClass = 'fa-bread-slice';
+                    categoryName = 'Breads';
+                    break;
+            }
+            
+            categoryHeading.innerHTML = `
+                <i class="fas ${iconClass}"></i>
+                <span>${categoryName}</span>
+            `;
+            menuContent.appendChild(categoryHeading);
+            
+            // Create items container
+            const itemsContainer = document.createElement('div');
+            itemsContainer.className = 'menu-items-container';
+            
+            // Add items to container
+            items.forEach(item => {
+                itemsContainer.appendChild(createMenuItem(item));
+            });
+            
+            menuContent.appendChild(itemsContainer);
+        }
+        
+        // Create a menu item element
+        function createMenuItem(item) {
+            const menuItem = document.createElement('div');
+            menuItem.className = 'menu-item';
+            menuItem.dataset.category = item.category;
+            
+            // Determine icon
+            const icon = item.category === 'veg' || item.category === 'bread' 
+                ? '<i class="fas fa-leaf veg-icon"></i>' 
+                : item.category === 'non-veg' || item.category === 'mandi' || item.category === 'biryani' || item.category === 'starters'
+                    ? '<i class="fas fa-drumstick-bite non-veg-icon"></i>' 
+                    : '';
+            
+            // Create spice indicators
+            let spiceIcons = '';
+            for (let i = 0; i < 3; i++) {
+                const opacity = i < item.spice ? 1 : 0.3;
+                spiceIcons += `<i class="fas fa-pepper-hot spice-icon" style="opacity:${opacity}"></i>`;
+            }
+            
+            // Handle items with options
+            let priceDisplay = item.price;
+            if (item.options && item.options.length > 0) {
+                priceDisplay = item.options.map(opt => `${opt.portion}: ${opt.price}`).join('<br>');
+            }
+            
+            menuItem.innerHTML = `
+                <div class="menu-item-img">
+                    <img src="${item.image}" alt="${item.name}">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            ${item.name}
+                            ${item.special ? '<span class="special-badge">Special</span>' : ''}
+                            ${icon}
+                        </span>
+                        <span class="menu-item-price">${priceDisplay}</span>
+                    </div>
+                    <p class="menu-item-desc">${item.desc}</p>
+                    ${item.spice > 0 ? `
+                    <div class="spice-level">
+                        <span class="spice-label">Spice:</span>
+                        ${spiceIcons}
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            return menuItem;
+        }
+        
+        // Setup event listeners
+        function setupEventListeners() {
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderMenu(btn.dataset.filter);
+                });
+            });
+        }
+        
+        // Initialize the menu
+        document.addEventListener('DOMContentLoaded', initMenu);
+    </script>
+</body>
+</html>
