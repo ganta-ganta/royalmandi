@@ -1,0 +1,3877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Royal Mandi - Taste of Asia</title>
+    
+    <!-- Firebase SDK v9 -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot, query, orderBy, where, serverTimestamp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js';
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js';
+        
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC7Y0BVRoH9m1B8jzYKvI61csT4bnifXEU",
+            authDomain: "royal-mandi.firebaseapp.com",
+            projectId: "royal-mandi",
+            storageBucket: "royal-mandi.appspot.com",
+            messagingSenderId: "285256672352",
+            appId: "1:285256672352:web:9cee8057176e4885ed8f05",
+            measurementId: "G-YC7ZK7Y81H"
+        };
+        
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        
+        // Make Firebase available globally
+        window.db = db;
+        window.auth = auth;
+        window.firebaseModules = {
+            collection,
+            addDoc,
+            getDocs,
+            doc,
+            updateDoc,
+            deleteDoc,
+            onSnapshot,
+            query,
+            orderBy,
+            where,
+            serverTimestamp,
+            signInWithEmailAndPassword,
+            signOut,
+            onAuthStateChanged
+        };
+    </script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #E67E22;
+            --primary-dark: #D35400;
+            --primary-light: #F39C12;
+            --secondary: #5D4037;
+            --accent: #E74C3C;
+            --light: #FFF9F5;
+            --dark: #2C3E50;
+            --text: #333333;
+            --text-light: #757575;
+            --success: #27AE60;
+            --warning: #F39C12;
+            --danger: #E74C3C;
+            --gold: #F1C40F;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            background-color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .hero-title {
+           color: #FFA500;
+          text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        /* Navigation */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            padding: 15px 0;
+            transition: all 0.3s ease;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        
+        .navbar.scrolled {
+            padding: 10px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            background-color: rgba(255,255,255,0.98);
+        }
+        
+        .navbar-brand img {
+            height: 40px;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar.scrolled .navbar-brand img {
+            height: 35px;
+        }
+        
+        .nav-link {
+            color: var(--dark);
+            font-weight: 500;
+            margin: 0 10px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            bottom: 0;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover:after, .nav-link.active:after {
+            width: 100%;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary);
+        }
+        
+        /* Buttons */
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            padding: 12px 25px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230, 126, 34, 0.4);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary);
+            border-color: var(--primary);
+            padding: 12px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://theroyalmandi.co.uk/img/bg-logo3.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            padding: 180px 0;
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-top: 70px;
+        }
+        
+        .hero-content {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            animation: fadeInDown 1s ease;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.3s forwards;
+            opacity: 0;
+        }
+        
+        .hero-buttons {
+            animation: fadeIn 1s ease 0.6s forwards;
+            opacity: 0;
+        }
+        
+        /* Sections */
+        .section {
+            padding: 100px 0;
+            position: relative;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        /* Menu Section */
+        .menu-category {
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 15px;
+            color: var(--dark);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .menu-category:after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+            bottom: 0;
+            left: 0;
+            border-radius: 2px;
+        }
+        
+        .menu-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .menu-item-img {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .menu-item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .menu-item:hover .menu-item-img img {
+            transform: scale(1.05);
+        }
+        
+        .menu-item-content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .menu-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .menu-item-name {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .menu-item-price {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        
+        .menu-item-desc {
+            color: var(--text-light);
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            flex: 1;
+        }
+        
+        .special-badge {
+            background-color: var(--primary);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-left: 10px;
+            display: inline-block;
+        }
+        
+        .veg-tag {
+            background-color: var(--success);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 8px;
+            display: inline-block;
+        }
+        
+        .non-veg-tag {
+            background-color: var(--danger);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 8px;
+            display: inline-block;
+        }
+        
+        .spice-level {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+        
+        .spice-label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-right: 8px;
+        }
+        
+        .spice-icon {
+            color: var(--warning);
+            font-size: 0.9rem;
+            margin-right: 3px;
+        }
+        
+        .menu-item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .item-icons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .item-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 0.8rem;
+        }
+        
+        .veg-icon {
+            color: var(--success);
+            background-color: rgba(39, 174, 96, 0.1);
+        }
+        
+        .non-veg-icon {
+            color: var(--danger);
+            background-color: rgba(231, 76, 60, 0.1);
+        }
+        
+        .gluten-free-icon {
+            color: var(--primary);
+            background-color: rgba(230, 126, 34, 0.1);
+        }
+        
+        .spicy-icon {
+            color: var(--warning);
+            background-color: rgba(243, 156, 18, 0.1);
+        }
+        
+        .halal-icon {
+            color: var(--secondary);
+            background-color: rgba(93, 64, 55, 0.1);
+        }
+        
+        /* Booking Section */
+        .booking-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .booking-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--primary);
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+        
+        .form-control, .form-select {
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(230, 126, 34, 0.25);
+        }
+        
+        /* Contact Section */
+        .contact-info-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            height: 100%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            text-align: center;
+            border-top: 4px solid var(--primary);
+        }
+        
+        .contact-info-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(230, 126, 34, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: var(--primary);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-info-card:hover .contact-icon {
+            background: var(--primary);
+            color: white;
+            transform: rotate(10deg);
+        }
+        
+        /* Admin Dashboard Styles */
+        .admin-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 9999;
+            display: none;
+        }
+        
+        .admin-dashboard {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f8f9fa;
+            z-index: 10000;
+            display: none;
+        }
+        
+        .admin-sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--dark);
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+        
+        .admin-sidebar-header {
+            padding: 0 20px 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .admin-sidebar-logo {
+            height: 40px;
+            filter: brightness(0) invert(1);
+        }
+        
+        .admin-nav {
+            padding: 0 20px;
+        }
+        
+        .admin-nav-link {
+            display: block;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            padding: 15px 20px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .admin-nav-link:hover, .admin-nav-link.active {
+            background: var(--primary);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .admin-nav-link i {
+            width: 20px;
+            margin-right: 10px;
+        }
+        
+        .admin-main {
+            margin-left: 280px;
+            padding: 30px;
+            min-height: 100vh;
+        }
+        
+        .admin-header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .admin-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-card:hover {
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        
+        .admin-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .admin-card-title {
+            margin: 0;
+            color: var(--dark);
+            font-size: 1.3rem;
+        }
+        
+        .stats-card {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(230, 126, 34, 0.3);
+        }
+        
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .stats-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .table-responsive {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .table {
+            margin: 0;
+        }
+        
+        .table th {
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 15px;
+        }
+        
+        .table td {
+            padding: 15px;
+            vertical-align: middle;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-pending {
+            background: rgba(243, 156, 18, 0.1);
+            color: #F39C12;
+        }
+        
+        .status-confirmed {
+            background: rgba(39, 174, 96, 0.1);
+            color: #27AE60;
+        }
+        
+        .status-cancelled {
+            background: rgba(231, 76, 60, 0.1);
+            color: #E74C3C;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 80px 0 30px;
+            position: relative;
+        }
+        
+        .footer:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+        }
+        .copyright {
+    background-color: #7e7f80;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.dev-credit a {
+    color: #dc3545;
+    font-weight: 500;
+}
+
+.dev-credit a:hover {
+    color: #b02a37;
+    text-decoration: underline;
+}
+        
+        .footer-logo {
+            height: 50px;
+            margin-bottom: 20px;
+            filter: brightness(0) invert(1);
+        }
+        
+        .footer-links h5 {
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-links h5:after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 3px;
+            background: var(--primary);
+            bottom: 0;
+            left: 0;
+            border-radius: 2px;
+        }
+        
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .footer-links a:hover {
+            color: rgb(225, 183, 0);
+            padding-left: 5px;
+        }
+        
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            color: white;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+            margin-top: 40px;
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Menu filter buttons */
+        .menu-filter {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .filter-btn {
+            padding: 8px 20px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 30px;
+            font-weight: 500;
+            color: var(--text);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 1199.98px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .section {
+                padding: 80px 0;
+            }
+            
+            .admin-sidebar {
+                width: 250px;
+            }
+            
+            .admin-main {
+                margin-left: 250px;
+            }
+        }
+        
+        @media (max-width: 991.98px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .menu-item-img {
+                height: 180px;
+            }
+            
+            .admin-sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .admin-sidebar.show {
+                transform: translateX(0);
+            }
+            
+            .admin-main {
+                margin-left: 0;
+            }
+        }
+        
+        @media (max-width: 767.98px) {
+            .hero-section {
+                padding: 120px 0;
+                background-attachment: scroll;
+            }
+            
+            .hero-title {
+                font-size: 2.2rem;
+                line-height: 1.2;
+                margin-bottom: 15px;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+                margin-bottom: 20px;
+            }
+            
+            .section-title {
+                margin-bottom: 40px;
+            }
+            
+            .menu-item {
+                margin-bottom: 20px;
+            }
+            
+            .booking-card {
+                padding: 30px;
+            }
+            
+            .menu-items-container {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+            }
+            
+            .menu-item {
+                margin-bottom: 0;
+            }
+            
+            .menu-item-img {
+                height: 150px;
+            }
+            
+            .menu-item-content {
+                padding: 15px;
+            }
+            
+            .menu-item-name, .menu-item-price {
+                font-size: 1rem;
+            }
+            
+            .menu-item-desc {
+                font-size: 0.85rem;
+            }
+        }
+        
+        @media (max-width: 575.98px) {
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+            
+            .booking-card {
+                padding: 20px;
+            }
+            
+            .menu-items-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .menu-category {
+                font-size: 1.3rem;
+            }
+        }
+        
+        /* Loading spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+   <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img src="img/logo.png" alt="The Royal Mandi" class="img-fluid">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#home">
+                        <i class="fas fa-home me-1"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#menu">
+                        <i class="fas fa-utensils me-1"></i> Menu
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#booking">
+                        <i class="fas fa-calendar-check me-1"></i> Reservations
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact">
+                        <i class="fas fa-phone-alt me-1"></i> Contact
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="adminLoginLink">
+                        <i class="fas fa-lock me-1"></i> Admin
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <img src="img/logo1.png" alt="The Royal Mandi" class="img-fluid">
+                <h1 class="hero-title">The Taste Of Asia</h1>
+                <p class="hero-subtitle">Blend of Arabian Tradition and Asian Fire</p>
+                <div class="hero-buttons">
+                    <a href="#menu" class="btn btn-primary btn-lg me-3">View Menu</a>
+                    <a href="#booking" class="btn btn-outline-light btn-lg">Book a Table</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+     <!-- Menu Section -->
+    <section id="menu" class="section">
+        <div class="container">
+            <h2 class="section-title">Our Menu</h2>
+            
+           <div class="menu-filter">
+              <button class="filter-btn active" data-filter="all">All</button>
+              <button class="filter-btn" data-filter="non-veg">Non-Veg</button>
+              <button class="filter-btn" data-filter="veg">Veg</button>
+              <button class="filter-btn" data-filter="mandi">Mandi</button>
+              <button class="filter-btn" data-filter="biryani">Biryani</button>
+              <button class="filter-btn" data-filter="starters">Starters</button>
+              <button class="filter-btn" data-filter="rice">Rice</button>
+              <button class="filter-btn" data-filter="bread">Bread</button>
+              <button class="filter-btn" data-filter="desserts">Desserts</button>
+              <button class="filter-btn" data-filter="drinks">Drinks</button>
+           </div>
+            
+            <!-- Menu Content Will Be Dynamically Inserted Here -->
+            <div id="menu-content"></div>
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+    <section id="booking" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title">Make a Reservation</h2>
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="booking-card">
+                        <form id="bookingForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label for="name" class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="name" required>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label for="phone" class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" id="phone" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label for="email" class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" id="email" required>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label for="guests" class="form-label">Number of Guests</label>
+                                    <select class="form-select" id="guests" required>
+                                        <option value="" disabled selected>Select</option>
+                                        <option value="1">1 Person</option>
+                                        <option value="2">2 People</option>
+                                        <option value="3">3 People</option>
+                                        <option value="4">4 People</option>
+                                        <option value="5">5 People</option>
+                                        <option value="6">6 People</option>
+                                        <option value="7">7+ People</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label for="date" class="form-label">Date</label>
+                                    <input type="date" class="form-control" id="date" required>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label for="time" class="form-label">Time</label>
+                                    <select class="form-select" id="time" required>
+                                        <option value="" disabled selected>Select</option>
+                                        <option value="12:00">12:00 PM</option>
+                                        <option value="12:30">12:30 PM</option>
+                                        <option value="13:00">1:00 PM</option>
+                                        <option value="13:30">1:30 PM</option>
+                                        <option value="18:00">6:00 PM</option>
+                                        <option value="18:30">6:30 PM</option>
+                                        <option value="19:00">7:00 PM</option>
+                                        <option value="19:30">7:30 PM</option>
+                                        <option value="20:00">8:00 PM</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="specialRequests" class="form-label">Special Requests</label>
+                                <textarea class="form-control" id="specialRequests" rows="3" placeholder="Allergies, high chairs, etc."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 py-3">
+                                <span id="submitText">Confirm Reservation</span>
+                                <span id="submitSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section bg-white">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="contact-info-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h4>Address</h4>
+                        <p>48 Borough Road, TS1 5DW<br>Middlesbrough, UK</p>
+                        <a href="https://maps.google.com?q=48+Borough+Road+TS1+5DW" class="btn btn-sm btn-outline-primary mt-2" target="_blank">View on Map</a>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="contact-info-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <h4>Phone</h4>
+                        <p><a href="tel:07467473372" class="text-decoration-none">07467 473372</a></p>
+                        <h4 class="mt-3">Email</h4>
+                        <p><a href="mailto:contact@theroyalmandico.uk" class="text-decoration-none">contact@theroyalmandico.uk</a></p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="contact-info-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h4>Opening Hours</h4>
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <td>Mon - Thu</td>
+                                    <td>11:00 AM - 10:00 PM</td>
+                                </tr>
+                                <tr>
+                                    <td>Fri - Sat</td>
+                                    <td>11:00 AM - 11:00 PM</td>
+                                </tr>
+                                <tr>
+                                    <td>Sunday</td>
+                                    <td>12:00 PM - 9:00 PM</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-5 mb-lg-0">
+                    <img src="img/logo.png" alt="The Royal Mandi" class="footer-logo">
+                    <p>Bringing authentic Indian flavors to Middlesbrough since 2015. Our passion for traditional cooking techniques and premium ingredients ensures an unforgettable dining experience.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-5 mb-md-0">
+                    <div class="footer-links">
+                        <h5>Quick Links</h5>
+                        <ul>
+                            <li><a href="#home">Home</a></li>
+                            <li><a href="#menu">Menu</a></li>
+                            <li><a href="#booking">Reservations</a></li>
+                            <li><a href="#contact">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-5 mb-md-0">
+                    <div class="footer-links">
+                        <h5>Menu Categories</h5>
+                        <ul>
+                            <li><a href="#non-veg">Non-Veg Specialties</a></li>
+                            <li><a href="#veg">Vegetarian Dishes</a></li>
+                            <li><a href="#rice">Rice & Biryanis</a></li>
+                            <li><a href="#bread">Naan & Breads</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <div class="footer-links">
+                        <h5>Contact Info</h5>
+                        <ul>
+                            <li><a href="https://maps.google.com?q=48+Borough+Road+TS1+5DW">48 Borough Road, TS1 5DW</a></li>
+                            <li><a href="tel:07467473372">07467 473372</a></li>
+                            <li><a href="mailto:theroyalmandi@gmail.com">contact@theroyalmandi.co.uk</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright text-center py-3">
+                 &copy; <span id="current-year">2024</span> The Royal Mandi. All rights reserved.
+               <div class="dev-credit mt-2">
+                 Developed by <a href="https://gantasolutions.com" target="_blank" class="text-decoration-none">Ganta Solutions</a>
+              </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Admin Login Modal -->
+    <div class="modal fade" id="adminLoginModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Admin Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="adminLoginForm">
+                        <div class="mb-4">
+                            <label for="adminEmail" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="adminEmail" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="adminPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="adminPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-3">
+                            <span id="adminSubmitText">Login</span>
+                            <span id="adminSubmitSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
+                        </button>
+                    </form>
+                    <div class="mt-3 text-center">
+                        <small class="text-muted">For authorized personnel only(nv eripk vi) </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div class="admin-dashboard" id="adminDashboard">
+        <div class="admin-sidebar">
+            <div class="admin-sidebar-header">
+                <img src="img/bg-logo.jpg" alt="The Royal Mandi" class="admin-sidebar-logo">
+                <h6 class="mt-2 mb-0">Admin Panel</h6>
+            </div>
+            <div class="admin-nav">
+                <a href="#" class="admin-nav-link active" data-section="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="#" class="admin-nav-link" data-section="bookings"><i class="fas fa-calendar-alt"></i> Reservations</a>
+                <a href="#" class="admin-nav-link" data-section="menu"><i class="fas fa-utensils"></i> Menu Management</a>
+                <a href="#" class="admin-nav-link" data-section="customers"><i class="fas fa-users"></i> Customers</a>
+                <a href="#" class="admin-nav-link" data-section="settings"><i class="fas fa-cog"></i> Settings</a>
+                <a href="#" class="admin-nav-link" id="adminLogoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+        
+        <div class="admin-main">
+            <!-- Dashboard Section -->
+            <div class="admin-section" id="dashboardSection">
+                <div class="admin-header">
+                    <h3 class="mb-0">Dashboard Overview</h3>
+                    <div class="text-muted">Welcome back, Admin!</div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="stats-card">
+                            <div class="stats-number" id="todayReservations">0</div>
+                            <div class="stats-label">Today's Reservations</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <div class="stats-card">
+                            <div class="stats-number" id="totalReservations">0</div>
+                            <div class="stats-label">Total Reservations</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <div class="stats-card">
+                            <div class="stats-number" id="pendingReservations">0</div>
+                            <div class="stats-label">Pending Reservations</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <div class="stats-card">
+                            <div class="stats-number" id="totalCustomers">0</div>
+                            <div class="stats-label">Total Customers</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-lg-8">
+                        <div class="admin-card">
+                            <div class="admin-card-header">
+                                <h4 class="admin-card-title">Recent Reservations</h4>
+                                <button class="btn btn-sm btn-outline-primary" onclick="showSection('bookings')">View All</button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Date/Time</th>
+                                            <th>Guests</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recentBookingsList">
+                                        <tr>
+                                            <td colspan="5" class="text-center">Loading...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4">
+                        <div class="admin-card">
+                            <div class="admin-card-header">
+                                <h4 class="admin-card-title">Quick Actions</h4>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary text-start" onclick="showSection('bookings')">
+                                    <i class="fas fa-calendar-plus me-2"></i> View All Reservations
+                                </button>
+                                <button class="btn btn-outline-primary text-start" onclick="showSection('customers')">
+                                    <i class="fas fa-users me-2"></i> Manage Customers
+                                </button>
+                                <button class="btn btn-outline-primary text-start" onclick="refreshDashboard()">
+                                    <i class="fas fa-sync-alt me-2"></i> Refresh Data
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bookings Section -->
+            <div class="admin-section" id="bookingsSection" style="display: none;">
+                <div class="admin-header">
+                    <h3 class="mb-0">Reservations Management</h3>
+                    <div class="text-muted">Manage all restaurant reservations</div>
+                </div>
+                
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h4 class="admin-card-title">All Reservations</h4>
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary me-2" onclick="refreshBookings()">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                            <select class="form-select form-select-sm d-inline-block w-auto" id="statusFilter">
+                                <option value="all">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="confirmed">Confirmed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Guests</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="allBookingsList">
+                                <tr>
+                                    <td colspan="8" class="text-center">Loading reservations...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Customers Section -->
+            <div class="admin-section" id="customersSection" style="display: none;">
+                <div class="admin-header">
+                    <h3 class="mb-0">Customer Management</h3>
+                    <div class="text-muted">View and manage customer information</div>
+                </div>
+                
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h4 class="admin-card-title">Customer List</h4>
+                        <button class="btn btn-sm btn-outline-primary" onclick="refreshCustomers()">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Total Reservations</th>
+                                    <th>Last Visit</th>
+                                </tr>
+                            </thead>
+                            <tbody id="customersList">
+                                <tr>
+                                    <td colspan="5" class="text-center">Loading customers...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Menu Section -->
+            <div class="admin-section" id="menuSection" style="display: none;">
+                <div class="admin-header">
+                    <h3 class="mb-0">Menu Management</h3>
+                    <div class="text-muted">Manage restaurant menu items</div>
+                </div>
+                
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h4 class="admin-card-title">Menu Items</h4>
+                        <button class="btn btn-sm btn-primary">
+                            <i class="fas fa-plus"></i> Add New Item
+                        </button>
+                    </div>
+                    <div class="text-center py-5">
+                        <i class="fas fa-utensils fa-3x text-muted mb-3"></i>
+                        <h5>Menu Management</h5>
+                        <p class="text-muted">Menu management features coming soon...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings Section -->
+            <div class="admin-section" id="settingsSection" style="display: none;">
+                <div class="admin-header">
+                    <h3 class="mb-0">Settings</h3>
+                    <div class="text-muted">Configure restaurant settings</div>
+                </div>
+                
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h4 class="admin-card-title">Restaurant Settings</h4>
+                    </div>
+                    <div class="text-center py-5">
+                        <i class="fas fa-cog fa-3x text-muted mb-3"></i>
+                        <h5>Settings Panel</h5>
+                        <p class="text-muted">Settings configuration coming soon...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Toast -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="successToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <i class="fas fa-check-circle me-2"></i>
+                    <span id="toastMessage">Operation completed successfully</span>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Toast -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="errorToast" class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <span id="errorMessage">An error occurred</span>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script>
+        // Global variables
+        let isAdminLoggedIn = false;
+        let bookingsData = [];
+        let customersData = [];
+        
+        // Wait for Firebase modules to load
+        window.addEventListener('load', function() {
+            setTimeout(initializeApp, 1000);
+        });
+        
+        function initializeApp() {
+            console.log('Initializing app...');
+            
+            // Navbar scroll effect
+            window.addEventListener('scroll', function() {
+                const navbar = document.querySelector('.navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Menu filter functionality
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const menuItems = document.querySelectorAll('.menu-item');
+            
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    const filter = btn.dataset.filter;
+                    
+                    menuItems.forEach(item => {
+                        if (filter === 'all' || item.dataset.category === filter) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                    
+                    if (filter !== 'all') {
+                        const section = document.getElementById(filter);
+                        if (section) {
+                            section.scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+            
+            // Admin login link
+            document.getElementById('adminLoginLink').addEventListener('click', (e) => {
+                e.preventDefault();
+                const adminModal = new bootstrap.Modal(document.getElementById('adminLoginModal'));
+                adminModal.show();
+            });
+            
+            // Set minimum date to today
+            const dateInput = document.getElementById('date');
+            if (dateInput) {
+                const today = new Date().toISOString().split('T')[0];
+                dateInput.setAttribute('min', today);
+            }
+            
+            // Initialize forms
+            initializeForms();
+            
+            // Initialize menu
+            initMenu();
+            
+            console.log('App initialized successfully');
+        }
+        
+        function initializeForms() {
+            // Booking form submission
+            const bookingForm = document.getElementById('bookingForm');
+            if (bookingForm) {
+                bookingForm.addEventListener('submit', handleBookingSubmission);
+            }
+            
+            // Admin login form submission
+            const adminLoginForm = document.getElementById('adminLoginForm');
+            if (adminLoginForm) {
+                adminLoginForm.addEventListener('submit', handleAdminLogin);
+            }
+            
+            // Admin logout
+            const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+            if (adminLogoutBtn) {
+                adminLogoutBtn.addEventListener('click', handleAdminLogout);
+            }
+            
+            // Admin navigation
+            document.querySelectorAll('.admin-nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const section = link.dataset.section;
+                    if (section && section !== 'logout') {
+                        showSection(section);
+                    }
+                });
+            });
+            
+            // Status filter
+            const statusFilter = document.getElementById('statusFilter');
+            if (statusFilter) {
+                statusFilter.addEventListener('change', filterBookings);
+            }
+        }
+        
+        async function handleBookingSubmission(e) {
+            e.preventDefault();
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const submitText = submitBtn.querySelector('#submitText');
+            const submitSpinner = submitBtn.querySelector('#submitSpinner');
+            
+            // Show loading state
+            submitText.textContent = 'Processing...';
+            submitSpinner.classList.remove('d-none');
+            submitBtn.disabled = true;
+            
+            try {
+                // Get form values
+                const formData = {
+                    name: document.getElementById('name').value,
+                    phone: document.getElementById('phone').value,
+                    email: document.getElementById('email').value,
+                    guests: document.getElementById('guests').value,
+                    date: document.getElementById('date').value,
+                    time: document.getElementById('time').value,
+                    specialRequests: document.getElementById('specialRequests').value,
+                    status: 'pending',
+                    timestamp: window.firebaseModules.serverTimestamp()
+                };
+                
+                // Add to Firestore
+                await window.firebaseModules.addDoc(
+                    window.firebaseModules.collection(window.db, 'bookings'), 
+                    formData
+                );
+                
+                // Show success toast
+                showToast('Reservation submitted successfully!', 'success');
+                
+                // Reset form
+                e.target.reset();
+                
+            } catch (error) {
+                console.error('Error adding reservation: ', error);
+                showToast('There was an error submitting your reservation. Please try again.', 'error');
+            } finally {
+                // Reset button state
+                submitText.textContent = 'Confirm Reservation';
+                submitSpinner.classList.add('d-none');
+                submitBtn.disabled = false;
+            }
+        }
+        
+        async function handleAdminLogin(e) {
+            e.preventDefault();
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const submitText = submitBtn.querySelector('#adminSubmitText');
+            const submitSpinner = submitBtn.querySelector('#adminSubmitSpinner');
+            
+            // Show loading state
+            submitText.textContent = 'Authenticating...';
+            submitSpinner.classList.remove('d-none');
+            submitBtn.disabled = true;
+            
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            try {
+                // Use the already initialized auth from window
+                const userCredential = await window.firebaseModules.signInWithEmailAndPassword(
+                    window.auth,
+                    email,
+                    password
+                );
+                
+                // Check if the user is an admin (using email verification for demo)
+                const adminEmails = ['the.royalmandi@gmail.com', 'theroyalmandii@gmail.com'];
+                if (adminEmails.includes(email)) {
+                    isAdminLoggedIn = true;
+                    
+                    // Hide modal
+                    const adminModal = bootstrap.Modal.getInstance(document.getElementById('adminLoginModal'));
+                    adminModal.hide();
+                    
+                    // Show admin dashboard
+                    document.getElementById('adminDashboard').style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                    
+                    // Load dashboard data
+                    await loadDashboardData();
+                    
+                    // Reset form
+                    e.target.reset();
+                    
+                    showToast('Welcome back, Admin!', 'success');
+                } else {
+                    await window.firebaseModules.signOut(window.auth);
+                    throw new Error('Invalid credentials');
+                }
+                
+            } catch (error) {
+                console.error('Login error:', error);
+                showToast('Invalid email or password. Please try again.', 'error');
+            } finally {
+                // Reset button state
+                submitText.textContent = 'Login';
+                submitSpinner.classList.add('d-none');
+                submitBtn.disabled = false;
+            }
+        }
+        
+        async function handleAdminLogout() {
+            try {
+                await window.firebaseModules.signOut(window.auth);
+                isAdminLoggedIn = false;
+                document.getElementById('adminDashboard').style.display = 'none';
+                document.body.style.overflow = 'auto';
+                showToast('Logged out successfully', 'success');
+            } catch (error) {
+                console.error('Logout error:', error);
+                showToast('Error during logout', 'error');
+            }
+        }
+        
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.admin-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Remove active class from all nav links
+            document.querySelectorAll('.admin-nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Show selected section
+            const targetSection = document.getElementById(sectionName + 'Section');
+            if (targetSection) {
+                targetSection.style.display = 'block';
+            }
+            
+            // Add active class to clicked nav link
+            const activeLink = document.querySelector(`[data-section="${sectionName}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+            
+            // Load section-specific data
+            switch(sectionName) {
+                case 'dashboard':
+                    loadDashboardData();
+                    break;
+                case 'bookings':
+                    loadAllBookings();
+                    break;
+                case 'customers':
+                    loadCustomers();
+                    break;
+            }
+        }
+        
+        async function loadDashboardData() {
+            try {
+                // Load bookings data
+                const bookingsSnapshot = await window.firebaseModules.getDocs(
+                    window.firebaseModules.collection(window.db, 'bookings')
+                );
+                
+                bookingsData = [];
+                bookingsSnapshot.forEach((doc) => {
+                    bookingsData.push({ id: doc.id, ...doc.data() });
+                });
+                
+                // Calculate statistics
+                const today = new Date().toISOString().split('T')[0];
+                const todayReservations = bookingsData.filter(booking => booking.date === today).length;
+                const totalReservations = bookingsData.length;
+                const pendingReservations = bookingsData.filter(booking => booking.status === 'pending').length;
+                
+                // Update dashboard stats
+                document.getElementById('todayReservations').textContent = todayReservations;
+                document.getElementById('totalReservations').textContent = totalReservations;
+                document.getElementById('pendingReservations').textContent = pendingReservations;
+                
+                // Load recent bookings
+                loadRecentBookings();
+                
+                // Calculate unique customers
+                const uniqueEmails = [...new Set(bookingsData.map(booking => booking.email))];
+                document.getElementById('totalCustomers').textContent = uniqueEmails.length;
+                
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+                showToast('Error loading dashboard data', 'error');
+            }
+        }
+        
+        function loadRecentBookings() {
+            const recentBookings = bookingsData
+                .sort((a, b) => {
+                    // Sort by timestamp if available, otherwise by date
+                    if (a.timestamp && b.timestamp) {
+                        return b.timestamp.seconds - a.timestamp.seconds;
+                    }
+                    return new Date(b.date) - new Date(a.date);
+                })
+                .slice(0, 5);
+            
+            const tbody = document.getElementById('recentBookingsList');
+            if (!tbody) return;
+            
+            if (recentBookings.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center">No reservations found</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = recentBookings.map(booking => `
+                <tr>
+                    <td>${booking.name}</td>
+                    <td>${formatDate(booking.date)} ${booking.time}</td>
+                    <td>${booking.guests}</td>
+                    <td><span class="status-badge status-${booking.status}">${booking.status}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick="updateBookingStatus('${booking.id}', 'confirmed')">
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger ms-1" onclick="updateBookingStatus('${booking.id}', 'cancelled')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        async function loadAllBookings() {
+            try {
+                if (bookingsData.length === 0) {
+                    const bookingsSnapshot = await window.firebaseModules.getDocs(
+                        window.firebaseModules.collection(window.db, 'bookings')
+                    );
+                    
+                    bookingsData = [];
+                    bookingsSnapshot.forEach((doc) => {
+                        bookingsData.push({ id: doc.id, ...doc.data() });
+                    });
+                }
+                
+                displayAllBookings(bookingsData);
+                
+            } catch (error) {
+                console.error('Error loading bookings:', error);
+                showToast('Error loading bookings', 'error');
+            }
+        }
+        
+        function displayAllBookings(bookings) {
+            const tbody = document.getElementById('allBookingsList');
+            if (!tbody) return;
+            
+            if (bookings.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="text-center">No reservations found</td></tr>';
+                return;
+            }
+            
+            const sortedBookings = bookings.sort((a, b) => {
+                if (a.timestamp && b.timestamp) {
+                    return b.timestamp.seconds - a.timestamp.seconds;
+                }
+                return new Date(b.date) - new Date(a.date);
+            });
+            
+            tbody.innerHTML = sortedBookings.map(booking => `
+                <tr>
+                    <td>${booking.name}</td>
+                    <td>${booking.email}</td>
+                    <td>${booking.phone}</td>
+                    <td>${formatDate(booking.date)}</td>
+                    <td>${booking.time}</td>
+                    <td>${booking.guests}</td>
+                    <td><span class="status-badge status-${booking.status}">${booking.status}</span></td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-sm btn-outline-success" onclick="updateBookingStatus('${booking.id}', 'confirmed')" title="Confirm">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="updateBookingStatus('${booking.id}', 'cancelled')" title="Cancel">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-info" onclick="viewBookingDetails('${booking.id}')" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        function filterBookings() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            let filteredBookings = bookingsData;
+            
+            if (statusFilter !== 'all') {
+                filteredBookings = bookingsData.filter(booking => booking.status === statusFilter);
+            }
+            
+            displayAllBookings(filteredBookings);
+        }
+        
+        async function updateBookingStatus(bookingId, newStatus) {
+            try {
+                await window.firebaseModules.updateDoc(
+                    window.firebaseModules.doc(window.db, 'bookings', bookingId),
+                    { status: newStatus }
+                );
+                
+                // Update local data
+                const bookingIndex = bookingsData.findIndex(b => b.id === bookingId);
+                if (bookingIndex !== -1) {
+                    bookingsData[bookingIndex].status = newStatus;
+                }
+                
+                // Refresh displays
+                loadRecentBookings();
+                loadAllBookings();
+                loadDashboardData();
+                
+                showToast(`Reservation ${newStatus} successfully`, 'success');
+                
+            } catch (error) {
+                console.error('Error updating booking status:', error);
+                showToast('Error updating reservation status', 'error');
+            }
+        }
+        
+        function viewBookingDetails(bookingId) {
+            const booking = bookingsData.find(b => b.id === bookingId);
+            if (booking) {
+                alert(`
+Booking Details:
+Name: ${booking.name}
+Email: ${booking.email}
+Phone: ${booking.phone}
+Date: ${formatDate(booking.date)}
+Time: ${booking.time}
+Guests: ${booking.guests}
+Status: ${booking.status}
+Special Requests: ${booking.specialRequests || 'None'}
+                `);
+            }
+        }
+        
+        async function loadCustomers() {
+            try {
+                // Group bookings by email to get unique customers
+                const customerMap = new Map();
+                
+                bookingsData.forEach(booking => {
+                    if (!customerMap.has(booking.email)) {
+                        customerMap.set(booking.email, {
+                            name: booking.name,
+                            email: booking.email,
+                            phone: booking.phone,
+                            reservations: [],
+                            totalReservations: 0,
+                            lastVisit: null
+                        });
+                    }
+                    
+                    const customer = customerMap.get(booking.email);
+                    customer.reservations.push(booking);
+                    customer.totalReservations++;
+                    
+                    // Update last visit date
+                    const bookingDate = new Date(booking.date);
+                    if (!customer.lastVisit || bookingDate > customer.lastVisit) {
+                        customer.lastVisit = bookingDate;
+                    }
+                });
+                
+                customersData = Array.from(customerMap.values());
+                displayCustomers();
+                
+            } catch (error) {
+                console.error('Error loading customers:', error);
+                showToast('Error loading customers', 'error');
+            }
+        }
+        
+        function displayCustomers() {
+            const tbody = document.getElementById('customersList');
+            if (!tbody) return;
+            
+            if (customersData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center">No customers found</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = customersData.map(customer => `
+                <tr>
+                    <td>${customer.name}</td>
+                    <td>${customer.email}</td>
+                    <td>${customer.phone}</td>
+                    <td>${customer.totalReservations}</td>
+                    <td>${customer.lastVisit ? formatDate(customer.lastVisit.toISOString().split('T')[0]) : 'N/A'}</td>
+                </tr>
+            `).join('');
+        }
+        
+        function refreshDashboard() {
+            loadDashboardData();
+            showToast('Dashboard refreshed', 'success');
+        }
+        
+        function refreshBookings() {
+            bookingsData = []; // Clear cache
+            loadAllBookings();
+            showToast('Bookings refreshed', 'success');
+        }
+        
+        function refreshCustomers() {
+            loadCustomers();
+            showToast('Customers refreshed', 'success');
+        }
+        
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+        }
+        
+        function showToast(message, type = 'success') {
+            const toastId = type === 'success' ? 'successToast' : 'errorToast';
+            const messageId = type === 'success' ? 'toastMessage' : 'errorMessage';
+            
+            document.getElementById(messageId).textContent = message;
+            const toast = new bootstrap.Toast(document.getElementById(toastId));
+            toast.show();
+        }
+
+        const menuData = [
+            // Mandi Dishes
+            {
+                name: "Chicken Mandi",
+                price: "7.99€",
+                desc: "Basmati rice cooked with Indian aromatic spices, served with dry fruits",
+                image: "img/chicken-mandi.jpg",
+                category: "mandi",
+                spice: 2,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true,
+                options: [
+                    { portion: "1 person", price: "7.99€" },
+                    { portion: "2 persons", price: "14.99€" }
+                ]
+            },
+            {
+                name: "Tandoori Chicken Mandi",
+                price: "8.99€",
+                desc: "Basmati rice with tandoori chicken and aromatic spices",
+                image: "img/tandoori-mandi.jpg",
+                category: "mandi",
+                spice: 3,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true,
+                options: [
+                    { portion: "1 person", price: "8.99€" },
+                    { portion: "2 persons", price: "16.99€" }
+                ]
+            },
+            {
+                name: "Chicken Juicy Mandi",
+                price: "9.99€",
+                desc: "Juicy chicken with aromatic mandi rice",
+                image: "img/juicy-mandi.jpg",
+                category: "mandi",
+                spice: 2,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true,
+                options: [
+                    { portion: "1 person", price: "9.99€" },
+                    { portion: "2 persons", price: "18.99€" }
+                ]
+            },
+            {
+                name: "Whole Mix Chicken Family Mandi",
+                price: "35.99€",
+                desc: "Family portion of mixed chicken mandi",
+                image: "img/family-mandi.jpg",
+                category: "mandi",
+                spice: 2,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true,
+                options: [
+                    { portion: "4 persons", price: "35.99€" }
+                ]
+            },
+            {
+                name: "Lamb Mandi",
+                price: "10.99€",
+                desc: "Tender lamb with aromatic mandi rice",
+                image: "img/lamb-mandi.jpg",
+                category: "mandi",
+                spice: 2,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true,
+                options: [
+                    { portion: "1 person", price: "10.99€" },
+                    { portion: "2 persons", price: "20.99€" }
+                ]
+            },
+            {
+                name: "Fish Mandi",
+                price: "8.99€",
+                desc: "Fresh fish with mandi rice and spices",
+                image: "img/fish-mandi.jpg",
+                category: "mandi",
+                spice: 2,
+                special: false,
+                veg: false,
+                glutenFree: true,
+                halal: true,
+                options: [
+                    { portion: "1 person", price: "8.99€" },
+                    { portion: "2 persons", price: "16.99€" }
+                ]
+            },
+            {
+                name: "Veg Mandi",
+                price: "6.99€",
+                desc: "Vegetarian version with mixed vegetables",
+                image: "img/veg-mandi.jpg",
+                category: "mandi",
+                spice: 1,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true,
+                options: [
+                    { portion: "1 person", price: "6.99€" },
+                    { portion: "2 persons", price: "12.99€" }
+                ]
+            },
+
+            // Biryani
+            {
+                name: "Chicken Dum Biryani",
+                price: "4.50€",
+                desc: "Chicken mixed with yogurt, Indian spices, mint, onion & garlic mixed with basmati rice",
+                image: "img/chicken-biryani.jpg",
+                category: "biryani",
+                spice: 2,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Chicken Fry Piece Biryani",
+                price: "5.99€",
+                desc: "Basmati biryani rice, with chicken spicy fry",
+                image: "img/fry-biryani.jpg",
+                category: "biryani",
+                spice: 3,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Chicken Pot Biryani",
+                price: "8.50€",
+                desc: "Chicken biryani cooked with pot",
+                image: "img/pot-biryani.jpg",
+                category: "biryani",
+                spice: 2,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Chicken 65 Biryani",
+                price: "5.99€",
+                desc: "Chicken biryani rice with chicken 65",
+                image: "img/chicken65-biryani.jpg",
+                category: "biryani",
+                spice: 3,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Chicken Tikka Biryani",
+                price: "6.99€",
+                desc: "Biryani rice with chicken tikka",
+                image: "img/tikka-biryani.jpg",
+                category: "biryani",
+                spice: 2,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Restaurant Special Chicken Biryani",
+                price: "7.50€",
+                desc: "Special chicken biryani with chef's secret recipe",
+                image: "img/special-biryani.jpg",
+                category: "biryani",
+                spice: 2,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Lamb Dum Biryani",
+                price: "6.50€",
+                desc: "Lamb mixed with yogurt, Indian spices, and garlic with basmati rice",
+                image: "img/lamb-biryani.jpg",
+                category: "biryani",
+                spice: 3,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Lamb Pot Biryani",
+                price: "9.99€",
+                desc: "Lamb biryani cooked with pot",
+                image: "img/lamb-pot-biryani.jpg",
+                category: "biryani",
+                spice: 3,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Lamb Fry Piece Biryani",
+                price: "7.50€",
+                desc: "Biryani rice with lamb special fry",
+                image: "img/lamb-fry-biryani.jpg",
+                category: "biryani",
+                spice: 3,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Nihari Lamb Biryani",
+                price: "9.50€",
+                desc: "Biryani with lamb shank special fry",
+                image: "img/nihari-biryani.jpg",
+                category: "biryani",
+                spice: 3,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Restaurant Special Lamb Biryani",
+                price: "9.50€",
+                desc: "Special lamb biryani with chef's secret recipe",
+                image: "img/special-lamb-biryani.jpg",
+                category: "biryani",
+                spice: 3,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Prawns Dum Biryani",
+                price: "6.99€",
+                desc: "Fresh prawns cooked with aromatic spices and rice",
+                image: "img/prawn-biryani.jpg",
+                category: "biryani",
+                spice: 2,
+                special: false,
+                veg: false,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Prawns Pot Biryani",
+                price: "9.50€",
+                desc: "Prawn biryani cooked with pot",
+                image: "img/prawn-pot-biryani.jpg",
+                category: "biryani",
+                spice: 2,
+                special: true,
+                veg: false,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Prawns Fry Piece Biryani",
+                price: "7.50€",
+                desc: "Biryani rice with fried prawns",
+                image: "img/prawn-fry-biryani.jpg",
+                category: "biryani",
+                spice: 2,
+                special: false,
+                veg: false,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Fish Fry Piece Biryani",
+                price: "8.50€",
+                desc: "Biryani rice with fried fish pieces",
+                image: "img/fish-fry-biryani.jpg",
+                category: "biryani",
+                spice: 2,
+                special: false,
+                veg: false,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Gongura Chicken Biryani",
+                price: "7.50€",
+                desc: "Chicken biryani with gongura leaves",
+                image: "img/gongura-chicken-biryani.jpg",
+                category: "biryani",
+                spice: 3,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Gongura Lamb Biryani",
+                price: "8.99€",
+                desc: "Lamb biryani with gongura leaves",
+                image: "img/gongura-lamb-biryani.jpg",
+                category: "biryani",
+                spice: 3,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Gongura Prawns Biryani",
+                price: "8.99€",
+                desc: "Prawn biryani with gongura leaves",
+                image: "img/gongura-prawn-biryani.jpg",
+                category: "biryani",
+                spice: 3,
+                special: true,
+                veg: false,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Vegetable Biryani",
+                price: "5.99€",
+                desc: "Mixed vegetables with fragrant basmati rice",
+                image: "img/vegetable-biryani.jpg",
+                category: "biryani",
+                spice: 1,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+
+            // Non-Veg Main
+            {
+                name: "Butter Chicken Masala",
+                price: "6.50€",
+                desc: "Chicken cooked with onion, tomato, cashew",
+                image: "img/butter-chicken.jpg",
+                category: "non-veg",
+                spice: 1,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Hyderabadi Chicken Masala",
+                price: "5.50€",
+                desc: "Chicken cooked with onion, tomato, spices",
+                image: "img/hyderabadi-chicken.jpg",
+                category: "non-veg",
+                spice: 3,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Tikka Chicken Masala",
+                price: "6.50€",
+                desc: "Chicken tikka boiled cooked with Indian spicy",
+                image: "img/tikka-chicken.jpg",
+                category: "non-veg",
+                spice: 2,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Gongura Chicken Curry",
+                price: "6.99€",
+                desc: "Chicken cooked with gongura leaves and spices",
+                image: "img/gongura-chicken.jpg",
+                category: "non-veg",
+                spice: 3,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Chicken Kurma",
+                price: "6.50€",
+                desc: "Mild chicken curry with cashew paste",
+                image: "img/chicken-kurma.jpg",
+                category: "non-veg",
+                spice: 1,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Palak Chicken Curry",
+                price: "6.99€",
+                desc: "Chicken cooked with spinach and spices",
+                image: "img/palak-chicken.jpg",
+                category: "non-veg",
+                spice: 2,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Lamb Curry",
+                price: "7.50€",
+                desc: "Traditional lamb curry with spices",
+                image: "img/lamb-curry.jpg",
+                category: "non-veg",
+                spice: 3,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Lamb Rogan Josh",
+                price: "7.99€",
+                desc: "Aromatic lamb curry with Kashmiri spices",
+                image: "img/rogan-josh.jpg",
+                category: "non-veg",
+                spice: 3,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Butter Lamb Masala",
+                price: "7.50€",
+                desc: "Lamb cooked in rich tomato and butter sauce",
+                image: "img/butter-lamb.jpg",
+                category: "non-veg",
+                spice: 2,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Gongura Lamb Curry",
+                price: "7.99€",
+                desc: "Lamb cooked with gongura leaves and spices",
+                image: "img/gongura-lamb.jpg",
+                category: "non-veg",
+                spice: 3,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Chittinod Lamb Curry",
+                price: "7.50€",
+                desc: "Lamb curry with special Chittinod spices",
+                image: "img/chittinod-lamb.jpg",
+                category: "non-veg",
+                spice: 3,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Prawns Curry",
+                price: "8.50€",
+                desc: "Prawns cooked in coconut based curry",
+                image: "img/prawns-curry.jpg",
+                category: "non-veg",
+                spice: 2,
+                special: false,
+                veg: false,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Gongura Prawns Curry",
+                price: "8.99€",
+                desc: "Prawns cooked with gongura leaves and spices",
+                image: "img/gongura-prawns.jpg",
+                category: "non-veg",
+                spice: 3,
+                special: true,
+                veg: false,
+                glutenFree: true,
+                halal: true
+            },
+
+            // Veg Main
+            {
+                name: "Paneer Butter Masala",
+                price: "6.99€",
+                desc: "Cottage cheese in rich creamy tomato sauce",
+                image: "img/paneer-butter.jpg",
+                category: "veg",
+                spice: 1,
+                special: false,
+                veg: true,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Mixed Vegetable Curry",
+                price: "5.99€",
+                desc: "Assorted vegetables cooked in mild spices",
+                image: "img/mixed-veg.jpg",
+                category: "veg",
+                spice: 1,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Bagora Baigan Masala",
+                price: "5.99€",
+                desc: "Eggplant cooked in special Bagora style",
+                image: "img/baigan-masala.jpg",
+                category: "veg",
+                spice: 2,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Rajma Curry",
+                price: "5.99€",
+                desc: "Kidney beans cooked in onion-tomato gravy",
+                image: "img/rajma-curry.jpg",
+                category: "veg",
+                spice: 2,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Dal Curry",
+                price: "5.50€",
+                desc: "Yellow lentils tempered with spices",
+                image: "img/dal-curry.jpg",
+                category: "veg",
+                spice: 1,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Tamota Dal",
+                price: "5.99€",
+                desc: "Lentils cooked with tomatoes and spices",
+                image: "img/tamota-dal.jpg",
+                category: "veg",
+                spice: 1,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Dal Makhani",
+                price: "5.50€",
+                desc: "Creamy black lentils cooked with butter",
+                image: "img/dal-makhani.jpg",
+                category: "veg",
+                spice: 1,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+
+            // Veg Starters
+            {
+                name: "Paneer Manchuria",
+                price: "5.99€",
+                desc: "Marinated paneer, onion, chillies, curry leaves, sauces & spices",
+                image: "img/paneer-manchuria.jpg",
+                category: "starters",
+                spice: 2,
+                special: false,
+                veg: true,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Chilli Paneer",
+                price: "5.99€",
+                desc: "Marinated paneer, bell pepper, onion, sauces & spices",
+                image: "img/chilli-paneer.jpg",
+                category: "starters",
+                spice: 3,
+                special: false,
+                veg: true,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Paneer Pepper Roast",
+                price: "5.99€",
+                desc: "Paneer mixed with onion, leaves, chillies, pepper & spices",
+                image: "img/paneer-pepper.jpg",
+                category: "starters",
+                spice: 3,
+                special: false,
+                veg: true,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Paneer 65 Dry",
+                price: "5.50€",
+                desc: "Marinated paneer with oil deep fry",
+                image: "img/paneer-65.jpg",
+                category: "starters",
+                spice: 2,
+                special: false,
+                veg: true,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Paneer Tikka",
+                price: "6.99€",
+                desc: "Marinated paneer with tandoori steam",
+                image: "img/paneer-tikka.jpg",
+                category: "starters",
+                spice: 2,
+                special: false,
+                veg: true,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Veg Manchuria",
+                price: "4.99€",
+                desc: "Carrot, cabbage, cauliflower, mixed with spices",
+                image: "img/veg-manchuria.jpg",
+                category: "starters",
+                spice: 2,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Gobi Manchuria",
+                price: "5.50€",
+                desc: "Cauliflower mixed with cornflour, toss with sauces & spices",
+                image: "img/gobi-manchuria.jpg",
+                category: "starters",
+                spice: 3,
+                special: false,
+                veg: true,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Gobi 65 Dry",
+                price: "5.50€",
+                desc: "Marinated cauliflower mixed with cornflour, crispy deep fry",
+                image: "img/gobi-65.jpg",
+                category: "starters",
+                spice: 2,
+                special: false,
+                veg: true,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Spicy Gobi Roast",
+                price: "5.99€",
+                desc: "Marinated cauliflower, toss with chilli paste & Indian spices",
+                image: "img/spicy-gobi.jpg",
+                category: "starters",
+                spice: 3,
+                special: false,
+                veg: true,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Hariyali Mushroom Roast",
+                price: "5.50€",
+                desc: "Mushroom with chillies, onion, curry leaves and spices",
+                image: "img/hariyali-mushroom.jpg",
+                category: "starters",
+                spice: 2,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+
+            // Non-Veg Starters
+            {
+                name: "Kodi Vepudu / Chicken Roast",
+                price: "6.50€",
+                desc: "Onions, chili, chicken, Indian spices",
+                image: "img/chicken-roast.jpg",
+                category: "starters",
+                spice: 3,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Chicken 65",
+                price: "5.99€",
+                desc: "Marinated chicken, deep fry oil, garlic ginger, yogurt",
+                image: "img/chicken-65.jpg",
+                category: "starters",
+                spice: 3,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Chicken Manchurian",
+                price: "5.99€",
+                desc: "Marinated chicken, tossed with sauces",
+                image: "img/chicken-manchurian.jpg",
+                category: "starters",
+                spice: 2,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Chilli Chicken",
+                price: "5.99€",
+                desc: "Marinated chicken, onion, chili, mixed with sauces",
+                image: "img/chilli-chicken.jpg",
+                category: "starters",
+                spice: 3,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Pepper Chicken",
+                price: "6.50€",
+                desc: "Chicken with pepper, onion, Indian spices",
+                image: "img/pepper-chicken.jpg",
+                category: "starters",
+                spice: 3,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Chicken 555",
+                price: "6.99€",
+                desc: "Marinated sliced chicken, onion, chili, mixed with Indian spices",
+                image: "img/chicken-555.jpg",
+                category: "starters",
+                spice: 3,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Guntur Chicken",
+                price: "6.50€",
+                desc: "Boiled chicken with Indian aromatic spices",
+                image: "img/guntur-chicken.jpg",
+                category: "starters",
+                spice: 4,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Andra Style Chilli Chicken",
+                price: "6.99€",
+                desc: "Boiled chicken with chili paste, curry leaves, spices",
+                image: "img/andra-chilli-chicken.jpg",
+                category: "starters",
+                spice: 4,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Chicken Lollypops",
+                price: "6.99€",
+                desc: "Marinated lollipops mixed with sauces",
+                image: "img/chicken-lollypop.jpg",
+                category: "starters",
+                spice: 2,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Lamb Ghee Roast",
+                price: "8.50€",
+                desc: "Lamb with deep ghee roast, garlic, ginger, spicy",
+                image: "img/lamb-ghee.jpg",
+                category: "starters",
+                spice: 3,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Lamb Pepper Fry Roast",
+                price: "8.50€",
+                desc: "Lamb deep roast with pepper & spices",
+                image: "img/lamb-pepper.jpg",
+                category: "starters",
+                spice: 3,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Chilli Lamb Roast",
+                price: "8.50€",
+                desc: "Lamb with chillis, onion, with spices",
+                image: "img/chilli-lamb.jpg",
+                category: "starters",
+                spice: 3,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Lamb Sukka",
+                price: "8.50€",
+                desc: "Lamb with aromatic spices",
+                image: "img/lamb-sukka.jpg",
+                category: "starters",
+                spice: 3,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Chicken Liver Fry",
+                price: "5.99€",
+                desc: "Chicken liver fry with onion & chilly with spices",
+                image: "img/chicken-liver.jpg",
+                category: "starters",
+                spice: 3,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Lamb Liver Fry",
+                price: "6.99€",
+                desc: "Lamb liver fry with onions and spices",
+                image: "img/lamb-liver.jpg",
+                category: "starters",
+                spice: 3,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Lamb Brain Fry / Bega Fry",
+                price: "7.50€",
+                desc: "Fried lamb brain with spices",
+                image: "img/lamb-brain.jpg",
+                category: "starters",
+                spice: 2,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+
+            // Seafood Starters
+            {
+                name: "Apolo Fish",
+                price: "8.50€",
+                desc: "Marinated fish with deep fry toss with sauces",
+                image: "img/apolo-fish.jpg",
+                category: "starters",
+                spice: 2,
+                special: false,
+                veg: false,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Fish Tawa Fry",
+                price: "8.50€",
+                desc: "Marinated fish, yogurt, ginger garlic, spices",
+                image: "img/fish-tawa.jpg",
+                category: "starters",
+                spice: 2,
+                special: false,
+                veg: false,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Fish Deep Fry",
+                price: "8.50€",
+                desc: "Marinated fish with oil deep fry",
+                image: "img/fish-deep-fry.jpg",
+                category: "starters",
+                spice: 2,
+                special: false,
+                veg: false,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Hoigeli Fish Roast",
+                price: "8.99€",
+                desc: "Fish with green chilli paste & masala",
+                image: "img/hoigeli-fish.jpg",
+                category: "starters",
+                spice: 3,
+                special: true,
+                veg: false,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Prawn Majestic",
+                price: "8.99€",
+                desc: "Marinated prawns with garlic, ginger, spicy, yogurt",
+                image: "img/prawn-majestic.jpg",
+                category: "starters",
+                spice: 2,
+                special: true,
+                veg: false,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Chilli Prawns",
+                price: "8.99€",
+                desc: "Bell pepper, onion, yogurt, saucy",
+                image: "img/chilli-prawn.jpg",
+                category: "starters",
+                spice: 3,
+                special: false,
+                veg: false,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Prawns Manchuria",
+                price: "8.99€",
+                desc: "Onion, chilli, curry leaves, garlic, saucy",
+                image: "img/prawn-manchuria.jpg",
+                category: "starters",
+                spice: 2,
+                special: false,
+                veg: false,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Prawn 65 Dry",
+                price: "8.99€",
+                desc: "Marinated prawns deep fried with spices",
+                image: "img/prawn-65.jpg",
+                category: "starters",
+                spice: 2,
+                special: false,
+                veg: false,
+                glutenFree: true,
+                halal: true
+            },
+
+            // Tandoori & Grill
+            {
+                name: "Tandoori Chicken",
+                price: "7.99€",
+                desc: "Chicken, yogurt, Indian spices",
+                image: "img/tandoori-chicken.jpg",
+                category: "starters",
+                spice: 2,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+
+            // Specials
+            {
+                name: "Paya with Parota",
+                price: "9.99€",
+                desc: "Lamb leg with onion paste & garlic paste with spices pulusu",
+                image: "img/paya-parota.jpg",
+                category: "specials",
+                spice: 3,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Natu Kodi with Ragi Sangati",
+                price: "9.99€",
+                desc: "Country chicken with coconut powder, ginger, garlic paste with special masala",
+                image: "img/natu-kodi.jpg",
+                category: "specials",
+                spice: 3,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Natu Kodi Fry Biryani",
+                price: "8.99€",
+                desc: "Flavored biryani rice with country chicken fry with tamarind masala",
+                image: "img/natu-biryani.jpg",
+                category: "specials",
+                spice: 3,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Nellore Chepala Pulusu with White Rice",
+                price: "9.99€",
+                desc: "Fish with tamarind juice mixed with masalas with basmati rice",
+                image: "img/nellore-fish.jpg",
+                category: "specials",
+                spice: 3,
+                special: true,
+                veg: false,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Gongura Chicken",
+                price: "7.50€",
+                desc: "Chicken cooked with gongura leaves and spices",
+                image: "img/gongura-chicken.jpg",
+                category: "specials",
+                spice: 3,
+                special: true,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+
+            // Rice
+            {
+                name: "Plain White Rice",
+                price: "2.99€",
+                desc: "Steamed basmati rice",
+                image: "img/white-rice.jpg",
+                category: "rice",
+                spice: 0,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Plain Biryani Rice",
+                price: "3.50€",
+                desc: "Fragrant biryani rice without meat",
+                image: "img/biryani-rice.jpg",
+                category: "rice",
+                spice: 1,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Bagora Rice",
+                price: "3.50€",
+                desc: "Rice tempered with special bagora spices",
+                image: "img/bagora-rice.jpg",
+                category: "rice",
+                spice: 2,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Jira Rice",
+                price: "3.50€",
+                desc: "Cumin flavored rice",
+                image: "img/jeera-rice.jpg",
+                category: "rice",
+                spice: 1,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Veg Fried Rice",
+                price: "3.50€",
+                desc: "Vegetable fried rice",
+                image: "img/veg-fried-rice.jpg",
+                category: "rice",
+                spice: 1,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Gobi Fried Rice",
+                price: "3.99€",
+                desc: "Cauliflower fried rice",
+                image: "img/gobi-fried-rice.jpg",
+                category: "rice",
+                spice: 2,
+                special: false,
+                veg: true,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Paneer Fried Rice",
+                price: "4.50€",
+                desc: "Paneer with fried rice",
+                image: "img/paneer-fried-rice.jpg",
+                category: "rice",
+                spice: 2,
+                special: false,
+                veg: true,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Egg Fried Rice",
+                price: "3.50€",
+                desc: "Egg with fried rice",
+                image: "img/egg-fried-rice.jpg",
+                category: "rice",
+                spice: 1,
+                special: false,
+                veg: false,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Chicken Fried Rice",
+                price: "4.50€",
+                desc: "Chicken with fried rice",
+                image: "img/chicken-fried-rice.jpg",
+                category: "rice",
+                spice: 2,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+
+            // Noodles
+            {
+                name: "Veg Noodles",
+                price: "3.99€",
+                desc: "Vegetable noodles",
+                image: "img/veg-noodles.jpg",
+                category: "rice",
+                spice: 1,
+                special: false,
+                veg: true,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Gobi Noodles",
+                price: "4.50€",
+                desc: "Cauliflower noodles",
+                image: "img/gobi-noodles.jpg",
+                category: "rice",
+                spice: 2,
+                special: false,
+                veg: true,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Paneer Noodles",
+                price: "4.50€",
+                desc: "Paneer with noodles",
+                image: "img/paneer-noodles.jpg",
+                category: "rice",
+                spice: 2,
+                special: false,
+                veg: true,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Egg Fried Noodles",
+                price: "3.50€",
+                desc: "Egg with fried noodles",
+                image: "img/egg-noodles.jpg",
+                category: "rice",
+                spice: 1,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Chicken Fried Noodles",
+                price: "4.50€",
+                desc: "Chicken with fried noodles",
+                image: "img/chicken-noodles.jpg",
+                category: "rice",
+                spice: 2,
+                special: false,
+                veg: false,
+                glutenFree: false,
+                halal: true
+            },
+
+            // Breads
+            {
+                name: "Plain Naan",
+                price: "0.99€",
+                desc: "Traditional tandoori bread",
+                image: "img/plain-naan.jpg",
+                category: "bread",
+                spice: 0,
+                special: false,
+                veg: true,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Garlic Naan",
+                price: "1.50€",
+                desc: "Naan with garlic butter",
+                image: "img/garlic-naan.jpg",
+                category: "bread",
+                spice: 1,
+                special: false,
+                veg: true,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Butter Naan",
+                price: "1.50€",
+                desc: "Naan with butter",
+                image: "img/butter-naan.jpg",
+                category: "bread",
+                spice: 0,
+                special: false,
+                veg: true,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Tea (Bawarchi special)",
+                price: "£2.00",
+                desc: "Our signature masala chai with cardamom, ginger and secret spices",
+                image: "img/tea-bawarchi-special.jpg",
+                category: "tea_coffee",
+                spice: 1,
+                special: true,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Coffee",
+                price: "£2.00",
+                desc: "Traditional South Indian filter coffee with frothy milk",
+                image: "img/indian-filter-coffee.jpg",
+                category: "tea_coffee",
+                spice: 0,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Ice cream (all flavours)",
+                price: "£3.49",
+                desc: "Homemade kulfi in mango, pistachio, rose or vanilla",
+                image: "img/indian-kulfi.jpg",
+                category: "desserts",
+                spice: 0,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Gulab jamun (3 pcs)",
+                price: "£3.49",
+                desc: "Golden fried khoya balls in rose-cardamom syrup",
+                image: "img/gulab-jamun.jpg",
+                category: "desserts",
+                spice: 0,
+                special: false,
+                veg: true,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Double ka meeta",
+                price: "£3.49",
+                desc: "Hyderabadi bread pudding with saffron and dry fruits",
+                image: "img/double-ka-meetha.jpg",
+                category: "desserts",
+                spice: 0,
+                special: true,
+                veg: true,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Gulab jamun with ice cream",
+                price: "£4.49",
+                desc: "Warm gulab jamun served with cold vanilla kulfi",
+                image: "img/gulab-jamun-icecream.jpg",
+                category: "desserts",
+                spice: 0,
+                special: true,
+                veg: true,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Rasmalai (2 pcs)",
+                price: "£3.99",
+                desc: "Bengali cottage cheese patties in sweetened, flavored milk",
+                image: "img/rasmalai.jpg",
+                category: "desserts",
+                spice: 0,
+                special: true,
+                veg: true,
+                glutenFree: false,
+                halal: true
+            },
+            {
+                name: "Soft drink cans",
+                price: "£1.49",
+                desc: "Coca-Cola, Pepsi, Sprite or Fanta (330ml)",
+                image: "img/soft-drinks-can.jpg",
+                category: "drinks",
+                spice: 0,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Water",
+                price: "£1.49",
+                desc: "Bisleri mineral water (1L bottle)",
+                image: "img/mineral-water.jpg",
+                category: "drinks",
+                spice: 0,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Thums up",
+                price: "£2.00",
+                desc: "Strong Indian cola with bold flavor (300ml bottle)",
+                image: "img/thums-up-bottle.jpg",
+                category: "drinks",
+                spice: 0,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Limca",
+                price: "£2.00",
+                desc: "Sparkling lime-lemon drink (300ml bottle)",
+                image: "img/limca-bottle.jpg",
+                category: "drinks",
+                spice: 0,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Goli soda (all flavours)",
+                price: "£1.49",
+                desc: "Traditional carbonated drink in glass bottle (250ml)",
+                image: "img/goli-soda-bottle.jpg",
+                category: "drinks",
+                spice: 0,
+                special: true,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Schweppes Tonic water",
+                price: "£1.49",
+                desc: "Classic Indian tonic water (200ml)",
+                image: "img/schweppes-tonic.jpg",
+                category: "drinks",
+                spice: 0,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Red bull energy drink",
+                price: "£2.79",
+                desc: "Energy drink (250ml can)",
+                image: "img/red-bull-can.jpg",
+                category: "drinks",
+                spice: 0,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Mango lassi",
+                price: "£3.49",
+                desc: "Creamy yogurt drink with alphonso mango pulp",
+                image: "img/mango-lassi-glass.jpg",
+                category: "drinks",
+                spice: 0,
+                special: true,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Sweet lassi",
+                price: "£3.49",
+                desc: "Traditional sweet yogurt drink with rose water",
+                image: "img/sweet-lassi-glass.jpg",
+                category: "drinks",
+                spice: 0,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Salt lassi",
+                price: "£3.49",
+                desc: "Savory spiced yogurt drink with roasted cumin",
+                image: "img/salted-lassi-glass.jpg",
+                category: "drinks",
+                spice: 1,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Lemon juice salt (Fresh)",
+                price: "£3.49",
+                desc: "Fresh nimbu pani with black salt and mint",
+                image: "img/salted-lemonade.jpg",
+                category: "drinks",
+                spice: 1,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            },
+            {
+                name: "Lemon juice sweet (Fresh)",
+                price: "£3.49",
+                desc: "Fresh lemonade with sugar and basil seeds",
+                image: "img/sweet-lemonade.jpg",
+                category: "drinks",
+                spice: 0,
+                special: false,
+                veg: true,
+                glutenFree: true,
+                halal: true
+            }
+        ];
+        
+        // DOM Elements
+        const menuContent = document.getElementById('menu-content');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        
+        // Initialize the menu
+        function initMenu() {
+            renderMenu('all');
+            setupEventListeners();
+        }
+        
+        function renderMenu(filter) {
+            menuContent.innerHTML = '';
+            
+            if (filter === 'all') {
+                // Group items by category - initialize all possible categories
+                const categories = {
+                    'mandi': [],
+                    'biryani': [],
+                    'non-veg': [],
+                    'veg': [],
+                    'starters': [],
+                    'specials': [],
+                    'rice': [],
+                    'bread': [],
+                    'tea_coffee': [],
+                    'desserts': [],
+                    'drinks': []
+                };
+                
+                // Now safely push items to their categories
+                menuData.forEach(item => {
+                    if (categories[item.category]) {
+                        categories[item.category].push(item);
+                    }
+                });
+                
+                // Render each category
+                for (const [category, items] of Object.entries(categories)) {
+                    if (items.length > 0) {
+                        renderCategory(category, items);
+                    }
+                }
+            } else {
+                // Filter items by selected category
+                const filteredItems = menuData.filter(item => item.category === filter);
+                
+                if (filteredItems.length > 0) {
+                    renderCategory(filter, filteredItems);
+                } else {
+                    // Show empty state
+                    menuContent.innerHTML = `
+                        <div style="text-align: center; padding: 30px; color: #666;">
+                            <p>No items found in this category</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+        
+        function renderCategory(category, items) {
+            // Create category heading
+            const categoryHeading = document.createElement('div');
+            categoryHeading.className = 'menu-category';
+            
+            // Set icon based on category
+            let iconClass = '';
+            let categoryName = '';
+            
+            switch(category) {
+                case 'non-veg':
+                    iconClass = 'fa-drumstick-bite';
+                    categoryName = 'Non-Veg Curries';
+                    break;
+                case 'veg':
+                    iconClass = 'fa-carrot';
+                    categoryName = 'Vegetarian Curries';
+                    break;
+                case 'mandi':
+                    iconClass = 'fa-utensils';
+                    categoryName = 'Mandi Specials';
+                    break;
+                case 'biryani':
+                    iconClass = 'fa-utensils';
+                    categoryName = 'Biryani';
+                    break;
+                case 'starters':
+                    iconClass = 'fa-pepper-hot';
+                    categoryName = 'Starters';
+                    break;
+                case 'specials':
+                    iconClass = 'fa-star';
+                    categoryName = 'House Specials';
+                    break;
+                case 'rice':
+                    iconClass = 'fa-utensils';
+                    categoryName = 'Rice & Noodles';
+                    break;
+                case 'bread':
+                    iconClass = 'fa-bread-slice';
+                    categoryName = 'Breads';
+                    break;
+                case 'tea_coffee':
+                    iconClass = 'fa-mug-hot';
+                    categoryName = 'Tea & Coffee';
+                    break;
+                case 'desserts':
+                    iconClass = 'fa-ice-cream';
+                    categoryName = 'Desserts';
+                    break;
+                case 'drinks':
+                    iconClass = 'fa-glass-whiskey';
+                    categoryName = 'Drinks';
+                    break;
+            }
+            
+            categoryHeading.innerHTML = `
+                <i class="fas ${iconClass}"></i>
+                <span>${categoryName}</span>
+            `;
+            menuContent.appendChild(categoryHeading);
+            
+            // Create items container
+            const itemsContainer = document.createElement('div');
+            itemsContainer.className = 'menu-items-container';
+            
+            // Add items to container
+            items.forEach(item => {
+                itemsContainer.appendChild(createMenuItem(item));
+            });
+            
+            menuContent.appendChild(itemsContainer);
+        }
+        
+        // Create a menu item element
+        function createMenuItem(item) {
+            const menuItem = document.createElement('div');
+            menuItem.className = 'menu-item';
+            menuItem.dataset.category = item.category;
+            
+            // Determine tags and icons
+            const isVeg = item.veg;
+            const vegTag = isVeg 
+                ? '<span class="veg-tag">Veg</span>' 
+                : '<span class="non-veg-tag">Non-Veg</span>';
+            
+            // Create spice indicators
+            let spiceIcons = '';
+            for (let i = 0; i < 3; i++) {
+                const opacity = i < item.spice ? 1 : 0.3;
+                spiceIcons += `<i class="fas fa-pepper-hot spice-icon" style="opacity:${opacity}"></i>`;
+            }
+            
+            // Create additional icons
+            const icons = [];
+            if (item.halal) {
+                icons.push('<i class="fas fa-check-circle halal-icon" title="Halal"></i>');
+            }
+            if (item.glutenFree) {
+                icons.push('<i class="fas fa-bread-slice gluten-free-icon" title="Gluten Free"></i>');
+            }
+            if (item.spice > 2) {
+                icons.push('<i class="fas fa-pepper-hot spicy-icon" title="Spicy"></i>');
+            }
+            
+            // Handle items with options
+            let priceDisplay = item.price;
+            if (item.options && item.options.length > 0) {
+                priceDisplay = item.options.map(opt => `${opt.portion}: ${opt.price}`).join('<br>');
+            }
+            
+            menuItem.innerHTML = `
+                <div class="menu-item-img">
+                    <img src="${item.image}" alt="${item.name}">
+                </div>
+                <div class="menu-item-content">
+                    <div class="menu-item-header">
+                        <span class="menu-item-name">
+                            ${item.name}
+                            ${item.special ? '<span class="special-badge">Special</span>' : ''}
+                            ${vegTag}
+                        </span>
+                        <span class="menu-item-price">${priceDisplay}</span>
+                    </div>
+                    <p class="menu-item-desc">${item.desc}</p>
+                    <div class="menu-item-footer">
+                        ${item.spice > 0 ? `
+                        <div class="spice-level">
+                            <span class="spice-label">Spice:</span>
+                            ${spiceIcons}
+                        </div>
+                        ` : '<div></div>'}
+                        <div class="item-icons">
+                            ${icons.join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            return menuItem;
+        }
+        
+        // Setup event listeners
+        function setupEventListeners() {
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderMenu(btn.dataset.filter);
+                });
+            });
+        }
+        
+        // Initialize the menu
+        document.addEventListener('DOMContentLoaded', initMenu);
+        
+        // Make functions globally available
+        window.showSection = showSection;
+        window.updateBookingStatus = updateBookingStatus;
+        window.viewBookingDetails = viewBookingDetails;
+        window.refreshDashboard = refreshDashboard;
+        window.refreshBookings = refreshBookings;
+        window.refreshCustomers = refreshCustomers;
+        
+        // Automatically update the year
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
