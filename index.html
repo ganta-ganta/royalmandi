@@ -16,6 +16,15 @@ s1.setAttribute('crossorigin','*');
 s0.parentNode.insertBefore(s1,s0);
 })();
 </script>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7BR5Q3EK0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7BR5Q3EK0');
+</script>
 <!--End of Tawk.to Script-->
     
     <!-- Firebase SDK v9 -->
@@ -305,7 +314,7 @@ s0.parentNode.insertBefore(s1,s0);
         }
         
         .menu-item-img {
-    height: 200px; /* Fixed height for container */
+    height: 300px; /* Fixed height for container */
     overflow: hidden;
     position: relative;
     width: 100%; /* Ensures container takes full width of parent */
@@ -313,7 +322,7 @@ s0.parentNode.insertBefore(s1,s0);
 
 .menu-item-img img {
     width: 100%;
-    height: auto; /* Let height adjust automatically */
+    height: 100; /* Let height adjust automatically */
     object-fit: cover; /* Ensures image covers area without distortion */
     transition: transform 0.5s ease;
 }
