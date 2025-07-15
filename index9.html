@@ -1275,7 +1275,7 @@
                 <div class="hero-logo">
                     <i class="fas fa-utensils"></i>
                 </div>
-                
+                <img src="img/logo1.png" alt="The Royal Mandi" class="img-fluid">
                 <h1 class="hero-title">The Royal Mandi</h1>
                 <p class="hero-subtitle">Taste of Asia</p>
                 <p class="hero-description">
@@ -1283,23 +1283,7 @@
                     Our authentic flavors and premium ingredients create an unforgettable dining experience.
                 </p>
                 
-                <div class="hero-stats">
-                    <div class="hero-stat">
-                        <span class="hero-stat-number">
-                            <i class="fas fa-star"></i>
-                            4.9
-                        </span>
-                        <span class="hero-stat-label">Rating</span>
-                    </div>
-                    <div class="hero-stat">
-                        <span class="hero-stat-number">50+</span>
-                        <span class="hero-stat-label">Dishes</span>
-                    </div>
-                    <div class="hero-stat">
-                        <span class="hero-stat-number">15+</span>
-                        <span class="hero-stat-label">Years</span>
-                    </div>
-                </div>
+                
                 
                 <div class="hero-buttons">
                     <a href="#menu" class="btn btn-primary btn-lg">
@@ -2025,103 +2009,103 @@
         let customersData = [];
         
         // Menu data
-        const menuData = [
-    // Mandi Dishes
+       const menuData = [
+    // Mandi dishes
     {
         name: "Chicken Mandi",
-        price: "7.99€",
+        price: "£7.99",
         desc: "Basmati rice cooked with Indian aromatic spices, served with dry fruits",
         image: "img/chicken-mandi.jpg",
         category: "mandi",
         spice: 2,
         special: false,
         options: [
-            { portion: "1 person", price: "7.99€" },
-            { portion: "2 persons", price: "14.99€" }
+            { portion: "1 person", price: "£7.99" },
+            { portion: "2 persons", price: "£14.99" }
         ]
     },
     {
         name: "Tandoori Chicken Mandi",
-        price: "8.99€",
+        price: "£8.99",
         desc: "Basmati rice with tandoori chicken and aromatic spices",
         image: "img/tandoori-mandi.jpg",
         category: "mandi",
         spice: 3,
         special: true,
         options: [
-            { portion: "1 person", price: "8.99€" },
-            { portion: "2 persons", price: "16.99€" }
-        ]
-    },
-    {
-        name: "Chicken Juicy Mandi",
-        price: "9.99€",
-        desc: "Juicy chicken with aromatic mandi rice",
-        image: "img/juicy-mandi.jpg",
-        category: "mandi",
-        spice: 2,
-        special: true,
-        options: [
-            { portion: "1 person", price: "9.99€" },
-            { portion: "2 persons", price: "18.99€" }
-        ]
-    },
-    {
-        name: "Whole Mix Chicken Family Mandi",
-        price: "35.99€",
-        desc: "Family portion of mixed chicken mandi",
-        image: "img/family-mandi.jpg",
-        category: "mandi",
-        spice: 2,
-        special: true,
-        options: [
-            { portion: "4 persons", price: "35.99€" }
+            { portion: "1 person", price: "£8.99" },
+            { portion: "2 persons", price: "£16.99" }
         ]
     },
     {
         name: "Lamb Mandi",
-        price: "10.99€",
+        price: "£10.99",
         desc: "Tender lamb with aromatic mandi rice",
         image: "img/lamb-mandi.jpg",
         category: "mandi",
         spice: 2,
         special: false,
         options: [
-            { portion: "1 person", price: "10.99€" },
-            { portion: "2 persons", price: "20.99€" }
+            { portion: "1 person", price: "£10.99" },
+            { portion: "2 persons", price: "£20.99" }
+        ]
+    },
+    {
+        name: "Chicken Juicy Mandi",
+        price: "£9.99",
+        desc: "Juicy chicken with aromatic mandi rice",
+        image: "img/juicy-mandi.jpg",
+        category: "mandi",
+        spice: 2,
+        special: true,
+        options: [
+            { portion: "1 person", price: "£9.99" },
+            { portion: "2 persons", price: "£18.99" }
+        ]
+    },
+    {
+        name: "Whole Mix Chicken Family Mandi",
+        price: "£35.99",
+        desc: "Family portion of mixed chicken mandi",
+        image: "img/family-mandi.jpg",
+        category: "mandi",
+        spice: 2,
+        special: true,
+        options: [
+            { portion: "4 persons", price: "£35.99" }
         ]
     },
     {
         name: "Fish Mandi",
-        price: "8.99€",
+        price: "£8.99",
         desc: "Fresh fish with mandi rice and spices",
         image: "img/fish-mandi.jpg",
         category: "mandi",
         spice: 2,
         special: false,
         options: [
-            { portion: "1 person", price: "8.99€" },
-            { portion: "2 persons", price: "16.99€" }
+            { portion: "1 person", price: "£8.99" },
+            { portion: "2 persons", price: "£16.99" }
         ]
     },
     {
         name: "Veg Mandi",
-        price: "6.99€",
+        price: "£6.99",
         desc: "Vegetarian version with mixed vegetables",
         image: "img/veg-mandi.jpg",
         category: "mandi",
         spice: 1,
         special: false,
         options: [
-            { portion: "1 person", price: "6.99€" },
-            { portion: "2 persons", price: "12.99€" }
+            { portion: "1 person", price: "£6.99" },
+            { portion: "2 persons", price: "£12.99" }
         ]
     },
-
-    // Biryani
+    
+    // Biryani dishes
     {
         name: "Chicken Dum Biryani",
-        price: "4.50€",
+        price: "£4.50",
         desc: "Chicken mixed with yogurt, Indian spices, mint, onion & garlic mixed with basmati rice",
         image: "img/chicken-biryani.jpg",
         category: "biryani",
@@ -2129,8 +2113,35 @@
         special: false
     },
     {
+        name: "Lamb Dum Biryani",
+        price: "£6.50",
+        desc: "Lamb mixed with yogurt, Indian spices, and garlic with basmati rice",
+        image: "img/lamb-biryani.jpg",
+        category: "biryani",
+        spice: 3,
+        special: false
+    },
+    {
+        name: "Chicken Pot Biryani",
+        price: "£8.50",
+        desc: "Chicken biryani cooked in traditional pot",
+        image: "img/pot-biryani.jpg",
+        category: "biryani",
+        spice: 2,
+        special: true
+    },
+    {
+        name: "Vegetable Biryani",
+        price: "£5.99",
+        desc: "Mixed vegetables with fragrant basmati rice",
+        image: "img/vegetable-biryani.jpg",
+        category: "biryani",
+        spice: 1,
+        special: false
+    },
+    {
         name: "Chicken Fry Piece Biryani",
-        price: "5.99€",
+        price: "£5.99",
         desc: "Basmati biryani rice, with chicken spicy fry",
         image: "img/fry-biryani.jpg",
         category: "biryani",
@@ -2138,17 +2149,8 @@
         special: false
     },
     {
-        name: "Chicken Pot Biryani",
-        price: "8.50€",
-        desc: "Chicken biryani cooked with pot",
-        image: "img/pot-biryani.jpg",
-        category: "biryani",
-        spice: 2,
-        special: true
-    },
-    {
         name: "Chicken 65 Biryani",
-        price: "5.99€",
+        price: "£5.99",
         desc: "Chicken biryani rice with chicken 65",
         image: "img/chicken65-biryani.jpg",
         category: "biryani",
@@ -2157,7 +2159,7 @@
     },
     {
         name: "Chicken Tikka Biryani",
-        price: "6.99€",
+        price: "£6.99",
         desc: "Biryani rice with chicken tikka",
         image: "img/tikka-biryani.jpg",
         category: "biryani",
@@ -2166,7 +2168,7 @@
     },
     {
         name: "Restaurant Special Chicken Biryani",
-        price: "7.50€",
+        price: "£7.50",
         desc: "Special chicken biryani with chef's secret recipe",
         image: "img/special-biryani.jpg",
         category: "biryani",
@@ -2174,17 +2176,8 @@
         special: true
     },
     {
-        name: "Lamb Dum Biryani",
-        price: "6.50€",
-        desc: "Lamb mixed with yogurt, Indian spices, and garlic with basmati rice",
-        image: "img/lamb-biryani.jpg",
-        category: "biryani",
-        spice: 3,
-        special: false
-    },
-    {
         name: "Lamb Pot Biryani",
-        price: "9.99€",
+        price: "£9.99",
         desc: "Lamb biryani cooked with pot",
         image: "img/lamb-pot-biryani.jpg",
         category: "biryani",
@@ -2193,7 +2186,7 @@
     },
     {
         name: "Lamb Fry Piece Biryani",
-        price: "7.50€",
+        price: "£7.50",
         desc: "Biryani rice with lamb special fry",
         image: "img/lamb-fry-biryani.jpg",
         category: "biryani",
@@ -2202,7 +2195,7 @@
     },
     {
         name: "Nihari Lamb Biryani",
-        price: "9.50€",
+        price: "£9.50",
         desc: "Biryani with lamb shank special fry",
         image: "img/nihari-biryani.jpg",
         category: "biryani",
@@ -2211,7 +2204,7 @@
     },
     {
         name: "Restaurant Special Lamb Biryani",
-        price: "9.50€",
+        price: "£9.50",
         desc: "Special lamb biryani with chef's secret recipe",
         image: "img/special-lamb-biryani.jpg",
         category: "biryani",
@@ -2220,7 +2213,7 @@
     },
     {
         name: "Prawns Dum Biryani",
-        price: "6.99€",
+        price: "£6.99",
         desc: "Fresh prawns cooked with aromatic spices and rice",
         image: "img/prawn-biryani.jpg",
         category: "biryani",
@@ -2229,7 +2222,7 @@
     },
     {
         name: "Prawns Pot Biryani",
-        price: "9.50€",
+        price: "£9.50",
         desc: "Prawn biryani cooked with pot",
         image: "img/prawn-pot-biryani.jpg",
         category: "biryani",
@@ -2238,7 +2231,7 @@
     },
     {
         name: "Prawns Fry Piece Biryani",
-        price: "7.50€",
+        price: "£7.50",
         desc: "Biryani rice with fried prawns",
         image: "img/prawn-fry-biryani.jpg",
         category: "biryani",
@@ -2247,7 +2240,7 @@
     },
     {
         name: "Fish Fry Piece Biryani",
-        price: "8.50€",
+        price: "£8.50",
         desc: "Biryani rice with fried fish pieces",
         image: "img/fish-fry-biryani.jpg",
         category: "biryani",
@@ -2256,7 +2249,7 @@
     },
     {
         name: "Gongura Chicken Biryani",
-        price: "7.50€",
+        price: "£7.50",
         desc: "Chicken biryani with gongura leaves",
         image: "img/gongura-chicken-biryani.jpg",
         category: "biryani",
@@ -2265,7 +2258,7 @@
     },
     {
         name: "Gongura Lamb Biryani",
-        price: "8.99€",
+        price: "£8.99",
         desc: "Lamb biryani with gongura leaves",
         image: "img/gongura-lamb-biryani.jpg",
         category: "biryani",
@@ -2274,36 +2267,45 @@
     },
     {
         name: "Gongura Prawns Biryani",
-        price: "8.99€",
+        price: "£8.99",
         desc: "Prawn biryani with gongura leaves",
         image: "img/gongura-prawn-biryani.jpg",
         category: "biryani",
         spice: 3,
         special: true
     },
-    {
-        name: "Vegetable Biryani",
-        price: "5.99€",
-        desc: "Mixed vegetables with fragrant basmati rice",
-        image: "img/vegetable-biryani.jpg",
-        category: "biryani",
-        spice: 1,
-        special: false
-    },
-
-    // Non-Veg Main
+    
+    // Non-veg curries
     {
         name: "Butter Chicken Masala",
-        price: "6.50€",
-        desc: "Chicken cooked with onion, tomato, cashew",
+        price: "£6.50",
+        desc: "Chicken cooked with onion, tomato, cashew in rich creamy sauce",
         image: "img/butter-chicken.jpg",
         category: "non-veg",
         spice: 1,
         special: false
     },
     {
+        name: "Lamb Curry",
+        price: "£7.50",
+        desc: "Traditional lamb curry with aromatic spices",
+        image: "img/lamb-curry.jpg",
+        category: "non-veg",
+        spice: 3,
+        special: false
+    },
+    {
+        name: "Chicken Tikka Masala",
+        price: "£6.50",
+        desc: "Grilled chicken tikka in spiced tomato sauce",
+        image: "img/tikka-chicken.jpg",
+        category: "non-veg",
+        spice: 2,
+        special: true
+    },
+    {
         name: "Hyderabadi Chicken Masala",
-        price: "5.50€",
+        price: "£5.50",
         desc: "Chicken cooked with onion, tomato, spices",
         image: "img/hyderabadi-chicken.jpg",
         category: "non-veg",
@@ -2311,17 +2313,8 @@
         special: false
     },
     {
-        name: "Tikka Chicken Masala",
-        price: "6.50€",
-        desc: "Chicken tikka boiled cooked with Indian spicy",
-        image: "img/tikka-chicken.jpg",
-        category: "non-veg",
-        spice: 2,
-        special: true
-    },
-    {
         name: "Gongura Chicken Curry",
-        price: "6.99€",
+        price: "£6.99",
         desc: "Chicken cooked with gongura leaves and spices",
         image: "img/gongura-chicken.jpg",
         category: "non-veg",
@@ -2330,7 +2323,7 @@
     },
     {
         name: "Chicken Kurma",
-        price: "6.50€",
+        price: "£6.50",
         desc: "Mild chicken curry with cashew paste",
         image: "img/chicken-kurma.jpg",
         category: "non-veg",
@@ -2339,7 +2332,7 @@
     },
     {
         name: "Palak Chicken Curry",
-        price: "6.99€",
+        price: "£6.99",
         desc: "Chicken cooked with spinach and spices",
         image: "img/palak-chicken.jpg",
         category: "non-veg",
@@ -2347,17 +2340,8 @@
         special: false
     },
     {
-        name: "Lamb Curry",
-        price: "7.50€",
-        desc: "Traditional lamb curry with spices",
-        image: "img/lamb-curry.jpg",
-        category: "non-veg",
-        spice: 3,
-        special: false
-    },
-    {
         name: "Lamb Rogan Josh",
-        price: "7.99€",
+        price: "£7.99",
         desc: "Aromatic lamb curry with Kashmiri spices",
         image: "img/rogan-josh.jpg",
         category: "non-veg",
@@ -2366,7 +2350,7 @@
     },
     {
         name: "Butter Lamb Masala",
-        price: "7.50€",
+        price: "£7.50",
         desc: "Lamb cooked in rich tomato and butter sauce",
         image: "img/butter-lamb.jpg",
         category: "non-veg",
@@ -2375,7 +2359,7 @@
     },
     {
         name: "Gongura Lamb Curry",
-        price: "7.99€",
+        price: "£7.99",
         desc: "Lamb cooked with gongura leaves and spices",
         image: "img/gongura-lamb.jpg",
         category: "non-veg",
@@ -2384,7 +2368,7 @@
     },
     {
         name: "Chittinod Lamb Curry",
-        price: "7.50€",
+        price: "£7.50",
         desc: "Lamb curry with special Chittinod spices",
         image: "img/chittinod-lamb.jpg",
         category: "non-veg",
@@ -2393,7 +2377,7 @@
     },
     {
         name: "Prawns Curry",
-        price: "8.50€",
+        price: "£8.50",
         desc: "Prawns cooked in coconut based curry",
         image: "img/prawns-curry.jpg",
         category: "non-veg",
@@ -2402,18 +2386,18 @@
     },
     {
         name: "Gongura Prawns Curry",
-        price: "8.99€",
+        price: "£8.99",
         desc: "Prawns cooked with gongura leaves and spices",
         image: "img/gongura-prawns.jpg",
         category: "non-veg",
         spice: 3,
         special: true
     },
-
-    // Veg Main
+    
+    // Vegetarian dishes
     {
         name: "Paneer Butter Masala",
-        price: "6.99€",
+        price: "£6.99",
         desc: "Cottage cheese in rich creamy tomato sauce",
         image: "img/paneer-butter.jpg",
         category: "veg",
@@ -2421,8 +2405,17 @@
         special: false
     },
     {
+        name: "Dal Makhani",
+        price: "£5.50",
+        desc: "Creamy black lentils cooked with butter and cream",
+        image: "img/dal-makhani.jpg",
+        category: "veg",
+        spice: 1,
+        special: false
+    },
+    {
         name: "Mixed Vegetable Curry",
-        price: "5.99€",
+        price: "£5.99",
         desc: "Assorted vegetables cooked in mild spices",
         image: "img/mixed-veg.jpg",
         category: "veg",
@@ -2431,7 +2424,7 @@
     },
     {
         name: "Bagora Baigan Masala",
-        price: "5.99€",
+        price: "£5.99",
         desc: "Eggplant cooked in special Bagora style",
         image: "img/baigan-masala.jpg",
         category: "veg",
@@ -2440,7 +2433,7 @@
     },
     {
         name: "Rajma Curry",
-        price: "5.99€",
+        price: "£5.99",
         desc: "Kidney beans cooked in onion-tomato gravy",
         image: "img/rajma-curry.jpg",
         category: "veg",
@@ -2449,7 +2442,7 @@
     },
     {
         name: "Dal Curry",
-        price: "5.50€",
+        price: "£5.50",
         desc: "Yellow lentils tempered with spices",
         image: "img/dal-curry.jpg",
         category: "veg",
@@ -2458,27 +2451,45 @@
     },
     {
         name: "Tamota Dal",
-        price: "5.99€",
+        price: "£5.99",
         desc: "Lentils cooked with tomatoes and spices",
         image: "img/tamota-dal.jpg",
         category: "veg",
         spice: 1,
         special: false
     },
+    
+    // Starters
     {
-        name: "Dal Makhani",
-        price: "5.50€",
-        desc: "Creamy black lentils cooked with butter",
-        image: "img/dal-makhani.jpg",
-        category: "veg",
-        spice: 1,
+        name: "Chicken 65",
+        price: "£5.99",
+        desc: "Marinated chicken deep fried with curry leaves and spices",
+        image: "img/chicken-65.jpg",
+        category: "starters",
+        spice: 3,
         special: false
     },
-
-    // Veg Starters
+    {
+        name: "Paneer Tikka",
+        price: "£6.99",
+        desc: "Marinated cottage cheese grilled in tandoor",
+        image: "img/paneer-tikka.jpg",
+        category: "starters",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Tandoori Chicken",
+        price: "£7.99",
+        desc: "Chicken marinated in yogurt and spices, grilled in tandoor",
+        image: "img/tandoori-chicken.jpg",
+        category: "starters",
+        spice: 2,
+        special: false
+    },
     {
         name: "Paneer Manchuria",
-        price: "5.99€",
+        price: "£5.99",
         desc: "Marinated paneer, onion, chillies, curry leaves, sauces & spices",
         image: "img/paneer-manchuria.jpg",
         category: "starters",
@@ -2487,7 +2498,7 @@
     },
     {
         name: "Chilli Paneer",
-        price: "5.99€",
+        price: "£5.99",
         desc: "Marinated paneer, bell pepper, onion, sauces & spices",
         image: "img/chilli-paneer.jpg",
         category: "starters",
@@ -2496,7 +2507,7 @@
     },
     {
         name: "Paneer Pepper Roast",
-        price: "5.99€",
+        price: "£5.99",
         desc: "Paneer mixed with onion, leaves, chillies, pepper & spices",
         image: "img/paneer-pepper.jpg",
         category: "starters",
@@ -2505,7 +2516,7 @@
     },
     {
         name: "Paneer 65 Dry",
-        price: "5.50€",
+        price: "£5.50",
         desc: "Marinated paneer with oil deep fry",
         image: "img/paneer-65.jpg",
         category: "starters",
@@ -2513,64 +2524,8 @@
         special: false
     },
     {
-        name: "Paneer Tikka",
-        price: "6.99€",
-        desc: "Marinated paneer with tandoori steam",
-        image: "img/paneer-tikka.jpg",
-        category: "starters",
-        spice: 2,
-        special: false
-    },
-    {
-        name: "Veg Manchuria",
-        price: "4.99€",
-        desc: "Carrot, cabbage, cauliflower, mixed with spices",
-        image: "img/veg-manchuria.jpg",
-        category: "starters",
-        spice: 2,
-        special: false
-    },
-    {
-        name: "Gobi Manchuria",
-        price: "5.50€",
-        desc: "Cauliflower mixed with cornflour, toss with sauces & spices",
-        image: "img/gobi-manchuria.jpg",
-        category: "starters",
-        spice: 3,
-        special: false
-    },
-    {
-        name: "Gobi 65 Dry",
-        price: "5.50€",
-        desc: "Marinated cauliflower mixed with cornflour, crispy deep fry",
-        image: "img/gobi-65.jpg",
-        category: "starters",
-        spice: 2,
-        special: false
-    },
-    {
-        name: "Spicy Gobi Roast",
-        price: "5.99€",
-        desc: "Marinated cauliflower, toss with chilli paste & Indian spices",
-        image: "img/spicy-gobi.jpg",
-        category: "starters",
-        spice: 3,
-        special: false
-    },
-    {
-        name: "Hariyali Mushroom Roast",
-        price: "5.50€",
-        desc: "Mushroom with chillies, onion, curry leaves and spices",
-        image: "img/hariyali-mushroom.jpg",
-        category: "starters",
-        spice: 2,
-        special: false
-    },
-
-    // Non-Veg Starters
-    {
         name: "Kodi Vepudu / Chicken Roast",
-        price: "6.50€",
+        price: "£6.50",
         desc: "Onions, chili, chicken, Indian spices",
         image: "img/chicken-roast.jpg",
         category: "starters",
@@ -2578,17 +2533,8 @@
         special: false
     },
     {
-        name: "Chicken 65",
-        price: "5.99€",
-        desc: "Marinated chicken, deep fry oil, garlic ginger, yogurt",
-        image: "img/chicken-65.jpg",
-        category: "starters",
-        spice: 3,
-        special: false
-    },
-    {
         name: "Chicken Manchurian",
-        price: "5.99€",
+        price: "£5.99",
         desc: "Marinated chicken, tossed with sauces",
         image: "img/chicken-manchurian.jpg",
         category: "starters",
@@ -2597,7 +2543,7 @@
     },
     {
         name: "Chilli Chicken",
-        price: "5.99€",
+        price: "£5.99",
         desc: "Marinated chicken, onion, chili, mixed with sauces",
         image: "img/chilli-chicken.jpg",
         category: "starters",
@@ -2606,7 +2552,7 @@
     },
     {
         name: "Pepper Chicken",
-        price: "6.50€",
+        price: "£6.50",
         desc: "Chicken with pepper, onion, Indian spices",
         image: "img/pepper-chicken.jpg",
         category: "starters",
@@ -2615,7 +2561,7 @@
     },
     {
         name: "Chicken 555",
-        price: "6.99€",
+        price: "£6.99",
         desc: "Marinated sliced chicken, onion, chili, mixed with Indian spices",
         image: "img/chicken-555.jpg",
         category: "starters",
@@ -2624,7 +2570,7 @@
     },
     {
         name: "Guntur Chicken",
-        price: "6.50€",
+        price: "£6.50",
         desc: "Boiled chicken with Indian aromatic spices",
         image: "img/guntur-chicken.jpg",
         category: "starters",
@@ -2633,7 +2579,7 @@
     },
     {
         name: "Andra Style Chilli Chicken",
-        price: "6.99€",
+        price: "£6.99",
         desc: "Boiled chicken with chili paste, curry leaves, spices",
         image: "img/andra-chilli-chicken.jpg",
         category: "starters",
@@ -2642,7 +2588,7 @@
     },
     {
         name: "Chicken Lollypops",
-        price: "6.99€",
+        price: "£6.99",
         desc: "Marinated lollipops mixed with sauces",
         image: "img/chicken-lollypop.jpg",
         category: "starters",
@@ -2651,7 +2597,7 @@
     },
     {
         name: "Lamb Ghee Roast",
-        price: "8.50€",
+        price: "£8.50",
         desc: "Lamb with deep ghee roast, garlic, ginger, spicy",
         image: "img/lamb-ghee.jpg",
         category: "starters",
@@ -2660,7 +2606,7 @@
     },
     {
         name: "Lamb Pepper Fry Roast",
-        price: "8.50€",
+        price: "£8.50",
         desc: "Lamb deep roast with pepper & spices",
         image: "img/lamb-pepper.jpg",
         category: "starters",
@@ -2669,7 +2615,7 @@
     },
     {
         name: "Chilli Lamb Roast",
-        price: "8.50€",
+        price: "£8.50",
         desc: "Lamb with chillis, onion, with spices",
         image: "img/chilli-lamb.jpg",
         category: "starters",
@@ -2678,7 +2624,7 @@
     },
     {
         name: "Lamb Sukka",
-        price: "8.50€",
+        price: "£8.50",
         desc: "Lamb with aromatic spices",
         image: "img/lamb-sukka.jpg",
         category: "starters",
@@ -2687,7 +2633,7 @@
     },
     {
         name: "Chicken Liver Fry",
-        price: "5.99€",
+        price: "£5.99",
         desc: "Chicken liver fry with onion & chilly with spices",
         image: "img/chicken-liver.jpg",
         category: "starters",
@@ -2696,7 +2642,7 @@
     },
     {
         name: "Lamb Liver Fry",
-        price: "6.99€",
+        price: "£6.99",
         desc: "Lamb liver fry with onions and spices",
         image: "img/lamb-liver.jpg",
         category: "starters",
@@ -2705,18 +2651,16 @@
     },
     {
         name: "Lamb Brain Fry / Bega Fry",
-        price: "7.50€",
+        price: "£7.50",
         desc: "Fried lamb brain with spices",
         image: "img/lamb-brain.jpg",
         category: "starters",
         spice: 2,
         special: true
     },
-
-    // Seafood Starters
     {
         name: "Apolo Fish",
-        price: "8.50€",
+        price: "£8.50",
         desc: "Marinated fish with deep fry toss with sauces",
         image: "img/apolo-fish.jpg",
         category: "starters",
@@ -2725,7 +2669,7 @@
     },
     {
         name: "Fish Tawa Fry",
-        price: "8.50€",
+        price: "£8.50",
         desc: "Marinated fish, yogurt, ginger garlic, spices",
         image: "img/fish-tawa.jpg",
         category: "starters",
@@ -2734,7 +2678,7 @@
     },
     {
         name: "Fish Deep Fry",
-        price: "8.50€",
+        price: "£8.50",
         desc: "Marinated fish with oil deep fry",
         image: "img/fish-deep-fry.jpg",
         category: "starters",
@@ -2743,7 +2687,7 @@
     },
     {
         name: "Hoigeli Fish Roast",
-        price: "8.99€",
+        price: "£8.99",
         desc: "Fish with green chilli paste & masala",
         image: "img/hoigeli-fish.jpg",
         category: "starters",
@@ -2752,7 +2696,7 @@
     },
     {
         name: "Prawn Majestic",
-        price: "8.99€",
+        price: "£8.99",
         desc: "Marinated prawns with garlic, ginger, spicy, yogurt",
         image: "img/prawn-majestic.jpg",
         category: "starters",
@@ -2761,7 +2705,7 @@
     },
     {
         name: "Chilli Prawns",
-        price: "8.99€",
+        price: "£8.99",
         desc: "Bell pepper, onion, yogurt, saucy",
         image: "img/chilli-prawn.jpg",
         category: "starters",
@@ -2770,7 +2714,7 @@
     },
     {
         name: "Prawns Manchuria",
-        price: "8.99€",
+        price: "£8.99",
         desc: "Onion, chilli, curry leaves, garlic, saucy",
         image: "img/prawn-manchuria.jpg",
         category: "starters",
@@ -2779,29 +2723,63 @@
     },
     {
         name: "Prawn 65 Dry",
-        price: "8.99€",
+        price: "£8.99",
         desc: "Marinated prawns deep fried with spices",
         image: "img/prawn-65.jpg",
         category: "starters",
         spice: 2,
         special: false
     },
-
-    // Tandoori & Grill
     {
-        name: "Tandoori Chicken",
-        price: "7.99€",
-        desc: "Chicken, yogurt, Indian spices",
-        image: "img/tandoori-chicken.jpg",
+        name: "Veg Manchuria",
+        price: "£4.99",
+        desc: "Carrot, cabbage, cauliflower, mixed with spices",
+        image: "img/veg-manchuria.jpg",
         category: "starters",
         spice: 2,
         special: false
     },
-
+    {
+        name: "Gobi Manchuria",
+        price: "£5.50",
+        desc: "Cauliflower mixed with cornflour, toss with sauces & spices",
+        image: "img/gobi-manchuria.jpg",
+        category: "starters",
+        spice: 3,
+        special: false
+    },
+    {
+        name: "Gobi 65 Dry",
+        price: "£5.50",
+        desc: "Marinated cauliflower mixed with cornflour, crispy deep fry",
+        image: "img/gobi-65.jpg",
+        category: "starters",
+        spice: 2,
+        special: false
+    },
+    {
+        name: "Spicy Gobi Roast",
+        price: "£5.99",
+        desc: "Marinated cauliflower, toss with chilli paste & Indian spices",
+        image: "img/spicy-gobi.jpg",
+        category: "starters",
+        spice: 3,
+        special: false
+    },
+    {
+        name: "Hariyali Mushroom Roast",
+        price: "£5.50",
+        desc: "Mushroom with chillies, onion, curry leaves and spices",
+        image: "img/hariyali-mushroom.jpg",
+        category: "starters",
+        spice: 2,
+        special: false
+    },
+    
     // Specials
     {
         name: "Paya with Parota",
-        price: "9.99€",
+        price: "£9.99",
         desc: "Lamb leg with onion paste & garlic paste with spices pulusu",
         image: "img/paya-parota.jpg",
         category: "specials",
@@ -2810,7 +2788,7 @@
     },
     {
         name: "Natu Kodi with Ragi Sangati",
-        price: "9.99€",
+        price: "£9.99",
         desc: "Country chicken with coconut powder, ginger, garlic paste with special masala",
         image: "img/natu-kodi.jpg",
         category: "specials",
@@ -2819,7 +2797,7 @@
     },
     {
         name: "Natu Kodi Fry Biryani",
-        price: "8.99€",
+        price: "£8.99",
         desc: "Flavored biryani rice with country chicken fry with tamarind masala",
         image: "img/natu-biryani.jpg",
         category: "specials",
@@ -2828,7 +2806,7 @@
     },
     {
         name: "Nellore Chepala Pulusu with White Rice",
-        price: "9.99€",
+        price: "£9.99",
         desc: "Fish with tamarind juice mixed with masalas with basmati rice",
         image: "img/nellore-fish.jpg",
         category: "specials",
@@ -2837,27 +2815,45 @@
     },
     {
         name: "Gongura Chicken",
-        price: "7.50€",
+        price: "£7.50",
         desc: "Chicken cooked with gongura leaves and spices",
         image: "img/gongura-chicken.jpg",
         category: "specials",
         spice: 3,
         special: true
     },
-
-    // Rice
+    
+    // Rice dishes
     {
-        name: "Plain White Rice",
-        price: "2.99€",
-        desc: "Steamed basmati rice",
+        name: "Plain Basmati Rice",
+        price: "£2.99",
+        desc: "Steamed fragrant basmati rice",
         image: "img/white-rice.jpg",
         category: "rice",
         spice: 0,
         special: false
     },
     {
+        name: "Jeera Rice",
+        price: "£3.50",
+        desc: "Basmati rice flavored with cumin seeds",
+        image: "img/jeera-rice.jpg",
+        category: "rice",
+        spice: 1,
+        special: false
+    },
+    {
+        name: "Chicken Fried Rice",
+        price: "£4.50",
+        desc: "Stir-fried rice with chicken and vegetables",
+        image: "img/chicken-fried-rice.jpg",
+        category: "rice",
+        spice: 2,
+        special: false
+    },
+    {
         name: "Plain Biryani Rice",
-        price: "3.50€",
+        price: "£3.50",
         desc: "Fragrant biryani rice without meat",
         image: "img/biryani-rice.jpg",
         category: "rice",
@@ -2866,7 +2862,7 @@
     },
     {
         name: "Bagora Rice",
-        price: "3.50€",
+        price: "£3.50",
         desc: "Rice tempered with special bagora spices",
         image: "img/bagora-rice.jpg",
         category: "rice",
@@ -2874,17 +2870,8 @@
         special: false
     },
     {
-        name: "Jira Rice",
-        price: "3.50€",
-        desc: "Cumin flavored rice",
-        image: "img/jeera-rice.jpg",
-        category: "rice",
-        spice: 1,
-        special: false
-    },
-    {
         name: "Veg Fried Rice",
-        price: "3.50€",
+        price: "£3.50",
         desc: "Vegetable fried rice",
         image: "img/veg-fried-rice.jpg",
         category: "rice",
@@ -2893,7 +2880,7 @@
     },
     {
         name: "Gobi Fried Rice",
-        price: "3.99€",
+        price: "£3.99",
         desc: "Cauliflower fried rice",
         image: "img/gobi-fried-rice.jpg",
         category: "rice",
@@ -2902,7 +2889,7 @@
     },
     {
         name: "Paneer Fried Rice",
-        price: "4.50€",
+        price: "£4.50",
         desc: "Paneer with fried rice",
         image: "img/paneer-fried-rice.jpg",
         category: "rice",
@@ -2911,7 +2898,7 @@
     },
     {
         name: "Egg Fried Rice",
-        price: "3.50€",
+        price: "£3.50",
         desc: "Egg with fried rice",
         image: "img/egg-fried-rice.jpg",
         category: "rice",
@@ -2919,19 +2906,8 @@
         special: false
     },
     {
-        name: "Chicken Fried Rice",
-        price: "4.50€",
-        desc: "Chicken with fried rice",
-        image: "img/chicken-fried-rice.jpg",
-        category: "rice",
-        spice: 2,
-        special: false
-    },
-
-    // Noodles
-    {
         name: "Veg Noodles",
-        price: "3.99€",
+        price: "£3.99",
         desc: "Vegetable noodles",
         image: "img/veg-noodles.jpg",
         category: "rice",
@@ -2940,7 +2916,7 @@
     },
     {
         name: "Gobi Noodles",
-        price: "4.50€",
+        price: "£4.50",
         desc: "Cauliflower noodles",
         image: "img/gobi-noodles.jpg",
         category: "rice",
@@ -2949,7 +2925,7 @@
     },
     {
         name: "Paneer Noodles",
-        price: "4.50€",
+        price: "£4.50",
         desc: "Paneer with noodles",
         image: "img/paneer-noodles.jpg",
         category: "rice",
@@ -2958,7 +2934,7 @@
     },
     {
         name: "Egg Fried Noodles",
-        price: "3.50€",
+        price: "£3.50",
         desc: "Egg with fried noodles",
         image: "img/egg-noodles.jpg",
         category: "rice",
@@ -2967,19 +2943,19 @@
     },
     {
         name: "Chicken Fried Noodles",
-        price: "4.50€",
+        price: "£4.50",
         desc: "Chicken with fried noodles",
         image: "img/chicken-noodles.jpg",
         category: "rice",
         spice: 2,
         special: false
     },
-
+    
     // Breads
     {
         name: "Plain Naan",
-        price: "0.99€",
-        desc: "Traditional tandoori bread",
+        price: "£0.99",
+        desc: "Traditional tandoor-baked bread",
         image: "img/plain-naan.jpg",
         category: "bread",
         spice: 0,
@@ -2987,8 +2963,8 @@
     },
     {
         name: "Garlic Naan",
-        price: "1.50€",
-        desc: "Naan with garlic butter",
+        price: "£1.50",
+        desc: "Naan bread topped with garlic and herbs",
         image: "img/garlic-naan.jpg",
         category: "bread",
         spice: 1,
@@ -2996,94 +2972,134 @@
     },
     {
         name: "Butter Naan",
-        price: "1.50€",
-        desc: "Naan with butter",
+        price: "£1.50",
+        desc: "Soft naan bread brushed with butter",
         image: "img/butter-naan.jpg",
         category: "bread",
         spice: 0,
         special: false
     },
+    
+    // Desserts
     {
-            "name": "Tea ",
-            "price": "£2.00",
-            "desc": "Our signature masala chai with cardamom, ginger and secret spices",
-            "image": "img/tea-bawarchi-special.jpg",
-            "category": "tea_coffee",
-            "spice": 1,
-            "special": true
-        },
-        {
-            "name": "Filter Coffee",
-            "price": "£2.00",
-            "desc": "Traditional South Indian filter coffee with frothy milk",
-            "image": "img/indian-filter-coffee.jpg",
-            "category": "tea_coffee",
-            "spice": 0,
-            "special": false
-        },
-        {
-            "name": "Ice cream (all flavours)",
-            "price": "£3.49",
-            "desc": "Homemade kulfi in mango, pistachio, rose or vanilla",
-            "image": "img/indian-kulfi.jpg",
-            "category": "desserts",
-            "spice": 0,
-            "special": false
-        },
-        {
-            "name": "Gulab jamun (3 pcs)",
-            "price": "£3.49",
-            "desc": "Golden fried khoya balls in rose-cardamom syrup",
-            "image": "img/gulab-jamun.jpg",
-            "category": "desserts",
-            "spice": 0,
-            "special": false
-        },
-        {
-            "name": "Double ka meeta",
-            "price": "£3.49",
-            "desc": "Hyderabadi bread pudding with saffron and dry fruits",
-            "image": "img/double-ka-meetha.jpg",
-            "category": "desserts",
-            "spice": 0,
-            "special": true
-        },
-        {
-            "name": "Gulab jamun with ice cream",
-            "price": "£4.49",
-            "desc": "Warm gulab jamun served with cold vanilla kulfi",
-            "image": "img/gulab-jamun-icecream.jpg",
-            "category": "desserts",
-            "spice": 0,
-            "special": true
-        },
-        {
-            "name": "Rasmalai (2 pcs)",
-            "price": "£3.99",
-            "desc": "Bengali cottage cheese patties in sweetened, flavored milk",
-            "image": "img/rasmalai.jpg",
-            "category": "desserts",
-            "spice": 0,
-            "special": true
-        },
-        {
-            "name": "Soft drink cans",
-            "price": "£1.49",
-            "desc": "Coca-Cola, Pepsi, Sprite or Fanta (330ml)",
-            "image": "img/soft-drinks-can.jpg",
-            "category": "drinks",
-            "spice": 0,
-            "special": false
-        },
-        {
-            "name": "Water",
-            "price": "£1.49",
-            "desc": "Bisleri mineral water (1L bottle)",
-            "image": "img/mineral-water.jpg",
-            "category": "drinks",
-            "spice": 0,
-            "special": false
-        },
+        name: "Gulab Jamun (3 pcs)",
+        price: "£3.49",
+        desc: "Golden fried dumplings in rose-cardamom syrup",
+        image: "img/gulab-jamun.jpg",
+        category: "desserts",
+        spice: 0,
+        special: false
+    },
+    {
+        name: "Kulfi Ice Cream",
+        price: "£3.49",
+        desc: "Traditional Indian ice cream with pistachios",
+        image: "img/indian-kulfi.jpg",
+        category: "desserts",
+        spice: 0,
+        special: false
+    },
+    {
+        name: "Rasmalai (2 pcs)",
+        price: "£3.99",
+        desc: "Soft cheese patties in sweetened milk",
+        image: "img/rasmalai.jpg",
+        category: "desserts",
+        spice: 0,
+        special: true
+    },
+    {
+        name: "Double ka meeta",
+        price: "£3.49",
+        desc: "Hyderabadi bread pudding with saffron and dry fruits",
+        image: "img/double-ka-meetha.jpg",
+        category: "desserts",
+        spice: 0,
+        special: true
+    },
+    {
+        name: "Gulab jamun with ice cream",
+        price: "£4.49",
+        desc: "Warm gulab jamun served with cold vanilla kulfi",
+        image: "img/gulab-jamun-icecream.jpg",
+        category: "desserts",
+        spice: 0,
+        special: true
+    },
+    {
+        name: "Ice cream (all flavours)",
+        price: "£3.49",
+        desc: "Homemade kulfi in mango, pistachio, rose or vanilla",
+        image: "img/indian-kulfi.jpg",
+        category: "desserts",
+        spice: 0,
+        special: false
+    },
+    
+    // Drinks
+    {
+        name: "Mango Lassi",
+        price: "£3.49",
+        desc: "Creamy yogurt drink with mango",
+        image: "img/mango-lassi-glass.jpg",
+        category: "drinks",
+        spice: 0,
+        special: true
+    },
+    {
+        name: "Masala Tea",
+        price: "£2.00",
+        desc: "Traditional spiced tea with cardamom and ginger",
+        image: "img/tea-bawarchi-special.jpg",
+        category: "drinks",
+        spice: 1,
+        special: true
+    },
+    {
+        name: "Fresh Lime Soda",
+        price: "£2.50",
+        desc: "Refreshing lime drink with mint",
+        image: "img/salted-lemonade.jpg",
+        category: "drinks",
+        spice: 0,
+        special: false
+    },
+    {
+        name: "Tea",
+        price: "£2.00",
+        desc: "Our signature masala chai with cardamom, ginger and secret spices",
+        image: "img/tea-bawarchi-special.jpg",
+        category: "tea_coffee",
+        spice: 1,
+        special: true
+    },
+    {
+        name: "Filter Coffee",
+        price: "£2.00",
+        desc: "Traditional South Indian filter coffee with frothy milk",
+        image: "img/indian-filter-coffee.jpg",
+        category: "tea_coffee",
+        spice: 0,
+        special: false
+    },
+    {
+        name: "Soft drink cans",
+        price: "£1.49",
+        desc: "Coca-Cola, Pepsi, Sprite or Fanta (330ml)",
+        image: "img/soft-drinks-can.jpg",
+        category: "drinks",
+        spice: 0,
+        special: false
+    },
+    {
+        name: "Water",
+        price: "£1.49",
+        desc: "Bisleri mineral water (1L bottle)",
+        image: "img/mineral-water.jpg",
+        category: "drinks",
+        spice: 0,
+        special: false
+    },
         {
             "name": "Thums up",
             "price": "£2.00",
