@@ -98,6 +98,49 @@
             font-weight: 700;
             color: var(--dark);
         }
+        .restaurant-timings {
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 12px 0;
+  font-weight: bold;
+  font-size: 15px;
+  position: relative;
+}
+
+.scrolling-message {
+  display: inline-block;
+  animation: scroll 25s linear infinite;
+  padding: 8px 0;
+}
+
+.current-time {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.2);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .scrolling-message {
+    font-size: 14px;
+    animation-duration: 30s;
+    padding-right: 70px;
+  }
+  
+  .current-time {
+    font-size: 10px;
+    right: 5px;
+  }
         .welcome-popup {
   display: none;
   position: fixed;
@@ -1348,9 +1391,9 @@
     <!-- Enhanced Menu Section -->
     <section id="menu" class="section">
         <div class="container">
-            <marquee behavior="scroll" direction="left" scrollamount="5">
-             🎉 Today's Special: Masala Dosa Combo only £5.99! • Free Sambar with every Idly order • Try our new Karam Dosa - Spicy Andhra Style! •
-            </marquee>
+            <div class="restaurant-timings">
+             <div class="scrolling-message" id="timingMessage"></div>
+            </div>
             <h2 class="section-title">Our Menu</h2>
             <p class="section-subtitle">
                 Discover our carefully crafted dishes, each telling a story of tradition and flavor
@@ -2061,6 +2104,65 @@
 
     <!-- External Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+  const messageElement = document.getElementById('timingMessage');
+  const now = new Date();
+  const currentHour = now.getHours();
+  const currentMin = now.getMinutes();
+  
+  // Menu timing configuration
+  const menus = {
+    tiffen: { start: 8, end: 11, 
+              message: "🍛 MORNING TIFFEN (8-11 AM): Idly, Dosa, Vada | Ghee Podi Idly £3.50 | Masala Dosa £3.50 |",
+              color: "#f8e58c" },
+    
+    mandi1: { start: 12, end: 15, 
+             message: "🍗 MANDI LUNCH (12-3 PM): Chicken Mandi £8.99 | Lamb Mandi £10.99 | Veg Mandi £6.99 | Family Packs Available |",
+             color: "#ffd8b1" },
+    
+    snacks: { start: 15, end: 18, 
+             message: "🍟 EVENING SNACKS (3-6 PM): Samosa £2.99 | Pani Puri £2.99 | Mysore Bonda £3.50 |",
+             color: "#ffb6b6" },
+    
+    mandi2: { start: 19, end: 23, 
+             message: "🍗 DINNER MANDI (7-11 PM): Special Chicken Mandi £9.99 | Pot Biryani £8.50 | Try our Hyderabadi Dum Biryani! |",
+             color: "#ffd8b1" },
+    
+    closed: { message: "⏰ Currently Closed: Tiffen 8-11 AM | Mandi 12-3 PM & 7-11 PM | Snacks 3-6 PM | We reopen soon!",
+             color: "#e0e0e0" }
+  };
+
+  // Determine current menu
+  let activeMenu = menus.closed;
+  
+  if (currentHour >= menus.tiffen.start && currentHour < menus.tiffen.end) {
+    activeMenu = menus.tiffen;
+  } 
+  else if (currentHour >= menus.mandi1.start && currentHour < menus.mandi1.end) {
+    activeMenu = menus.mandi1;
+  }
+  else if (currentHour >= menus.snacks.start && currentHour < menus.snacks.end) {
+    activeMenu = menus.snacks;
+  }
+  else if (currentHour >= menus.mandi2.start && currentHour < menus.mandi2.end) {
+    activeMenu = menus.mandi2;
+  }
+
+  // Create scrolling effect
+  messageElement.innerHTML = activeMenu.message + " • " + activeMenu.message;
+  
+  // Apply styling
+  messageElement.style.backgroundColor = activeMenu.color;
+  messageElement.parentNode.style.backgroundColor = activeMenu.color;
+  
+  // Add time indicator
+  const timeDisplay = document.createElement('div');
+  timeDisplay.className = 'current-time';
+  timeDisplay.textContent = `Current Time: ${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+  messageElement.parentNode.appendChild(timeDisplay);
+});
+</script>
     
     <!-- Enhanced Custom JavaScript -->
     <script>
