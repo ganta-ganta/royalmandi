@@ -98,6 +98,29 @@
             font-weight: 700;
             color: var(--dark);
         }
+        .welcome-popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Arial', sans-serif;
+}
+
+.popup-content {
+  background: white;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  position: relative;
+  animation: popIn 0.4s ease-out;
+}
         
         /* Enhanced Navigation */
         .navbar {
@@ -1214,6 +1237,30 @@
     </style>
 </head>
 <body>
+    <!-- Welcome Popup HTML -->
+<div class="welcome-popup" id="welcomePopup">
+  <div class="popup-content">
+    <button class="close-btn" onclick="closePopup()">×</button>
+    <div class="popup-header">
+      <h2>Welcome to <span class="restaurant-name">Mandi House</span></h2>
+    </div>
+    <div class="popup-body">
+      <div class="time-message" id="timeMessage"></div>
+      <p>Enjoy authentic Mandi, Tiffen, and Snacks at their scheduled times:</p>
+      <ul class="timing-list">
+        <li>🍛 <strong>Tiffen</strong>: 8 AM - 11 AM</li>
+        <li>🍗 <strong>Mandi/Biryani</strong>: 12 PM - 3 PM & 7 PM - 11 PM</li>
+        <li>🍟 <strong>Snacks</strong>: 3 PM - 6 PM</li>
+      </ul>
+      <div class="special-offer">
+        <p>🎉 First-time visitor? Get 10% off your first order with code: <strong>WELCOME10</strong></p>
+      </div>
+    </div>
+    <div class="popup-footer">
+      <button class="action-btn" onclick="closePopup()">View Menu</button>
+    </div>
+  </div>
+</div>
     <!-- Enhanced Navigation -->
     <nav class="navbar navbar-expand-lg">
         <div class="container">
@@ -4154,6 +4201,57 @@ function showToast(message, type = 'success') {
     document.getElementById(messageId).textContent = message;
     const toast = new bootstrap.Toast(document.getElementById(toastId));
     toast.show();
+}
+        // Show popup on page load
+document.addEventListener('DOMContentLoaded', function() {
+  // Check if popup was already shown
+  if (!localStorage.getItem('popupShown')) {
+    setTimeout(showPopup, 1000); // Show after 1 second
+    localStorage.setItem('popupShown', 'true');
+  }
+  
+  // Set time-sensitive message
+  updateTimeMessage();
+});
+
+function showPopup() {
+  const popup = document.getElementById('welcomePopup');
+  popup.style.display = 'flex';
+  
+  // Auto-close after 5 seconds
+  setTimeout(function() {
+    if (popup.style.display !== 'none') {
+      closePopup();
+    }
+  }, 5000);
+}
+
+function closePopup() {
+  document.getElementById('welcomePopup').style.display = 'none';
+}
+
+function updateTimeMessage() {
+  const now = new Date();
+  const currentHour = now.getHours();
+  let message = "";
+  
+  if (currentHour >= 8 && currentHour < 11) {
+    message = "Good Morning! Our Tiffen menu is now being served.";
+  } 
+  else if (currentHour >= 12 && currentHour < 15) {
+    message = "Lunch Time! Our Mandi Specials are available now.";
+  }
+  else if (currentHour >= 15 && currentHour < 18) {
+    message = "Evening Snack Time! Crispy treats available.";
+  }
+  else if (currentHour >= 19 && currentHour < 23) {
+    message = "Dinner Time! Enjoy our famous Mandi dishes.";
+  }
+  else {
+    message = "We're currently closed. See our hours below.";
+  }
+  
+  document.getElementById('timeMessage').textContent = message;
 }
 
 // Make functions globally available
