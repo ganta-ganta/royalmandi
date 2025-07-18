@@ -3398,638 +3398,639 @@
     }
 ];
         
-        // Wait for Firebase modules to load
-        window.addEventListener('load', function() {
-            setTimeout(initializeApp, 1000);
+       // Wait for Firebase modules to load
+window.addEventListener('load', function() {
+    setTimeout(initializeApp, 1000);
+});
+
+function initializeApp() {
+    console.log('Initializing app...');
+    
+    // Update current year
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+    
+    // Initialize menu
+    initMenu();
+    
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+    
+    // Set minimum date to today
+    const dateInput = document.getElementById('date');
+    if (dateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today);
+    }
+    
+    // Initialize forms
+    initializeForms();
+    
+    console.log('App initialized successfully');
+}
+
+function initMenu() {
+    renderMenu('all');
+    setupMenuEventListeners();
+}
+
+function renderMenu(filter) {
+    const menuContent = document.getElementById('menu-content');
+    menuContent.innerHTML = '';
+    
+    if (filter === 'all') {
+        // Group items by category
+        const categories = {
+            'mandi': [],
+            'biryani': [],
+            'non-veg': [],
+            'veg': [],
+            'starters': [],
+            'rice': [],
+            'bread': [],
+            'desserts': [],
+            'drinks': [],
+            'snacks': [],
+            'breakfast': [],
+            'dosa': []
+        };
+        
+        menuData.forEach(item => {
+            if (categories[item.category]) {
+                categories[item.category].push(item);
+            }
         });
         
-        function initializeApp() {
-            console.log('Initializing app...');
-            
-            // Update current year
-            document.getElementById('current-year').textContent = new Date().getFullYear();
-            
-            // Initialize menu
-            initMenu();
-            
-            // Navbar scroll effect
-            window.addEventListener('scroll', function() {
-                const navbar = document.querySelector('.navbar');
-                if (window.scrollY > 50) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
-                }
-            });
-            
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-            
-            // Set minimum date to today
-            const dateInput = document.getElementById('date');
-            if (dateInput) {
-                const today = new Date().toISOString().split('T')[0];
-                dateInput.setAttribute('min', today);
-            }
-            
-            // Initialize forms
-            initializeForms();
-            
-            console.log('App initialized successfully');
-        }
-        
-        function initMenu() {
-            renderMenu('all');
-            setupMenuEventListeners();
-        }
-        
-        function renderMenu(filter) {
-            const menuContent = document.getElementById('menu-content');
-            menuContent.innerHTML = '';
-            
-            if (filter === 'all') {
-                // Group items by category
-                const categories = {
-                    'mandi': [],
-                    'biryani': [],
-                    'non-veg': [],
-                    'veg': [],
-                    'starters': [],
-                    'rice': [],
-                    'bread': [],
-                    'desserts': [],
-                    'drinks': [],
-                    'snacks':[],
-                    'breakfast':[],
-                    'dosa':[]
-                };
-                
-                menuData.forEach(item => {
-                    if (categories[item.category]) {
-                        categories[item.category].push(item);
-                    }
-                });
-                
-                // Render each category
-                for (const [category, items] of Object.entries(categories)) {
-                    if (items.length > 0) {
-                        renderCategory(category, items);
-                    }
-                }
-            } else {
-                // Filter items by selected category
-                const filteredItems = menuData.filter(item => item.category === filter);
-                
-                if (filteredItems.length > 0) {
-                    renderCategory(filter, filteredItems);
-                } else {
-                    menuContent.innerHTML = `
-                        <div class="text-center py-5">
-                            <i class="fas fa-utensils fa-3x text-muted mb-3"></i>
-                            <h4>No items found</h4>
-                            <p class="text-muted">No items found in this category</p>
-                        </div>
-                    `;
-                }
+        // Render each category
+        for (const [category, items] of Object.entries(categories)) {
+            if (items.length > 0) {
+                renderCategory(category, items);
             }
         }
+    } else {
+        // Filter items by selected category
+        const filteredItems = menuData.filter(item => item.category === filter);
         
-        function renderCategory(category, items) {
-            const menuContent = document.getElementById('menu-content');
-            
-            // Category data
-            const categoryData = {
-                'mandi': { name: 'Mandi Specials', icon: 'fa-star' },
-                'biryani': { name: 'Biryani Collection', icon: 'fa-utensils' },
-                'non-veg': { name: 'Non-Veg Curries', icon: 'fa-drumstick-bite' },
-                'veg': { name: 'Vegetarian Delights', icon: 'fa-leaf' },
-                'starters': { name: 'Appetizers & Starters', icon: 'fa-pepper-hot' },
-                'rice': { name: 'Rice & Noodles', icon: 'fa-utensils' },
-                'bread': { name: 'Fresh Breads', icon: 'fa-bread-slice' },
-                'desserts': { name: 'Sweet Endings', icon: 'fa-ice-cream' },
-                'dosa': { name: 'Dosa Specials', icon: 'fa-pancakes' }, // or choose an appropriate icon
-                'breakfast': { name: 'Breakfast Items', icon: 'fa-egg' }, // or choose an appropriate icon
-                 'snacks': { name: 'Snacks & Quick Bites', icon: 'fa-cookie' }
-            };
-            
-            const categoryInfo = categoryData[category];
-            
-            // Create category section
-            const categorySection = document.createElement('div');
-            categorySection.className = 'menu-category animate-fadeInUp';
-            categorySection.innerHTML = `
-                <div class="category-icon">
-                    <i class="fas ${categoryInfo.icon}"></i>
-                </div>
-                <h3>${categoryInfo.name}</h3>
-            `;
-            
-            // Create items container
-            const itemsContainer = document.createElement('div');
-            itemsContainer.className = 'menu-items-container';
-            
-            // Add items
-            items.forEach(item => {
-                itemsContainer.appendChild(createMenuItem(item));
-            });
-            
-            menuContent.appendChild(categorySection);
-            menuContent.appendChild(itemsContainer);
-        }
-        
-        function createMenuItem(item) {
-            const menuItem = document.createElement('div');
-            menuItem.className = 'menu-item animate-fadeInUp';
-            menuItem.dataset.category = item.category;
-            
-            // Create badges
-            let badges = '';
-            if (item.special) {
-                badges += `
-                    <div class="special-badge">
-                        <i class="fas fa-star"></i>
-                        <span>Special</span>
-                    </div>
-                `;
-            }
-            
-            // Add veg/non-veg badge
-            if (item.category === 'veg') {
-                badges += `<div class="veg-badge"><i class="fas fa-leaf"></i> Veg</div>`;
-            } else if (['non-veg', 'mandi', 'biryani', 'starters'].includes(item.category)) {
-                badges += `<div class="non-veg-badge"><i class="fas fa-drumstick-bite"></i> Non-Veg</div>`;
-            }
-            
-            // Create spice indicators
-            let spiceIcons = '';
-            if (item.spice > 0) {
-                for (let i = 0; i < 3; i++) {
-                    const opacity = i < item.spice ? 1 : 0.3;
-                    spiceIcons += `<i class="fas fa-pepper-hot spice-icon" style="opacity:${opacity}"></i>`;
-                }
-            }
-            
-            // Handle price display
-            let priceDisplay = item.price;
-            let optionsHtml = '';
-            
-            if (item.options && item.options.length > 0) {
-                priceDisplay = 'from ' + item.options[0].price;
-                optionsHtml = `
-                    <div class="menu-item-options">
-                        <h6><i class="fas fa-list-ul me-2"></i>Portion Options:</h6>
-                        ${item.options.map(option => `
-                            <div class="option-item">
-                                <span>${option.portion}</span>
-                                <strong>${option.price}</strong>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-            }
-            
-            menuItem.innerHTML = `
-                <div class="menu-item-img">
-                    <img src="${item.image}" alt="${item.name}" loading="lazy">
-                    <div class="menu-item-badges">
-                        ${badges}
-                    </div>
-                </div>
-                <div class="menu-item-content">
-                    <div class="menu-item-header">
-                        <h5 class="menu-item-name">${item.name}</h5>
-                        <div class="menu-item-price">${priceDisplay}</div>
-                    </div>
-                    <p class="menu-item-desc">${item.desc}</p>
-                    ${item.spice > 0 ? `
-                        <div class="spice-level">
-                            <span class="spice-label">Spice Level:</span>
-                            ${spiceIcons}
-                        </div>
-                    ` : ''}
-                    ${optionsHtml}
+        if (filteredItems.length > 0) {
+            renderCategory(filter, filteredItems);
+        } else {
+            menuContent.innerHTML = `
+                <div class="text-center py-5">
+                    <i class="fas fa-utensils fa-3x text-muted mb-3"></i>
+                    <h4>No items found</h4>
+                    <p class="text-muted">No items found in this category</p>
                 </div>
             `;
-            
-            return menuItem;
         }
-        
-        function setupMenuEventListeners() {
-            const filterButtons = document.querySelectorAll('.filter-btn');
-            
-            filterButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    filterButtons.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    renderMenu(btn.dataset.filter);
-                });
-            });
+    }
+}
+
+function renderCategory(category, items) {
+    const menuContent = document.getElementById('menu-content');
+    
+    // Category data
+    const categoryData = {
+        'mandi': { name: 'Mandi Specials', icon: 'fa-star' },
+        'biryani': { name: 'Biryani Collection', icon: 'fa-utensils' },
+        'non-veg': { name: 'Non-Veg Curries', icon: 'fa-drumstick-bite' },
+        'veg': { name: 'Vegetarian Delights', icon: 'fa-leaf' },
+        'starters': { name: 'Appetizers & Starters', icon: 'fa-pepper-hot' },
+        'rice': { name: 'Rice & Noodles', icon: 'fa-utensils' },
+        'bread': { name: 'Fresh Breads', icon: 'fa-bread-slice' },
+        'desserts': { name: 'Sweet Endings', icon: 'fa-ice-cream' },
+        'drinks': { name: 'Refreshing Drinks', icon: 'fa-glass-whiskey' },
+        'snacks': { name: 'Snacks & Quick Bites', icon: 'fa-cookie' },
+        'breakfast': { name: 'Breakfast Items', icon: 'fa-egg' },
+        'dosa': { name: 'Dosa Specials', icon: 'fa-pancakes' }
+    };
+    
+    const categoryInfo = categoryData[category];
+    
+    // Create category section
+    const categorySection = document.createElement('div');
+    categorySection.className = 'menu-category animate-fadeInUp';
+    categorySection.innerHTML = `
+        <div class="category-icon">
+            <i class="fas ${categoryInfo.icon}"></i>
+        </div>
+        <h3>${categoryInfo.name}</h3>
+    `;
+    
+    // Create items container
+    const itemsContainer = document.createElement('div');
+    itemsContainer.className = 'menu-items-container';
+    
+    // Add items
+    items.forEach(item => {
+        itemsContainer.appendChild(createMenuItem(item));
+    });
+    
+    menuContent.appendChild(categorySection);
+    menuContent.appendChild(itemsContainer);
+}
+
+function createMenuItem(item) {
+    const menuItem = document.createElement('div');
+    menuItem.className = 'menu-item animate-fadeInUp';
+    menuItem.dataset.category = item.category;
+    
+    // Create badges
+    let badges = '';
+    if (item.special) {
+        badges += `
+            <div class="special-badge">
+                <i class="fas fa-star"></i>
+                <span>Special</span>
+            </div>
+        `;
+    }
+    
+    // Add veg/non-veg badge
+    if (item.category === 'veg') {
+        badges += `<div class="veg-badge"><i class="fas fa-leaf"></i> Veg</div>`;
+    } else if (['non-veg', 'mandi', 'biryani', 'starters'].includes(item.category)) {
+        badges += `<div class="non-veg-badge"><i class="fas fa-drumstick-bite"></i> Non-Veg</div>`;
+    }
+    
+    // Create spice indicators
+    let spiceIcons = '';
+    if (item.spice > 0) {
+        for (let i = 0; i < 3; i++) {
+            const opacity = i < item.spice ? 1 : 0.3;
+            spiceIcons += `<i class="fas fa-pepper-hot spice-icon" style="opacity:${opacity}"></i>`;
         }
-        
-        function initializeForms() {
-            // Booking form submission
-            const bookingForm = document.getElementById('bookingForm');
-            if (bookingForm) {
-                bookingForm.addEventListener('submit', handleBookingSubmission);
-            }
-            
-            // Admin login form submission
-            const adminLoginForm = document.getElementById('adminLoginForm');
-            if (adminLoginForm) {
-                adminLoginForm.addEventListener('submit', handleAdminLogin);
-            }
-            
-            // Admin logout
-            const adminLogoutBtn = document.getElementById('adminLogoutBtn');
-            if (adminLogoutBtn) {
-                adminLogoutBtn.addEventListener('click', handleAdminLogout);
-            }
-            
-            // Admin login link
-            document.getElementById('adminLoginLink').addEventListener('click', (e) => {
-                e.preventDefault();
-                const adminModal = new bootstrap.Modal(document.getElementById('adminLoginModal'));
-                adminModal.show();
-            });
-            
-            // Admin navigation
-            document.querySelectorAll('.admin-nav-link').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const section = link.dataset.section;
-                    if (section && section !== 'logout') {
-                        showSection(section);
-                    }
-                });
-            });
-            
-            // Status filter
-            const statusFilter = document.getElementById('statusFilter');
-            if (statusFilter) {
-                statusFilter.addEventListener('change', filterBookings);
-            }
-        }
-        
-        async function handleBookingSubmission(e) {
+    }
+    
+    // Handle price display
+    let priceDisplay = item.price;
+    let optionsHtml = '';
+    
+    if (item.options && item.options.length > 0) {
+        priceDisplay = 'from ' + item.options[0].price;
+        optionsHtml = `
+            <div class="menu-item-options">
+                <h6><i class="fas fa-list-ul me-2"></i>Portion Options:</h6>
+                ${item.options.map(option => `
+                    <div class="option-item">
+                        <span>${option.portion}</span>
+                        <strong>${option.price}</strong>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+    
+    menuItem.innerHTML = `
+        <div class="menu-item-img">
+            <img src="${item.image}" alt="${item.name}" loading="lazy">
+            <div class="menu-item-badges">
+                ${badges}
+            </div>
+        </div>
+        <div class="menu-item-content">
+            <div class="menu-item-header">
+                <h5 class="menu-item-name">${item.name}</h5>
+                <div class="menu-item-price">${priceDisplay}</div>
+            </div>
+            <p class="menu-item-desc">${item.desc}</p>
+            ${item.spice > 0 ? `
+                <div class="spice-level">
+                    <span class="spice-label">Spice Level:</span>
+                    ${spiceIcons}
+                </div>
+            ` : ''}
+            ${optionsHtml}
+        </div>
+    `;
+    
+    return menuItem;
+}
+
+function setupMenuEventListeners() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderMenu(btn.dataset.filter);
+        });
+    });
+}
+
+function initializeForms() {
+    // Booking form submission
+    const bookingForm = document.getElementById('bookingForm');
+    if (bookingForm) {
+        bookingForm.addEventListener('submit', handleBookingSubmission);
+    }
+    
+    // Admin login form submission
+    const adminLoginForm = document.getElementById('adminLoginForm');
+    if (adminLoginForm) {
+        adminLoginForm.addEventListener('submit', handleAdminLogin);
+    }
+    
+    // Admin logout
+    const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+    if (adminLogoutBtn) {
+        adminLogoutBtn.addEventListener('click', handleAdminLogout);
+    }
+    
+    // Admin login link
+    document.getElementById('adminLoginLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        const adminModal = new bootstrap.Modal(document.getElementById('adminLoginModal'));
+        adminModal.show();
+    });
+    
+    // Admin navigation
+    document.querySelectorAll('.admin-nav-link').forEach(link => {
+        link.addEventListener('click', (e) => {
             e.preventDefault();
-            
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            const submitText = submitBtn.querySelector('#submitText');
-            const submitSpinner = submitBtn.querySelector('#submitSpinner');
-            
-            // Show loading state
-            submitText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-            submitSpinner.classList.remove('d-none');
-            submitBtn.disabled = true;
-            
-            try {
-                // Get form values
-                const formData = {
-                    name: document.getElementById('name').value,
-                    phone: document.getElementById('phone').value,
-                    email: document.getElementById('email').value,
-                    guests: document.getElementById('guests').value,
-                    date: document.getElementById('date').value,
-                    time: document.getElementById('time').value,
-                    specialRequests: document.getElementById('specialRequests').value,
-                    status: 'pending',
-                    timestamp: window.firebaseModules.serverTimestamp()
-                };
-                
-                // Add to Firestore
-                await window.firebaseModules.addDoc(
-                    window.firebaseModules.collection(window.db, 'bookings'), 
-                    formData
-                );
-                
-                // Show success toast
-                showToast('Reservation submitted successfully! We will contact you soon.', 'success');
-                
-                // Reset form
-                e.target.reset();
-                
-            } catch (error) {
-                console.error('Error adding reservation: ', error);
-                showToast('There was an error submitting your reservation. Please try again.', 'error');
-            } finally {
-                // Reset button state
-                submitText.innerHTML = '<i class="fas fa-calendar-check"></i> Confirm Reservation';
-                submitSpinner.classList.add('d-none');
-                submitBtn.disabled = false;
+            const section = link.dataset.section;
+            if (section && section !== 'logout') {
+                showSection(section);
             }
+        });
+    });
+    
+    // Status filter
+    const statusFilter = document.getElementById('statusFilter');
+    if (statusFilter) {
+        statusFilter.addEventListener('change', filterBookings);
+    }
+}
+
+async function handleBookingSubmission(e) {
+    e.preventDefault();
+    
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const submitText = submitBtn.querySelector('#submitText');
+    const submitSpinner = submitBtn.querySelector('#submitSpinner');
+    
+    // Show loading state
+    submitText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    submitSpinner.classList.remove('d-none');
+    submitBtn.disabled = true;
+    
+    try {
+        // Get form values
+        const formData = {
+            name: document.getElementById('name').value,
+            phone: document.getElementById('phone').value,
+            email: document.getElementById('email').value,
+            guests: document.getElementById('guests').value,
+            date: document.getElementById('date').value,
+            time: document.getElementById('time').value,
+            specialRequests: document.getElementById('specialRequests').value,
+            status: 'pending',
+            timestamp: window.firebaseModules.serverTimestamp()
+        };
+        
+        // Add to Firestore
+        await window.firebaseModules.addDoc(
+            window.firebaseModules.collection(window.db, 'bookings'), 
+            formData
+        );
+        
+        // Show success toast
+        showToast('Reservation submitted successfully! We will contact you soon.', 'success');
+        
+        // Reset form
+        e.target.reset();
+        
+    } catch (error) {
+        console.error('Error adding reservation: ', error);
+        showToast('There was an error submitting your reservation. Please try again.', 'error');
+    } finally {
+        // Reset button state
+        submitText.innerHTML = '<i class="fas fa-calendar-check"></i> Confirm Reservation';
+        submitSpinner.classList.add('d-none');
+        submitBtn.disabled = false;
+    }
+}
+
+async function handleAdminLogin(e) {
+    e.preventDefault();
+    
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const submitText = submitBtn.querySelector('#adminSubmitText');
+    const submitSpinner = submitBtn.querySelector('#adminSubmitSpinner');
+    
+    // Show loading state
+    submitText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+    submitSpinner.classList.remove('d-none');
+    submitBtn.disabled = true;
+    
+    const email = document.getElementById('adminEmail').value;
+    const password = document.getElementById('adminPassword').value;
+    
+    try {
+        // Use Firebase authentication
+        const userCredential = await window.firebaseModules.signInWithEmailAndPassword(
+            window.auth,
+            email,
+            password
+        );
+        
+        // Check if user is admin
+        const adminEmails = ['the.royalmandi@gmail.com', 'theroyalmandii@gmail.com'];
+        if (adminEmails.includes(email)) {
+            isAdminLoggedIn = true;
+            
+            // Hide modal
+            const adminModal = bootstrap.Modal.getInstance(document.getElementById('adminLoginModal'));
+            adminModal.hide();
+            
+            // Show admin dashboard
+            document.getElementById('adminDashboard').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            
+            // Load dashboard data
+            await loadDashboardData();
+            
+            // Reset form
+            e.target.reset();
+            
+            showToast('Welcome back, Admin!', 'success');
+        } else {
+            await window.firebaseModules.signOut(window.auth);
+            throw new Error('Invalid credentials');
         }
         
-        async function handleAdminLogin(e) {
-            e.preventDefault();
-            
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            const submitText = submitBtn.querySelector('#adminSubmitText');
-            const submitSpinner = submitBtn.querySelector('#adminSubmitSpinner');
-            
-            // Show loading state
-            submitText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
-            submitSpinner.classList.remove('d-none');
-            submitBtn.disabled = true;
-            
-            const email = document.getElementById('adminEmail').value;
-            const password = document.getElementById('adminPassword').value;
-            
-            try {
-                // Use Firebase authentication
-                const userCredential = await window.firebaseModules.signInWithEmailAndPassword(
-                    window.auth,
-                    email,
-                    password
-                );
-                
-                // Check if user is admin
-                const adminEmails = ['the.royalmandi@gmail.com', 'theroyalmandii@gmail.com'];
-                if (adminEmails.includes(email)) {
-                    isAdminLoggedIn = true;
-                    
-                    // Hide modal
-                    const adminModal = bootstrap.Modal.getInstance(document.getElementById('adminLoginModal'));
-                    adminModal.hide();
-                    
-                    // Show admin dashboard
-                    document.getElementById('adminDashboard').style.display = 'block';
-                    document.body.style.overflow = 'hidden';
-                    
-                    // Load dashboard data
-                    await loadDashboardData();
-                    
-                    // Reset form
-                    e.target.reset();
-                    
-                    showToast('Welcome back, Admin!', 'success');
-                } else {
-                    await window.firebaseModules.signOut(window.auth);
-                    throw new Error('Invalid credentials');
-                }
-                
-            } catch (error) {
-                console.error('Login error:', error);
-                showToast('Invalid email or password. Please try again.', 'error');
-            } finally {
-                // Reset button state
-                submitText.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
-                submitSpinner.classList.add('d-none');
-                submitBtn.disabled = false;
-            }
-        }
+    } catch (error) {
+        console.error('Login error:', error);
+        showToast('Invalid email or password. Please try again.', 'error');
+    } finally {
+        // Reset button state
+        submitText.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+        submitSpinner.classList.add('d-none');
+        submitBtn.disabled = false;
+    }
+}
+
+async function handleAdminLogout() {
+    try {
+        await window.firebaseModules.signOut(window.auth);
+        isAdminLoggedIn = false;
+        document.getElementById('adminDashboard').style.display = 'none';
+        document.body.style.overflow = 'auto';
+        showToast('Logged out successfully', 'success');
+    } catch (error) {
+        console.error('Logout error:', error);
+        showToast('Error during logout', 'error');
+    }
+}
+
+function showSection(sectionName) {
+    // Hide all sections
+    document.querySelectorAll('.admin-section').forEach(section => {
+        section.style.display = 'none';
+    });
+    
+    // Remove active class from all nav links
+    document.querySelectorAll('.admin-nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+    
+    // Show selected section
+    const targetSection = document.getElementById(sectionName + 'Section');
+    if (targetSection) {
+        targetSection.style.display = 'block';
+    }
+    
+    // Add active class to clicked nav link
+    const activeLink = document.querySelector(`[data-section="${sectionName}"]`);
+    if (activeLink) {
+        activeLink.classList.add('active');
+    }
+    
+    // Load section-specific data
+    switch(sectionName) {
+        case 'dashboard':
+            loadDashboardData();
+            break;
+        case 'bookings':
+            loadAllBookings();
+            break;
+        case 'customers':
+            loadCustomers();
+            break;
+    }
+}
+
+async function loadDashboardData() {
+    try {
+        // Load bookings data
+        const bookingsSnapshot = await window.firebaseModules.getDocs(
+            window.firebaseModules.collection(window.db, 'bookings')
+        );
         
-        async function handleAdminLogout() {
-            try {
-                await window.firebaseModules.signOut(window.auth);
-                isAdminLoggedIn = false;
-                document.getElementById('adminDashboard').style.display = 'none';
-                document.body.style.overflow = 'auto';
-                showToast('Logged out successfully', 'success');
-            } catch (error) {
-                console.error('Logout error:', error);
-                showToast('Error during logout', 'error');
-            }
-        }
+        bookingsData = [];
+        bookingsSnapshot.forEach((doc) => {
+            bookingsData.push({ id: doc.id, ...doc.data() });
+        });
         
-        function showSection(sectionName) {
-            // Hide all sections
-            document.querySelectorAll('.admin-section').forEach(section => {
-                section.style.display = 'none';
+        // Calculate statistics
+        const today = new Date().toISOString().split('T')[0];
+        const todayReservations = bookingsData.filter(booking => booking.date === today).length;
+        const totalReservations = bookingsData.length;
+        const pendingReservations = bookingsData.filter(booking => booking.status === 'pending').length;
+        
+        // Update dashboard stats
+        document.getElementById('todayReservations').textContent = todayReservations;
+        document.getElementById('totalReservations').textContent = totalReservations;
+        document.getElementById('pendingReservations').textContent = pendingReservations;
+        
+        // Load recent bookings
+        loadRecentBookings();
+        
+        // Calculate unique customers
+        const uniqueEmails = [...new Set(bookingsData.map(booking => booking.email))];
+        document.getElementById('totalCustomers').textContent = uniqueEmails.length;
+        
+    } catch (error) {
+        console.error('Error loading dashboard data:', error);
+        showToast('Error loading dashboard data', 'error');
+    }
+}
+
+function loadRecentBookings() {
+    const recentBookings = bookingsData
+        .sort((a, b) => {
+            if (a.timestamp && b.timestamp) {
+                return b.timestamp.seconds - a.timestamp.seconds;
+            }
+            return new Date(b.date) - new Date(a.date);
+        })
+        .slice(0, 5);
+    
+    const tbody = document.getElementById('recentBookingsList');
+    if (!tbody) return;
+    
+    if (recentBookings.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">No reservations found</td></tr>';
+        return;
+    }
+    
+    tbody.innerHTML = recentBookings.map(booking => `
+        <tr>
+            <td>
+                <div>
+                    <strong>${booking.name}</strong><br>
+                    <small class="text-muted">${booking.email}</small>
+                </div>
+            </td>
+            <td>${formatDate(booking.date)}<br><small>${booking.time}</small></td>
+            <td><span class="badge bg-primary">${booking.guests} guests</span></td>
+            <td><span class="status-badge status-${booking.status}">${booking.status}</span></td>
+            <td>
+                <div class="btn-group btn-group-sm">
+                    <button class="btn btn-success" onclick="updateBookingStatus('${booking.id}', 'confirmed')" title="Confirm">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button class="btn btn-danger" onclick="updateBookingStatus('${booking.id}', 'cancelled')" title="Cancel">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </td>
+        </tr>
+    `).join('');
+}
+
+async function loadAllBookings() {
+    try {
+        if (bookingsData.length === 0) {
+            const bookingsSnapshot = await window.firebaseModules.getDocs(
+                window.firebaseModules.collection(window.db, 'bookings')
+            );
+            
+            bookingsData = [];
+            bookingsSnapshot.forEach((doc) => {
+                bookingsData.push({ id: doc.id, ...doc.data() });
             });
-            
-            // Remove active class from all nav links
-            document.querySelectorAll('.admin-nav-link').forEach(link => {
-                link.classList.remove('active');
-            });
-            
-            // Show selected section
-            const targetSection = document.getElementById(sectionName + 'Section');
-            if (targetSection) {
-                targetSection.style.display = 'block';
-            }
-            
-            // Add active class to clicked nav link
-            const activeLink = document.querySelector(`[data-section="${sectionName}"]`);
-            if (activeLink) {
-                activeLink.classList.add('active');
-            }
-            
-            // Load section-specific data
-            switch(sectionName) {
-                case 'dashboard':
-                    loadDashboardData();
-                    break;
-                case 'bookings':
-                    loadAllBookings();
-                    break;
-                case 'customers':
-                    loadCustomers();
-                    break;
-            }
         }
         
-        async function loadDashboardData() {
-            try {
-                // Load bookings data
-                const bookingsSnapshot = await window.firebaseModules.getDocs(
-                    window.firebaseModules.collection(window.db, 'bookings')
-                );
-                
-                bookingsData = [];
-                bookingsSnapshot.forEach((doc) => {
-                    bookingsData.push({ id: doc.id, ...doc.data() });
-                });
-                
-                // Calculate statistics
-                const today = new Date().toISOString().split('T')[0];
-                const todayReservations = bookingsData.filter(booking => booking.date === today).length;
-                const totalReservations = bookingsData.length;
-                const pendingReservations = bookingsData.filter(booking => booking.status === 'pending').length;
-                
-                // Update dashboard stats
-                document.getElementById('todayReservations').textContent = todayReservations;
-                document.getElementById('totalReservations').textContent = totalReservations;
-                document.getElementById('pendingReservations').textContent = pendingReservations;
-                
-                // Load recent bookings
-                loadRecentBookings();
-                
-                // Calculate unique customers
-                const uniqueEmails = [...new Set(bookingsData.map(booking => booking.email))];
-                document.getElementById('totalCustomers').textContent = uniqueEmails.length;
-                
-            } catch (error) {
-                console.error('Error loading dashboard data:', error);
-                showToast('Error loading dashboard data', 'error');
-            }
+        displayAllBookings(bookingsData);
+        
+    } catch (error) {
+        console.error('Error loading bookings:', error);
+        showToast('Error loading bookings', 'error');
+    }
+}
+
+function displayAllBookings(bookings) {
+    const tbody = document.getElementById('allBookingsList');
+    if (!tbody) return;
+    
+    if (bookings.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">No reservations found</td></tr>';
+        return;
+    }
+    
+    const sortedBookings = bookings.sort((a, b) => {
+        if (a.timestamp && b.timestamp) {
+            return b.timestamp.seconds - a.timestamp.seconds;
+        }
+        return new Date(b.date) - new Date(a.date);
+    });
+    
+    tbody.innerHTML = sortedBookings.map(booking => `
+        <tr>
+            <td>
+                <div>
+                    <strong>${booking.name}</strong><br>
+                    <small class="text-muted">${booking.email}</small>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <i class="fas fa-phone text-primary me-1"></i>${booking.phone}<br>
+                    <i class="fas fa-envelope text-muted me-1"></i>${booking.email}
+                </div>
+            </td>
+            <td><i class="fas fa-calendar me-1"></i>${formatDate(booking.date)}</td>
+            <td><i class="fas fa-clock me-1"></i>${booking.time}</td>
+            <td><span class="badge bg-primary">${booking.guests} guests</span></td>
+            <td><span class="status-badge status-${booking.status}">${booking.status}</span></td>
+            <td>
+                <div class="btn-group btn-group-sm">
+                    <button class="btn btn-success" onclick="updateBookingStatus('${booking.id}', 'confirmed')" title="Confirm">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button class="btn btn-danger" onclick="updateBookingStatus('${booking.id}', 'cancelled')" title="Cancel">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button class="btn btn-info" onclick="viewBookingDetails('${booking.id}')" title="View Details">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </td>
+        </tr>
+    `).join('');
+}
+
+function filterBookings() {
+    const statusFilter = document.getElementById('statusFilter').value;
+    let filteredBookings = bookingsData;
+    
+    if (statusFilter !== 'all') {
+        filteredBookings = bookingsData.filter(booking => booking.status === statusFilter);
+    }
+    
+    displayAllBookings(filteredBookings);
+}
+
+async function updateBookingStatus(bookingId, newStatus) {
+    try {
+        await window.firebaseModules.updateDoc(
+            window.firebaseModules.doc(window.db, 'bookings', bookingId),
+            { status: newStatus }
+        );
+        
+        // Update local data
+        const bookingIndex = bookingsData.findIndex(b => b.id === bookingId);
+        if (bookingIndex !== -1) {
+            bookingsData[bookingIndex].status = newStatus;
         }
         
-        function loadRecentBookings() {
-            const recentBookings = bookingsData
-                .sort((a, b) => {
-                    if (a.timestamp && b.timestamp) {
-                        return b.timestamp.seconds - a.timestamp.seconds;
-                    }
-                    return new Date(b.date) - new Date(a.date);
-                })
-                .slice(0, 5);
-            
-            const tbody = document.getElementById('recentBookingsList');
-            if (!tbody) return;
-            
-            if (recentBookings.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">No reservations found</td></tr>';
-                return;
-            }
-            
-            tbody.innerHTML = recentBookings.map(booking => `
-                <tr>
-                    <td>
-                        <div>
-                            <strong>${booking.name}</strong><br>
-                            <small class="text-muted">${booking.email}</small>
-                        </div>
-                    </td>
-                    <td>${formatDate(booking.date)}<br><small>${booking.time}</small></td>
-                    <td><span class="badge bg-primary">${booking.guests} guests</span></td>
-                    <td><span class="status-badge status-${booking.status}">${booking.status}</span></td>
-                    <td>
-                        <div class="btn-group btn-group-sm">
-                            <button class="btn btn-success" onclick="updateBookingStatus('${booking.id}', 'confirmed')" title="Confirm">
-                                <i class="fas fa-check"></i>
-                            </button>
-                            <button class="btn btn-danger" onclick="updateBookingStatus('${booking.id}', 'cancelled')" title="Cancel">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
-        }
+        // Refresh displays
+        loadRecentBookings();
+        displayAllBookings(bookingsData);
+        loadDashboardData();
         
-        async function loadAllBookings() {
-            try {
-                if (bookingsData.length === 0) {
-                    const bookingsSnapshot = await window.firebaseModules.getDocs(
-                        window.firebaseModules.collection(window.db, 'bookings')
-                    );
-                    
-                    bookingsData = [];
-                    bookingsSnapshot.forEach((doc) => {
-                        bookingsData.push({ id: doc.id, ...doc.data() });
-                    });
-                }
-                
-                displayAllBookings(bookingsData);
-                
-            } catch (error) {
-                console.error('Error loading bookings:', error);
-                showToast('Error loading bookings', 'error');
-            }
-        }
+        showToast(`Reservation ${newStatus} successfully`, 'success');
         
-        function displayAllBookings(bookings) {
-            const tbody = document.getElementById('allBookingsList');
-            if (!tbody) return;
-            
-            if (bookings.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">No reservations found</td></tr>';
-                return;
-            }
-            
-            const sortedBookings = bookings.sort((a, b) => {
-                if (a.timestamp && b.timestamp) {
-                    return b.timestamp.seconds - a.timestamp.seconds;
-                }
-                return new Date(b.date) - new Date(a.date);
-            });
-            
-            tbody.innerHTML = sortedBookings.map(booking => `
-                <tr>
-                    <td>
-                        <div>
-                            <strong>${booking.name}</strong><br>
-                            <small class="text-muted">${booking.email}</small>
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <i class="fas fa-phone text-primary me-1"></i>${booking.phone}<br>
-                            <i class="fas fa-envelope text-muted me-1"></i>${booking.email}
-                        </div>
-                    </td>
-                    <td><i class="fas fa-calendar me-1"></i>${formatDate(booking.date)}</td>
-                    <td><i class="fas fa-clock me-1"></i>${booking.time}</td>
-                    <td><span class="badge bg-primary">${booking.guests} guests</span></td>
-                    <td><span class="status-badge status-${booking.status}">${booking.status}</span></td>
-                    <td>
-                        <div class="btn-group btn-group-sm">
-                            <button class="btn btn-success" onclick="updateBookingStatus('${booking.id}', 'confirmed')" title="Confirm">
-                                <i class="fas fa-check"></i>
-                            </button>
-                            <button class="btn btn-danger" onclick="updateBookingStatus('${booking.id}', 'cancelled')" title="Cancel">
-                                <i class="fas fa-times"></i>
-                            </button>
-                            <button class="btn btn-info" onclick="viewBookingDetails('${booking.id}')" title="View Details">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
-        }
-        
-        function filterBookings() {
-            const statusFilter = document.getElementById('statusFilter').value;
-            let filteredBookings = bookingsData;
-            
-            if (statusFilter !== 'all') {
-                filteredBookings = bookingsData.filter(booking => booking.status === statusFilter);
-            }
-            
-            displayAllBookings(filteredBookings);
-        }
-        
-        async function updateBookingStatus(bookingId, newStatus) {
-            try {
-                await window.firebaseModules.updateDoc(
-                    window.firebaseModules.doc(window.db, 'bookings', bookingId),
-                    { status: newStatus }
-                );
-                
-                // Update local data
-                const bookingIndex = bookingsData.findIndex(b => b.id === bookingId);
-                if (bookingIndex !== -1) {
-                    bookingsData[bookingIndex].status = newStatus;
-                }
-                
-                // Refresh displays
-                loadRecentBookings();
-                displayAllBookings(bookingsData);
-                loadDashboardData();
-                
-                showToast(`Reservation ${newStatus} successfully`, 'success');
-                
-            } catch (error) {
-                console.error('Error updating booking status:', error);
-                showToast('Error updating reservation status', 'error');
-            }
-        }
-        
-        function viewBookingDetails(bookingId) {
-            const booking = bookingsData.find(b => b.id === bookingId);
-            if (booking) {
-                const details = `
+    } catch (error) {
+        console.error('Error updating booking status:', error);
+        showToast('Error updating reservation status', 'error');
+    }
+}
+
+function viewBookingDetails(bookingId) {
+    const booking = bookingsData.find(b => b.id === bookingId);
+    if (booking) {
+        const details = `
 Booking Details:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 👤 Name: ${booking.name}
@@ -4041,124 +4042,124 @@ Booking Details:
 📋 Status: ${booking.status.toUpperCase()}
 📝 Special Requests: ${booking.specialRequests || 'None'}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-                `;
-                alert(details);
-            }
-        }
+        `;
+        alert(details);
+    }
+}
+
+async function loadCustomers() {
+    try {
+        // Group bookings by email to get unique customers
+        const customerMap = new Map();
         
-        async function loadCustomers() {
-            try {
-                // Group bookings by email to get unique customers
-                const customerMap = new Map();
-                
-                bookingsData.forEach(booking => {
-                    if (!customerMap.has(booking.email)) {
-                        customerMap.set(booking.email, {
-                            name: booking.name,
-                            email: booking.email,
-                            phone: booking.phone,
-                            reservations: [],
-                            totalReservations: 0,
-                            lastVisit: null
-                        });
-                    }
-                    
-                    const customer = customerMap.get(booking.email);
-                    customer.reservations.push(booking);
-                    customer.totalReservations++;
-                    
-                    // Update last visit date
-                    const bookingDate = new Date(booking.date);
-                    if (!customer.lastVisit || bookingDate > customer.lastVisit) {
-                        customer.lastVisit = bookingDate;
-                    }
+        bookingsData.forEach(booking => {
+            if (!customerMap.has(booking.email)) {
+                customerMap.set(booking.email, {
+                    name: booking.name,
+                    email: booking.email,
+                    phone: booking.phone,
+                    reservations: [],
+                    totalReservations: 0,
+                    lastVisit: null
                 });
-                
-                customersData = Array.from(customerMap.values());
-                displayCustomers();
-                
-            } catch (error) {
-                console.error('Error loading customers:', error);
-                showToast('Error loading customers', 'error');
-            }
-        }
-        
-        function displayCustomers() {
-            const tbody = document.getElementById('customersList');
-            if (!tbody) return;
-            
-            if (customersData.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">No customers found</td></tr>';
-                return;
             }
             
-            tbody.innerHTML = customersData.map(customer => `
-                <tr>
-                    <td>
-                        <div>
-                            <strong>${customer.name}</strong>
-                        </div>
-                    </td>
-                    <td>
-                        <i class="fas fa-envelope text-muted me-1"></i>
-                        ${customer.email}
-                    </td>
-                    <td>
-                        <i class="fas fa-phone text-primary me-1"></i>
-                        ${customer.phone}
-                    </td>
-                    <td>
-                        <span class="badge bg-success">${customer.totalReservations}</span>
-                    </td>
-                    <td>
-                        <i class="fas fa-calendar me-1"></i>
-                        ${customer.lastVisit ? formatDate(customer.lastVisit.toISOString().split('T')[0]) : 'N/A'}
-                    </td>
-                </tr>
-            `).join('');
-        }
-        
-        function refreshDashboard() {
-            loadDashboardData();
-            showToast('Dashboard refreshed', 'success');
-        }
-        
-        function refreshBookings() {
-            bookingsData = []; // Clear cache
-            loadAllBookings();
-            showToast('Bookings refreshed', 'success');
-        }
-        
-        function refreshCustomers() {
-            loadCustomers();
-            showToast('Customers refreshed', 'success');
-        }
-        
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('en-GB', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric'
-            });
-        }
-        
-        function showToast(message, type = 'success') {
-            const toastId = type === 'success' ? 'successToast' : 'errorToast';
-            const messageId = type === 'success' ? 'toastMessage' : 'errorMessage';
+            const customer = customerMap.get(booking.email);
+            customer.reservations.push(booking);
+            customer.totalReservations++;
             
-            document.getElementById(messageId).textContent = message;
-            const toast = new bootstrap.Toast(document.getElementById(toastId));
-            toast.show();
-        }
+            // Update last visit date
+            const bookingDate = new Date(booking.date);
+            if (!customer.lastVisit || bookingDate > customer.lastVisit) {
+                customer.lastVisit = bookingDate;
+            }
+        });
         
-        // Make functions globally available
-        window.showSection = showSection;
-        window.updateBookingStatus = updateBookingStatus;
-        window.viewBookingDetails = viewBookingDetails;
-        window.refreshDashboard = refreshDashboard;
-        window.refreshBookings = refreshBookings;
-        window.refreshCustomers = refreshCustomers;
+        customersData = Array.from(customerMap.values());
+        displayCustomers();
+        
+    } catch (error) {
+        console.error('Error loading customers:', error);
+        showToast('Error loading customers', 'error');
+    }
+}
+
+function displayCustomers() {
+    const tbody = document.getElementById('customersList');
+    if (!tbody) return;
+    
+    if (customersData.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">No customers found</td></tr>';
+        return;
+    }
+    
+    tbody.innerHTML = customersData.map(customer => `
+        <tr>
+            <td>
+                <div>
+                    <strong>${customer.name}</strong>
+                </div>
+            </td>
+            <td>
+                <i class="fas fa-envelope text-muted me-1"></i>
+                ${customer.email}
+            </td>
+            <td>
+                <i class="fas fa-phone text-primary me-1"></i>
+                ${customer.phone}
+            </td>
+            <td>
+                <span class="badge bg-success">${customer.totalReservations}</span>
+            </td>
+            <td>
+                <i class="fas fa-calendar me-1"></i>
+                ${customer.lastVisit ? formatDate(customer.lastVisit.toISOString().split('T')[0]) : 'N/A'}
+            </td>
+        </tr>
+    `).join('');
+}
+
+function refreshDashboard() {
+    loadDashboardData();
+    showToast('Dashboard refreshed', 'success');
+}
+
+function refreshBookings() {
+    bookingsData = []; // Clear cache
+    loadAllBookings();
+    showToast('Bookings refreshed', 'success');
+}
+
+function refreshCustomers() {
+    loadCustomers();
+    showToast('Customers refreshed', 'success');
+}
+
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    });
+}
+
+function showToast(message, type = 'success') {
+    const toastId = type === 'success' ? 'successToast' : 'errorToast';
+    const messageId = type === 'success' ? 'toastMessage' : 'errorMessage';
+    
+    document.getElementById(messageId).textContent = message;
+    const toast = new bootstrap.Toast(document.getElementById(toastId));
+    toast.show();
+}
+
+// Make functions globally available
+window.showSection = showSection;
+window.updateBookingStatus = updateBookingStatus;
+window.viewBookingDetails = viewBookingDetails;
+window.refreshDashboard = refreshDashboard;
+window.refreshBookings = refreshBookings;
+window.refreshCustomers = refreshCustomers;
     </script>
 </body>
 </html>
