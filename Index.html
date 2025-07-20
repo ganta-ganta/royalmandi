@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Mandi - Coming Soon</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a0a0a, #3a1a1a, #5a2a2a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            overflow-x: hidden;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            max-width: 900px;
+            background: rgba(0, 0, 0, 0.75);
+            padding: 50px;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .crown-icon {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3rem;
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            z-index: 10;
+        }
+        
+        .logo-container {
+            margin-bottom: 40px;
+            animation: pulse 3s infinite;
+        }
+        
+        .logo {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(145deg, #ffd700, #c5a200);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 25px;
+            border: 6px solid #8b0000;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.7);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 60%, rgba(0,0,0,0.3) 100%);
+        }
+        
+        .logo img {
+            max-width: 80%;
+            max-height: 80%;
+            border-radius: 50%;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+            background: linear-gradient(to right, #ffd700, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+        
+        .tagline {
+            font-size: 1.8rem;
+            margin-bottom: 40px;
+            color: #f8f9fa;
+            font-weight: 300;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            letter-spacing: 1px;
+        }
+        
+        .message {
+            font-size: 1.8rem;
+            margin-bottom: 50px;
+            line-height: 1.7;
+            color: #e9ecef;
+            padding: 0 20px;
+            font-weight: 300;
+        }
+        
+        .highlight {
+            color: #ffd700;
+            font-weight: 500;
+        }
+        
+        .contact-box {
+            background: linear-gradient(45deg, rgba(139, 0, 0, 0.7), rgba(165, 42, 42, 0.7));
+            padding: 30px;
+            border-radius: 20px;
+            margin: 40px 0;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .contact-box::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ffd700, #8b0000, #ffd700);
+            z-index: -1;
+            border-radius: 22px;
+        }
+        
+        .contact-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: inherit;
+            border-radius: 20px;
+            z-index: -1;
+        }
+        
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #25D366;
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            padding: 20px 40px;
+            border-radius: 60px;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            margin-top: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .whatsapp-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #128C7E, #25D366, #128C7E);
+            z-index: -1;
+            transition: opacity 0.4s ease;
+            opacity: 0;
+        }
+        
+        .whatsapp-btn:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+        }
+        
+        .whatsapp-btn:hover::before {
+            opacity: 1;
+        }
+        
+        .whatsapp-btn i {
+            font-size: 2.5rem;
+            margin-right: 15px;
+            transition: transform 0.3s ease;
+        }
+        
+        .whatsapp-btn:hover i {
+            transform: scale(1.2);
+        }
+        
+        .icons {
+            display: flex;
+            justify-content: center;
+            gap: 45px;
+            margin: 50px 0;
+            flex-wrap: wrap;
+        }
+        
+        .icon {
+            font-size: 5rem;
+            color: #ffd700;
+            transition: all 0.4s ease;
+            text-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .icon i {
+            transition: all 0.4s ease;
+        }
+        
+        .icon:hover i {
+            transform: scale(1.3) rotate(10deg);
+            color: #ffffff;
+            text-shadow: 0 0 40px rgba(255, 255, 255, 0.9);
+        }
+        
+        .icon-label {
+            font-size: 1.2rem;
+            margin-top: 15px;
+            opacity: 0.9;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 5px 15px;
+            border-radius: 20px;
+            transition: all 0.4s ease;
+            font-weight: 300;
+        }
+        
+        .icon:hover .icon-label {
+            transform: translateY(10px);
+            opacity: 1;
+            background: rgba(0, 0, 0, 0.7);
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            min-width: 120px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .countdown-item:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        .countdown-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+        }
+        
+        .countdown-label {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 10px;
+            color: #e0e0e0;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .construction-icon {
+            font-size: 4rem;
+            margin-bottom: 30px;
+            color: #ffd700;
+            animation: spin 6s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .floating {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 215, 0, 0.1);
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.1);
+            animation: float 15s infinite linear;
+            z-index: 1;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+            100% { transform: translateY(0) rotate(360deg); }
+        }
+        
+        .floating:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 10%;
+            left: 15%;
+            animation-duration: 20s;
+        }
+        
+        .floating:nth-child(2) {
+            width: 70px;
+            height: 70px;
+            top: 70%;
+            left: 5%;
+            animation-duration: 25s;
+        }
+        
+        .floating:nth-child(3) {
+            width: 120px;
+            height: 120px;
+            top: 20%;
+            right: 10%;
+            animation-duration: 18s;
+        }
+        
+        .floating:nth-child(4) {
+            width: 50px;
+            height: 50px;
+            top: 80%;
+            right: 15%;
+            animation-duration: 30s;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            font-size: 1.1rem;
+            color: #aaa;
+        }
+        
+        @media (max-width: 900px) {
+            .container { padding: 40px; }
+            h1 { font-size: 3.5rem; }
+            .tagline, .message { font-size: 1.6rem; }
+            .logo { width: 180px; height: 180px; }
+            .icon { font-size: 4rem; }
+            .whatsapp-btn { font-size: 1.5rem; padding: 18px 35px; }
+            .countdown-item { min-width: 100px; }
+            .countdown-number { font-size: 2.5rem; }
+            .icon-label { font-size: 1.1rem; }
+        }
+        
+        @media (max-width: 600px) {
+            .container { padding: 30px; }
+            h1 { font-size: 2.8rem; }
+            .tagline, .message { font-size: 1.4rem; }
+            .logo { width: 160px; height: 160px; }
+            .icon { font-size: 3.5rem; }
+            .whatsapp-btn { font-size: 1.3rem; padding: 15px 30px; }
+            .countdown { gap: 15px; }
+            .countdown-item { min-width: 80px; padding: 15px; }
+            .countdown-number { font-size: 2rem; }
+            .countdown-label { font-size: 0.9rem; }
+            .icon-label { font-size: 1rem; }
+            .icons { gap: 30px; }
+        }
+        
+        @media (max-width: 480px) {
+            .container { padding: 25px 20px; }
+            h1 { font-size: 2.3rem; }
+            .tagline, .message { font-size: 1.2rem; }
+            .logo { width: 140px; height: 140px; }
+            .icon { font-size: 3rem; }
+            .whatsapp-btn { font-size: 1.1rem; padding: 12px 25px; }
+            .countdown { gap: 10px; }
+            .countdown-item { min-width: 70px; padding: 12px; }
+            .countdown-number { font-size: 1.8rem; }
+            .countdown-label { font-size: 0.8rem; }
+            .icon-label { font-size: 0.9rem; }
+            .icons { gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating background elements -->
+    <div class="floating"></div>
+    <div class="floating"></div>
+    <div class="floating"></div>
+    <div class="floating"></div>
+    
+    <div class="container">
+        <div class="crown-icon">
+            <i class="fas fa-crown"></i>
+        </div>
+        
+        <div class="logo-container">
+            <div class="logo">
+                <img src="https://theroyalmandi.co.uk/img/logo.png" alt="Royal Mandi Logo">
+            </div>
+            <h1>ROYAL MANDI</h1>
+            <div class="tagline">Authentic Arabian Cuisine</div>
+        </div>
+        
+        <div class="construction-icon">
+            <i class="fas fa-utensils"></i>
+        </div>
+        
+        <div class="message">
+            <p>Our <span class="highlight">restaurant website</span> is under construction</p>
+            <p>We're preparing a royal dining experience for you!</p>
+        </div>
+        
+        <div class="contact-box">
+            <p>We'll be launching soon. For reservations and inquiries:</p>
+            
+            <a href="https://wa.me/917995081439" class="whatsapp-btn" target="_blank">
+                <i class="fab fa-whatsapp"></i> +91 79950 81439
+            </a>
+        </div>
+        
+        <div class="icons">
+            <div class="icon">
+                <i class="fas fa-drumstick-bite"></i>
+                <div class="icon-label">Mandi Specialties</div>
+            </div>
+            <div class="icon">
+                <i class="fas fa-cheese"></i>
+                <div class="icon-label">Fine Ingredients</div>
+            </div>
+            <div class="icon">
+                <i class="fas fa-wine-glass-alt"></i>
+                <div class="icon-label">Royal Ambiance</div>
+            </div>
+            <div class="icon">
+                <i class="fas fa-truck"></i>
+                <div class="icon-label">Home Delivery</div>
+            </div>
+            <div class="icon">
+                <i class="fas fa-gift"></i>
+                <div class="icon-label">Special Offers</div>
+            </div>
+        </div>
+        
+        <div class="countdown">
+            <div class="countdown-item">
+                <div class="countdown-number" id="days">07</div>
+                <div class="countdown-label">Days</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="hours">23</div>
+                <div class="countdown-label">Hours</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="minutes">45</div>
+                <div class="countdown-label">Minutes</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="seconds">18</div>
+                <div class="countdown-label">Seconds</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Website under construction by Ganta Solutions</p>
+        </div>
+    </div>
+
+    <script>
+        // Countdown timer
+        function updateCountdown() {
+            const days = document.getElementById('days');
+            const hours = document.getElementById('hours');
+            const minutes = document.getElementById('minutes');
+            const seconds = document.getElementById('seconds');
+            
+            // Set target date (7 days from now)
+            const targetDate = new Date();
+            targetDate.setDate(targetDate.getDate() + 7);
+            
+            const now = new Date();
+            const diff = targetDate - now;
+            
+            // Calculate days, hours, minutes, seconds
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            // Update display
+            days.innerHTML = d.toString().padStart(2, '0');
+            hours.innerHTML = h.toString().padStart(2, '0');
+            minutes.innerHTML = m.toString().padStart(2, '0');
+            seconds.innerHTML = s.toString().padStart(2, '0');
+        }
+        
+        // Initial call and set interval
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
