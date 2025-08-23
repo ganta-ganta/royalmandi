@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SUPREME ENTERPRISES - Product Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); min-height: 100vh; margin: 0; }
+    .main-container { padding: 15px; max-width: 900px; margin: 0 auto; position: relative; }
+    .company-header { background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.95) 100%); padding: 24px; border-radius: 20px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); margin-bottom: 20px; position: relative; }
+    .company-header h2 { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 800; font-size: 28px; margin: 0; }
+    .card { border-radius: 16px; border: 1px solid rgba(226,232,240,0.8); background: rgba(255,255,255,0.95); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    .card-header { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white; border-radius: 16px 16px 0 0; padding: 16px 20px; font-weight: 600; font-size: 16px; }
+    .card-body { padding: 20px; }
+    .btn-primary { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white; }
+    .table { border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1); }
+    th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: center; }
+    th { background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); font-weight: 600; }
+    tr:nth-child(even) { background: linear-gradient(135deg, #fafbfc 0%, #f8fafc 100%); }
+    .form-control, .form-select { padding: 10px 14px; font-size: 14px; border-radius: 12px; border: 2px solid #e5e7eb; background: rgba(255,255,255,0.8);}
+    .form-label { font-weight: 600; color: #1f2937; margin-bottom: 6px; font-size: 14px; }
+    .btn { border-radius: 12px; }
+    .btn-warning { background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%); color: white;}
+    .btn-danger { background: linear-gradient(135deg, #ef4444 0%, #f87171 100%); color: white;}
+    .btn-success { background: linear-gradient(135deg, #10b981 0%, #34d399 100%); color: white;}
+    .modal-content { border-radius: 20px; border: none; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);}
+    .modal-header { border-bottom: 1px solid rgba(226,232,240,0.8); background: #f8fafc;}
+    .modal-footer { border-top: 1px solid rgba(226,232,240,0.8); background: #f8fafc;}
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <div class="company-header mb-4">
+      <h2>SUPREME ENTERPRISES - Products</h2>
+      <p class="text-muted">Add, edit, and manage products dynamically.</p>
+    </div>
+    <div class="card mb-4">
+      <div class="card-header"><i class="bi bi-plus-circle"></i> Add Product</div>
+      <div class="card-body">
+        <form id="addProductForm" class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label">Product Name</label>
+            <input type="text" class="form-control" id="productName" required>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Stock</label>
+            <input type="number" class="form-control" id="productStock" min="0" required>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Price (₹)</label>
+            <input type="number" class="form-control" id="productPrice" min="0" required>
+          </div>
+          <div class="col-md-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100"><i class="bi bi-plus-circle"></i> Add</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><i class="bi bi-table"></i> Products List</div>
+      <div class="card-body">
+        <table class="table" id="productsTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Product Name</th>
+              <th>Stock</th>
+              <th>Price (₹)</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Dynamic rows here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Edit Modal -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <form class="modal-content" id="editProductForm">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel"><i class="bi bi-pencil-square"></i> Edit Product</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body row g-3">
+          <input type="hidden" id="editIndex">
+          <div class="col-12">
+            <label class="form-label">Product Name</label>
+            <input type="text" class="form-control" id="editProductName" required>
+          </div>
+          <div class="col-6">
+            <label class="form-label">Stock</label>
+            <input type="number" class="form-control" id="editProductStock" min="0" required>
+          </div>
+          <div class="col-6">
+            <label class="form-label">Price (₹)</label>
+            <input type="number" class="form-control" id="editProductPrice" min="0" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Product list state
+    let products = [
+      { name: "Camping Tent", stock: 20, price: 3500 },
+      { name: "Sleeping Bag", stock: 5, price: 900 },
+      { name: "Lantern", stock: 0, price: 500 }
+    ];
+
+    function renderProducts() {
+      const tbody = document.querySelector("#productsTable tbody");
+      tbody.innerHTML = "";
+      products.forEach((prod, idx) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${idx + 1}</td>
+          <td>${prod.name}</td>
+          <td>${prod.stock}</td>
+          <td>₹${prod.price}</td>
+          <td>
+            <button class="btn btn-warning btn-sm me-2" onclick="editProduct(${idx})"><i class="bi bi-pencil"></i> Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteProduct(${idx})"><i class="bi bi-trash"></i> Delete</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Add product handler
+    document.getElementById("addProductForm").onsubmit = function(e) {
+      e.preventDefault();
+      const name = document.getElementById("productName").value.trim();
+      const stock = parseInt(document.getElementById("productStock").value, 10);
+      const price = parseInt(document.getElementById("productPrice").value, 10);
+      if (name && !isNaN(stock) && !isNaN(price)) {
+        products.push({ name, stock, price });
+        renderProducts();
+        this.reset();
+      }
+    };
+
+    // Edit product handler
+    window.editProduct = function(idx) {
+      const prod = products[idx];
+      document.getElementById("editIndex").value = idx;
+      document.getElementById("editProductName").value = prod.name;
+      document.getElementById("editProductStock").value = prod.stock;
+      document.getElementById("editProductPrice").value = prod.price;
+      const modal = new bootstrap.Modal(document.getElementById('editModal'));
+      modal.show();
+    };
+
+    // Save edit handler
+    document.getElementById("editProductForm").onsubmit = function(e) {
+      e.preventDefault();
+      const idx = parseInt(document.getElementById("editIndex").value, 10);
+      const name = document.getElementById("editProductName").value.trim();
+      const stock = parseInt(document.getElementById("editProductStock").value, 10);
+      const price = parseInt(document.getElementById("editProductPrice").value, 10);
+      if (name && !isNaN(stock) && !isNaN(price)) {
+        products[idx] = { name, stock, price };
+        renderProducts();
+        bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
+      }
+    };
+
+    // Delete product handler
+    window.deleteProduct = function(idx) {
+      if (confirm("Are you sure to delete this product?")) {
+        products.splice(idx, 1);
+        renderProducts();
+      }
+    };
+
+    // Initial render
+    renderProducts();
+  </script>
+</body>
+</html>
